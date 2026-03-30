@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planilha de Acompanhamento — Academia dos Jovens Empreendedores</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1A1E2E; --gold:#F5C842; --green:#10B981;
+  --blue:#3B82F6; --red:#EF4444; --purple:#8B5CF6;
+  --bg:#F0F4FF; --white:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);padding:28px 20px;max-width:1000px;margin:0 auto}
+
+h1{font-size:1.5rem;font-weight:900;color:var(--ink);margin-bottom:4px}
+.subtitle{font-size:.85rem;color:#6B7280;margin-bottom:24px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap}
+.tab{
+  background:white;border:2px solid #E5E7EB;border-bottom:none;
+  border-radius:10px 10px 0 0;padding:10px 20px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;
+  color:#6B7280;transition:.15s;
+}
+.tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+.tab:hover:not(.active){background:#F9FAFB;color:var(--ink)}
+
+/* SHEET PREVIEW */
+.sheet{
+  background:white;border:2px solid var(--ink);border-radius:0 12px 12px 12px;
+  overflow:hidden;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+.sheet-header{
+  background:var(--ink);padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sheet-title{font-size:.82rem;font-weight:800;color:white}
+.copy-btn{
+  background:var(--gold);color:var(--ink);
+  font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:800;
+  padding:5px 14px;border-radius:8px;border:none;cursor:pointer;transition:.15s;
+}
+.copy-btn:hover{transform:scale(1.05)}
+.copy-btn.done{background:#10B981;color:white}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+thead th{
+  background:#F1F5FF;color:var(--ink);font-weight:800;
+  padding:8px 12px;text-align:left;border:1px solid #E5E7EB;
+  white-space:nowrap;font-size:.72rem;letter-spacing:.04em;
+}
+thead th.col-gold{background:rgba(245,200,66,.15);color:#92400E}
+thead th.col-green{background:rgba(16,185,129,.1);color:#065F46}
+thead th.col-blue{background:rgba(59,130,246,.1);color:#1E40AF}
+thead th.col-purple{background:rgba(139,92,246,.1);color:#4C1D95}
+tbody td{
+  padding:7px 12px;border:1px solid #E5E7EB;
+  color:#374151;vertical-align:top;
+}
+tbody tr:nth-child(even) td{background:#FAFBFF}
+tbody tr:hover td{background:#EEF2FF}
+.sample{color:#9CA3AF;font-style:italic;font-size:.7rem}
+.formula{color:#1D4ED8;font-family:monospace;font-size:.68rem;background:#EFF6FF;padding:2px 5px;border-radius:4px}
+.phase-tag{
+  display:inline-block;border-radius:6px;padding:2px 8px;
+  font-size:.65rem;font-weight:800;
+}
+
+/* STEP GUIDE */
+.guide{margin-top:24px}
+.guide h2{font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:14px}
+.step{
+  display:flex;gap:14px;align-items:flex-start;
+  margin-bottom:16px;
+  background:white;border:1px solid #E5E7EB;border-radius:14px;padding:16px;
+}
+.step-n{
+  width:32px;height:32px;border-radius:10px;
+  background:var(--ink);color:white;
+  font-size:.85rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-body h3{font-size:.9rem;font-weight:800;color:var(--ink);margin-bottom:4px}
+.step-body p{font-size:.82rem;color:#6B7280;line-height:1.6}
+.step-body code{
+  background:#F1F5FF;border:1px solid #DBEAFE;
+  border-radius:6px;padding:2px 8px;font-size:.75rem;color:#1D4ED8;font-family:monospace;
+}
+.step-body a{color:var(--blue);font-weight:700;text-decoration:none}
+.step-body a:hover{text-decoration:underline}
+
+.tip-box{
+  background:linear-gradient(135deg,#FEF9C3,#FEF3C7);
+  border:1.5px solid #FDE047;border-radius:12px;
+  padding:14px 18px;margin:12px 0;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.tip-box p{font-size:.8rem;line-height:1.65;color:#78350F}
+
+.screen{display:none}
+.screen.active{display:block}
+</style>
+</head>
+<body>
+
+<h1>📊 Planilha de Acompanhamento</h1>
+<p class="subtitle">Academia dos Jovens Empreendedores — Nuvem Veloz · Modelo para Google Sheets</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('xp')">⚡ Aba 1 — XP & Progresso</div>
+  <div class="tab" onclick="showTab('entregas')">📋 Aba 2 — Entregas</div>
+  <div class="tab" onclick="showTab('desafios')">🃏 Aba 3 — Desafios Semanais</div>
+  <div class="tab" onclick="showTab('cert')">🎓 Aba 4 — Certificados</div>
+  <div class="tab" onclick="showTab('guide')">📖 Como Criar</div>
+</div>
+
+<!-- ABA 1: XP -->
+<div class="screen active" id="tab-xp">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title">Aba "XP e Progresso" — copie esta estrutura para o Google Sheets</span>
+      <button class="copy-btn" onclick="copyData('data-xp', this)">📋 Copiar dados</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="data-xp">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Aluno</th>
+            <th>Fase</th>
+            <th>Missão</th>
+            <th class="col-gold">Ação</th>
+            <th class="col-gold">XP Ganho</th>
+            <th class="col-gold">XP Total</th>
+            <th class="col-green">Nível Atual</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sample">25/03/2025</span></td>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">Missão 1.1</span></td>
+            <td><span class="sample">Ficha de agente criada</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+20</td>
+            <td><span class="formula">=SOMASE(B:B,B2,F:F)</span></td>
+            <td><span class="formula">=SE(G2>=820,"🌀 Mestre",SE(G2>=580,"🎯 Estrategista",SE(G2>=380,"📣 Comunicador",SE(G2>=220,"🎨 Mestre da Marca",SE(G2>=100,"🔧 Inventor","🌱 Explorador")))))</span></td>
+            <td><span class="sample">Ótima participação!</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">25/03/2025</span></td>
+            <td><span class="sample">Aluno 2</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">Missão 1.1</span></td>
+            <td><span class="sample">10 ideias geradas</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+20</td>
+            <td><span class="formula">=SOMASE(B:B,B3,F:F)</span></td>
+            <td><span class="formula">=SE(G3>=820,"🌀 Mestre",SE(G3>=580,"🎯 Estrategista",SE(G3>=380,"📣 Comunicador",SE(G3>=220,"🎨 Mestre da Marca",SE(G3>=100,"🔧 Inventor","🌱 Explorador")))))</span></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="sample">← Continue adicionando linhas aqui</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <span style="font-size:1.2rem">💡</span>
+    <p><strong>Dica das fórmulas:</strong> A coluna "XP Total" usa <code>=SOMASE(B:B,B2,F:F)</code> — ela soma automaticamente todos os XP do mesmo aluno na coluna B. A coluna "Nível Atual" calcula o nível automaticamente. Você só precisa preencher as 6 primeiras colunas!</p>
+  </div>
+
+  <!-- Ranking summary -->
+  <div class="sheet" style="margin-top:16px">
+    <div class="sheet-header">
+      <span class="sheet-title">Tabela de Ranking (adicione numa aba separada "Ranking")</span>
+      <button class="copy-btn" onclick="copyData('data-ranking', this)">📋 Copiar</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="data-ranking">
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Aluno</th>
+            <th class="col-gold">XP Total</th>
+            <th class="col-green">Nível</th>
+            <th class="col-blue">Missões Concluídas</th>
+            <th class="col-purple">Próxima Recompensa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🥇 1º</td>
+            <td><span class="formula">=ÍNDICE('XP e Progresso'!B:B,CORRESP(MAIOR('XP e Progresso'!G:G,1),'XP e Progresso'!G:G,0))</span></td>
+            <td style="font-weight:800;color:#B45309"><span class="formula">=MAIOR('XP e Progresso'!G:G,1)</span></td>
+            <td><span class="sample">🌱 Explorador</span></td>
+            <td><span class="sample">3</span></td>
+            <td><span class="sample">🥇 Medalha em 100 XP</span></td>
+          </tr>
+          <tr>
+            <td>🥈 2º</td>
+            <td><span class="formula">=ÍNDICE('XP e Progresso'!B:B,CORRESP(MAIOR('XP e Progresso'!G:G,2),'XP e Progresso'!G:G,0))</span></td>
+            <td style="font-weight:800;color:#B45309"><span class="formula">=MAIOR('XP e Progresso'!G:G,2)</span></td>
+            <td><span class="sample">🌱 Explorador</span></td>
+            <td><span class="sample">3</span></td>
+            <td><span class="sample">🥇 Medalha em 100 XP</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ABA 2: ENTREGAS -->
+<div class="screen" id="tab-entregas">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title">Aba "Entregas" — registro de todos os materiais criados por cada aluno</span>
+      <button class="copy-btn" onclick="copyData('data-entregas', this)">📋 Copiar dados</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="data-entregas">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Fase</th>
+            <th>Missão</th>
+            <th class="col-blue">Entrega</th>
+            <th class="col-blue">Formato</th>
+            <th class="col-green">Status</th>
+            <th class="col-gold">XP Concedido</th>
+            <th>Link / Arquivo</th>
+            <th>Feedback do Instrutor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">1.2</span></td>
+            <td><span class="sample">Mapa de Problemas</span></td>
+            <td><span class="sample">Papel / Foto</span></td>
+            <td><span style="color:#15803D;font-weight:800">✅ Entregue</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+25</td>
+            <td><span class="sample">foto_mapa_aluno1.jpg</span></td>
+            <td><span class="sample">Excelente! Identificou problemas reais.</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#DBEAFE;color:#1D4ED8">Fase 2</span></td>
+            <td><span class="sample">2.2</span></td>
+            <td><span class="sample">Logo no Canva</span></td>
+            <td><span class="sample">Canva / PNG</span></td>
+            <td><span style="color:#15803D;font-weight:800">✅ Entregue</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+80</td>
+            <td><span class="sample">canva.com/design/abc123</span></td>
+            <td><span class="sample">Logo bonito, cores coerentes com a marca.</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Aluno 2</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">1.4</span></td>
+            <td><span class="sample">Canvas da Empresa</span></td>
+            <td><span class="sample">Apostila / Foto</span></td>
+            <td><span style="color:#D97706;font-weight:800">⏳ Pendente</span></td>
+            <td style="text-align:center;color:#9CA3AF">—</td>
+            <td></td>
+            <td><span class="sample">Trazer na próxima aula</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#FEF9C3;color:#854D0E">Fase 3</span></td>
+            <td><span class="sample">3.3</span></td>
+            <td><span class="sample">Vídeo Curto</span></td>
+            <td><span class="sample">MP4 / Reel</span></td>
+            <td><span style="color:#DC2626;font-weight:800">❌ Não entregue</span></td>
+            <td style="text-align:center;color:#9CA3AF">—</td>
+            <td></td>
+            <td><span class="sample">Prazo: próxima semana</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ABA 3: DESAFIOS -->
+<div class="screen" id="tab-desafios">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title">Aba "Desafios Semanais" — controle das missões para casa</span>
+      <button class="copy-btn" onclick="copyData('data-desafios', this)">📋 Copiar dados</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="data-desafios">
+        <thead>
+          <tr>
+            <th>Semana</th>
+            <th>Aluno</th>
+            <th>Fase</th>
+            <th class="col-purple">Desafio</th>
+            <th class="col-green">Entregou?</th>
+            <th class="col-gold">XP Bônus</th>
+            <th>Resultado / Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sample">Semana 1</span></td>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">🔍 Missão Observador — 3 problemas observados</span></td>
+            <td style="text-align:center"><span style="color:#15803D;font-weight:800">✅ Sim</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+20</td>
+            <td><span class="sample">Identificou problema no transporte escolar. Ótima observação!</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Semana 1</span></td>
+            <td><span class="sample">Aluno 2</span></td>
+            <td><span class="phase-tag" style="background:#DCFCE7;color:#15803D">Fase 1</span></td>
+            <td><span class="sample">🔍 Missão Observador — 3 problemas observados</span></td>
+            <td style="text-align:center"><span style="color:#DC2626;font-weight:800">❌ Não</span></td>
+            <td style="text-align:center;color:#9CA3AF">—</td>
+            <td><span class="sample">Conversar sobre a importância das missões semanais</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Semana 2</span></td>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="phase-tag" style="background:#DBEAFE;color:#1D4ED8">Fase 2</span></td>
+            <td><span class="sample">🎨 Missão Canva — cartão de visitas criado</span></td>
+            <td style="text-align:center"><span style="color:#15803D;font-weight:800">✅ Sim</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309">+25</td>
+            <td><span class="sample">Design muito criativo! Logo bem aplicado.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ABA 4: CERTIFICADOS -->
+<div class="screen" id="tab-cert">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="sheet-title">Aba "Certificados" — registro de alunos formados</span>
+      <button class="copy-btn" onclick="copyData('data-cert', this)">📋 Copiar dados</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="data-cert">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Data de Início</th>
+            <th>Data de Conclusão</th>
+            <th class="col-gold">XP Final Total</th>
+            <th class="col-green">Nível Final</th>
+            <th class="col-purple">Missões Concluídas</th>
+            <th class="col-blue">Nota do Demo Day</th>
+            <th>Certificado Emitido?</th>
+            <th>Observações Finais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sample">Aluno 1</span></td>
+            <td><span class="sample">25/03/2025</span></td>
+            <td><span class="sample">30/06/2025</span></td>
+            <td style="text-align:center;font-weight:800;color:#B45309"><span class="sample">1.240 XP</span></td>
+            <td><span class="sample">🌀 Mestre do Funil</span></td>
+            <td style="text-align:center"><span class="sample">30 / 32</span></td>
+            <td style="text-align:center;font-weight:800"><span class="sample">⭐⭐⭐⭐⭐</span></td>
+            <td style="text-align:center"><span style="color:#15803D;font-weight:800">✅ Emitido</span></td>
+            <td><span class="sample">Aluno destaque! Fez a primeira venda real.</span></td>
+          </tr>
+          <tr>
+            <td><span class="sample">Aluno 2</span></td>
+            <td><span class="sample">25/03/2025</span></td>
+            <td></td>
+            <td style="text-align:center;color:#9CA3AF"><span class="sample">Em curso...</span></td>
+            <td></td>
+            <td style="text-align:center"><span class="sample">22 / 32</span></td>
+            <td></td>
+            <td style="text-align:center"><span style="color:#D97706;font-weight:800">⏳ Aguardando</span></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <span style="font-size:1.2rem">🎓</span>
+    <p><strong>Quando emitir:</strong> Preencha o nome e data no arquivo <strong>certificado-academia.html</strong>, clique "Imprimir / Salvar PDF", e salve o PDF na pasta do aluno. Registre aqui quando foi emitido.</p>
+  </div>
+</div>
+
+<!-- GUIA DE CRIAÇÃO -->
+<div class="screen" id="tab-guide">
+  <div class="guide">
+    <h2>📖 Passo a passo — criar a planilha no Google Sheets</h2>
+
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-body">
+        <h3>Acesse o Google Sheets</h3>
+        <p>Vá para <a href="https://sheets.google.com" target="_blank">sheets.google.com</a> e clique em <strong>"+"</strong> para criar uma nova planilha em branco. Dê o nome <strong>"Academia dos Jovens Empreendedores"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <h3>Crie as 4 abas</h3>
+        <p>Na parte inferior, clique no <strong>"+"</strong> para adicionar abas. Crie 4 abas com os nomes exatos:<br>
+        <code>XP e Progresso</code> &nbsp;·&nbsp; <code>Entregas</code> &nbsp;·&nbsp; <code>Desafios Semanais</code> &nbsp;·&nbsp; <code>Certificados</code></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-body">
+        <h3>Copie os cabeçalhos de cada aba</h3>
+        <p>Em cada aba acima, clique em <strong>"📋 Copiar dados"</strong> e cole na célula <strong>A1</strong> do Google Sheets correspondente. Os cabeçalhos e exemplos serão colados automaticamente.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-body">
+        <h3>Adicione as fórmulas automáticas</h3>
+        <p>Na aba <strong>"XP e Progresso"</strong>, na coluna G (XP Total), cole esta fórmula na linha 2:<br>
+        <code>=SOMASE(B:B,B2,F:F)</code><br>
+        E na coluna H (Nível Atual):<br>
+        <code>=SE(G2>=820,"🌀 Mestre do Funil",SE(G2>=580,"🎯 Estrategista",SE(G2>=380,"📣 Comunicador",SE(G2>=220,"🎨 Mestre da Marca",SE(G2>=100,"🔧 Inventor","🌱 Explorador")))))</code><br>
+        Depois arraste as fórmulas para baixo nas linhas seguintes.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-body">
+        <h3>Formate as células (opcional, mas bonito)</h3>
+        <p>Selecione a linha 1 → <strong>Formatar → Estilo negrito</strong>. Congele a linha 1 com <strong>Exibir → Congelar → 1 linha</strong> para os cabeçalhos ficarem visíveis ao rolar.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-n">6</div>
+      <div class="step-body">
+        <h3>Compartilhe com você mesma</h3>
+        <p>Clique em <strong>"Compartilhar"</strong> (canto superior direito) e adicione seu e-mail de celular para acessar facilmente durante as aulas. Você pode atualizar o XP pelo celular em tempo real!</p>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <span style="font-size:1.2rem">📱</span>
+      <p><strong>Dica prática:</strong> Instale o app <strong>Google Sheets</strong> no celular. Durante a aula, ao conceder XP, abra o app e adicione a linha diretamente — os alunos vão adorar ver o número subindo na hora!</p>
+    </div>
+
+    <div class="tip-box">
+      <span style="font-size:1.2rem">🔗</span>
+      <p><strong>Vincular ao jogo:</strong> No futuro, você pode exibir o ranking da planilha numa tela durante a aula usando <strong>Google Sheets → Publicar na web</strong>. Cria um link público somente leitura do ranking que pode ser projetado.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function copyData(tableId, btn) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+
+  // Build TSV (tab-separated values) — perfect for pasting into Google Sheets
+  let tsv = '';
+  const rows = table.querySelectorAll('tr');
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('th, td');
+    const rowData = Array.from(cells).map(cell => {
+      // Get text content, clean up
+      return cell.textContent.trim().replace(/\s+/g, ' ');
+    });
+    tsv += rowData.join('\t') + '\n';
+  });
+
+  navigator.clipboard.writeText(tsv).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('done');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('done');
+    }, 2500);
+  }).catch(() => {
+    // Fallback: select the table text
+    const range = document.createRange();
+    range.selectNode(table);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = '📋 Copiar dados'; btn.classList.remove('done'); }, 2500);
+  });
+}
+</script>
+</body>
+</html>

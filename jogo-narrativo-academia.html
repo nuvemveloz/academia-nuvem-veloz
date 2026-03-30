@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS ACADEMY — Desperte o Gênio Que Existe em Você!</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ════ NEXUS ACADEMY — DESIGN SYSTEM ════ */
+:root{
+  --nb:#00D4FF;    /* neon blue     */
+  --nb2:#0099BB;
+  --ep:#B060FF;    /* electric purple */
+  --ep2:#7C3AED;
+  --cg:#00FF88;    /* cyber green   */
+  --cg2:#00CC6A;
+  --gold:#FFD60A;  --gold2:#C78000;
+  --red:#FF3355;   --orange:#FF8C00;
+  --bg:#03050F;    /* deep space    */
+  --s1:#080E20;    --s2:#0D1530;   --s3:#121B38;
+  --border:rgba(0,212,255,.15);
+  --text:#E8F4FF;  --muted:#3A5070;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── ANIMATED GRID BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ── SCANNING LINE ── */
+body::after{
+  content:'';position:fixed;top:-100%;left:0;right:0;height:3px;z-index:0;
+  background:linear-gradient(90deg,transparent,var(--nb),transparent);
+  animation:scan 6s linear infinite;
+  pointer-events:none;
+}
+@keyframes scan{to{top:100%}}
+
+/* ── PARTICLES CANVAS ── */
+#particles-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── SCREENS ── */
+.screen{display:none;position:relative;z-index:1}
+.screen.on{display:flex;flex-direction:column;min-height:100vh;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ════ TOPBAR ════ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:52px;
+  background:rgba(3,5,15,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+}
+.tb-logo-wrap{padding:0 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tb-logo-img{height:32px;width:auto;filter:drop-shadow(0 0 8px var(--nb))}
+.tb-brand{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;
+  color:var(--nb);letter-spacing:.08em;line-height:1.2}
+.tb-by{font-size:.55rem;color:var(--muted);letter-spacing:.06em}
+.tb-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
+.tb-nav{display:flex;flex:1;overflow-x:auto}
+.tb-nav::-webkit-scrollbar{display:none}
+.tb-nb{background:none;border:none;color:var(--muted);
+  font-family:'Nunito',sans-serif;font-size:.7rem;font-weight:800;
+  padding:0 14px;height:52px;cursor:pointer;transition:.2s;
+  text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.tb-nb:hover,.tb-nb.on{color:var(--text)}
+.tb-nb.on{border-bottom:2px solid var(--nb);margin-bottom:-1px}
+.tb-right{display:flex;align-items:center;gap:10px;padding:0 14px;flex-shrink:0}
+
+/* XP pill in topbar */
+.tb-xp-pill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,214,10,.08);border:1px solid rgba(255,214,10,.2);
+  border-radius:100px;padding:4px 12px;
+  box-shadow:0 0 12px rgba(255,214,10,.1);
+}
+.tb-xp-video{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.tb-xp-val{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;color:var(--gold)}
+
+/* Streak pill */
+.tb-streak{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.2);
+  border-radius:100px;padding:4px 10px;
+  font-size:.72rem;font-weight:800;color:var(--orange);
+}
+.tb-streak.hot{box-shadow:0 0 14px rgba(255,140,0,.3);animation:streakPulse 1.5s ease-in-out infinite}
+@keyframes streakPulse{0%,100%{box-shadow:0 0 14px rgba(255,140,0,.3)}50%{box-shadow:0 0 24px rgba(255,140,0,.6)}}
+
+.tb-lvl{font-size:.62rem;color:var(--muted);font-weight:700;line-height:1.3;text-align:right}
+
+/* LIVES */
+.lives-display{display:flex;gap:3px}
+.life{font-size:.9rem;transition:.3s}
+.life.lost{filter:grayscale(1);opacity:.3}
+
+/* ════ BTNS ════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-weight:800;border-radius:12px;transition:all .2s;text-decoration:none}
+.btn-cyber{
+  background:linear-gradient(135deg,var(--nb),var(--nb2));
+  color:#001520;padding:14px 32px;font-size:1rem;
+  box-shadow:0 0 24px rgba(0,212,255,.35),0 4px 12px rgba(0,0,0,.4);
+  position:relative;overflow:hidden;
+}
+.btn-cyber::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform .4s;
+}
+.btn-cyber:hover::before{transform:translateX(100%)}
+.btn-cyber:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(0,212,255,.5),0 8px 20px rgba(0,0,0,.4)}
+.btn-purple{
+  background:linear-gradient(135deg,var(--ep),var(--ep2));
+  color:white;padding:12px 24px;font-size:.9rem;
+  box-shadow:0 0 18px rgba(176,96,255,.3);
+}
+.btn-purple:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(176,96,255,.5)}
+.btn-green{
+  background:linear-gradient(135deg,var(--cg),var(--cg2));
+  color:#001a0a;padding:14px 28px;font-size:.95rem;
+  box-shadow:0 0 18px rgba(0,255,136,.25);
+}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(0,255,136,.45)}
+.btn-ghost{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--muted);padding:10px 20px;font-size:.85rem;
+}
+.btn-ghost:hover{color:var(--text);border-color:rgba(0,212,255,.3);box-shadow:0 0 12px rgba(0,212,255,.1)}
+.btn-danger{background:rgba(255,51,85,.1);border:1px solid rgba(255,51,85,.3);
+  color:var(--red);padding:8px 16px;font-size:.78rem}
+
+/* ════ INTRO SCREEN ════ */
+#s-intro{
+  justify-content:center;align-items:center;text-align:center;
+  padding:60px 24px;min-height:100vh;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(0,212,255,.06) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 60% at 80% 80%,rgba(176,96,255,.05) 0%,transparent 60%),
+             var(--bg);
+}
+.intro-logo{height:80px;width:auto;margin:0 auto 20px;display:block;
+  filter:drop-shadow(0 0 16px var(--nb));
+  animation:logoPulse 3s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 16px var(--nb))}50%{filter:drop-shadow(0 0 28px var(--nb))}}
+
+.nexus-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);
+  border-radius:100px;padding:6px 18px;margin-bottom:20px;
+}
+.nb-dot{width:7px;height:7px;border-radius:50%;background:var(--cg);animation:blink .8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.nb-text{font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;
+  color:var(--nb);letter-spacing:.12em;text-transform:uppercase}
+
+.nexus-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,8vw,5rem);font-weight:900;
+  line-height:1;margin-bottom:8px;
+  background:linear-gradient(135deg,var(--nb) 0%,var(--ep) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(0,212,255,.3));
+}
+.nexus-sub{
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;
+  color:rgba(255,255,255,.5);letter-spacing:.06em;margin-bottom:24px;
+}
+
+/* Coin preview in intro */
+.intro-coin-wrap{
+  display:flex;align-items:center;justify-content:center;margin-bottom:28px;
+}
+.intro-coin-video{
+  width:90px;height:90px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(255,214,10,.4);
+  box-shadow:0 0 32px rgba(255,214,10,.3);
+  animation:coinSpin 8s ease-in-out infinite;
+}
+@keyframes coinFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.05)}
+}
+.intro-coin-static{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:default;
+  animation:coinFloat 2.5s ease-in-out infinite var(--delay,0s);
+}
+.intro-coin-static span{
+  font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  color:rgba(255,214,10,.6);
+}
+.intro-coin-static img{
+  filter:drop-shadow(0 0 8px rgba(255,214,10,.4));
+  transition:.2s;
+}
+.intro-coin-static:hover img{
+  transform:scale(1.15);
+  filter:drop-shadow(0 0 16px rgba(255,214,10,.8));
+}
+@keyframes coinSpin{0%,100%{transform:rotateY(0)}50%{transform:rotateY(15deg)}}
+
+/* Setup box */
+.setup-box{
+  background:var(--s1);border:1px solid var(--border);border-radius:20px;
+  padding:28px;max-width:400px;margin:0 auto 24px;
+  box-shadow:0 0 40px rgba(0,212,255,.05),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.sl{font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:8px;display:block}
+.si{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:700;padding:12px 16px;
+  outline:none;transition:.2s;margin-bottom:14px;
+}
+.si:focus{border-color:var(--nb);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+.si::placeholder{color:var(--muted)}
+
+.av-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.av{
+  width:46px;height:46px;border-radius:12px;
+  background:rgba(255,255,255,.05);border:2px solid transparent;
+  font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.2s;
+}
+.av.on{border-color:var(--nb);background:rgba(0,212,255,.12);
+  box-shadow:0 0 12px rgba(0,212,255,.3)}
+.av:hover:not(.on){border-color:rgba(0,212,255,.3)}
+
+/* ════ GAME LAYOUT ════ */
+#s-game{padding-top:52px}
+.game-wrap{display:grid;grid-template-columns:250px 1fr 220px;min-height:calc(100vh - 52px)}
+
+/* ── LEFT PANEL ── */
+.left-panel{
+  background:var(--s1);border-right:1px solid var(--border);
+  padding:16px;overflow-y:auto;max-height:calc(100vh - 52px);
+  position:sticky;top:52px;
+}
+
+/* Player card */
+.player-card{
+  background:linear-gradient(160deg,rgba(0,212,255,.08),rgba(176,96,255,.05));
+  border:1px solid rgba(0,212,255,.2);border-radius:16px;
+  padding:16px;margin-bottom:14px;text-align:center;
+  box-shadow:0 0 20px rgba(0,212,255,.05);
+}
+.pc-av{font-size:2.6rem;display:block;margin-bottom:4px}
+.pc-name{
+  font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;
+  color:var(--nb);margin-bottom:2px;
+  outline:none;cursor:text;
+  border-bottom:1px dashed rgba(0,212,255,.2);display:inline-block;min-width:80px;
+}
+.pc-xp{font-size:1.5rem;font-weight:900;color:var(--gold);display:block;
+  font-family:'Orbitron',monospace;}
+.pc-lv{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* XP bar */
+.xp-bar-bg{height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin:8px 0;position:relative}
+.xp-bar{height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--nb),var(--ep));
+  transition:width .7s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 8px var(--nb);
+}
+
+/* Streak in card */
+.pc-streak{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,140,0,.1);border:1px solid rgba(255,140,0,.2);
+  border-radius:100px;padding:3px 10px;font-size:.68rem;font-weight:800;color:var(--orange);
+  margin-top:6px;
+}
+
+/* Panel section title */
+.pst{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin:14px 0 7px;padding-left:2px}
+
+/* Phase buttons */
+.phase-btn{
+  display:flex;align-items:center;gap:8px;width:100%;
+  background:none;border:1px solid transparent;border-radius:10px;
+  padding:8px 10px;cursor:pointer;font-family:'Nunito',sans-serif;
+  color:var(--muted);font-size:.76rem;font-weight:700;text-align:left;
+  transition:.15s;margin-bottom:3px;
+}
+.phase-btn:hover,.phase-btn.on{background:var(--s2);border-color:var(--border);color:var(--text)}
+.phase-btn.on{border-color:rgba(0,212,255,.2);box-shadow:0 0 8px rgba(0,212,255,.05)}
+.phase-btn.locked{opacity:.35;cursor:not-allowed}
+.pi{font-size:1rem}
+.pd{flex:1;min-width:0}
+.pn{display:block;font-size:.55rem;color:var(--muted)}
+.pp{display:block}
+
+/* Reward rows */
+.reward-row{
+  background:rgba(255,214,10,.04);border:1px solid rgba(255,214,10,.1);
+  border-radius:10px;padding:9px;margin-bottom:5px;
+  display:flex;align-items:center;gap:8px;transition:.2s;
+}
+.reward-row.earned{border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.04)}
+.rr-coin{width:26px;height:auto;flex-shrink:0}
+.rr-info{flex:1;min-width:0}
+.rr-xp{font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;color:var(--gold)}
+.rr-label{font-size:.7rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rr-done{color:var(--cg);font-size:.85rem}
+
+/* ── CENTER ── */
+.center{padding:24px;overflow-y:auto;max-height:calc(100vh - 52px)}
+
+/* Narrative */
+.narr-box{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:20px;padding:28px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.narr-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--nb),var(--ep),var(--gold));
+  box-shadow:0 0 8px var(--nb);
+}
+.narr-ch{font-family:'Orbitron',monospace;font-size:.55rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--nb);margin-bottom:8px}
+.narr-title{font-family:'Orbitron',monospace;font-size:clamp(1rem,3vw,1.6rem);
+  font-weight:700;line-height:1.2;margin-bottom:12px;
+  background:linear-gradient(90deg,var(--nb),var(--ep));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.narr-text{font-size:.88rem;color:#6080A0;line-height:1.85;margin-bottom:14px}
+.narr-text strong{color:var(--text)}
+.nchip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:8px;padding:4px 10px;font-size:.68rem;font-weight:700;
+  margin:2px;
+}
+
+/* Mission cards */
+.missions-title{
+  font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;
+  color:var(--muted);margin-bottom:12px;letter-spacing:.06em;text-transform:uppercase}
+
+.mission-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:14px;padding:16px 18px;margin-bottom:8px;
+  cursor:pointer;transition:all .2s;
+  border-left:3px solid var(--lc,var(--nb));
+  position:relative;overflow:hidden;
+}
+.mission-card::before{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:0;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,.04));
+  transition:width .3s;
+}
+.mission-card:hover::before{width:100%}
+.mission-card:hover{transform:translateX(4px);border-color:var(--lc,var(--nb));
+  box-shadow:0 0 16px rgba(0,212,255,.08)}
+.mission-card.done{opacity:.5}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mc-phase{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--lc,var(--nb))}
+.mc-check{font-size:.78rem;color:var(--cg);font-weight:800}
+.mc-title{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;
+  margin-bottom:4px;line-height:1.3;color:var(--text)}
+.mc-desc{font-size:.74rem;color:var(--muted);line-height:1.5}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.mc-xp-row{display:flex;align-items:center;gap:5px}
+.mc-coin{width:20px;height:auto}
+.mc-xp-val{font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:var(--gold)}
+.mc-skill{font-size:.6rem;color:var(--muted);background:rgba(255,255,255,.04);
+  border:1px solid var(--border);padding:3px 8px;border-radius:100px}
+
+/* ── MISSION DETAIL ── */
+.det-wrap{background:var(--s1);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.det-head{padding:24px 28px;position:relative;overflow:hidden}
+.det-head::before{
+  content:'';position:absolute;inset:0;
+  background:var(--dhc,rgba(0,212,255,.06));
+}
+.det-head::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--dlc,var(--nb)),var(--ep));
+  box-shadow:0 0 8px var(--dlc,var(--nb));
+}
+.det-close{
+  position:absolute;top:14px;right:14px;width:30px;height:30px;
+  background:rgba(255,255,255,.07);border:none;color:var(--text);
+  border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;z-index:2;transition:.15s;
+}
+.det-close:hover{background:rgba(255,255,255,.15)}
+.det-ph{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;display:block;position:relative;z-index:1}
+.det-num{font-size:.68rem;color:var(--muted);position:relative;z-index:1;margin-bottom:4px}
+.det-title{font-family:'Orbitron',monospace;font-size:clamp(1rem,3vw,1.8rem);
+  font-weight:900;line-height:1.1;position:relative;z-index:1;margin-bottom:10px;
+  background:linear-gradient(90deg,var(--text),rgba(255,255,255,.7));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.det-chips{display:flex;gap:7px;flex-wrap:wrap;position:relative;z-index:1}
+.dchip{background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;color:var(--muted)}
+
+.det-body{padding:22px 28px}
+
+/* Script lines */
+.script-line{
+  border-left:2px solid var(--lc,var(--nb));border-radius:0 10px 10px 0;
+  background:rgba(0,212,255,.03);padding:12px 14px;margin-bottom:8px;
+  box-shadow:inset 0 0 20px rgba(0,212,255,.02);
+}
+.sl-label{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--lc,var(--nb));margin-bottom:5px}
+.sl-text{font-size:.84rem;color:#6080A0;line-height:1.75}
+.sl-text strong{color:var(--text)}
+.sl-tip{display:block;font-size:.74rem;font-style:italic;color:var(--muted);
+  margin-top:6px;padding-top:6px;border-top:1px solid rgba(0,212,255,.08)}
+
+/* Steps */
+.steps-ul{display:flex;flex-direction:column;gap:8px}
+.step-li{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;transition:.15s;
+}
+.step-li:hover{background:rgba(0,212,255,.03);border-color:rgba(0,212,255,.15)}
+.step-n{
+  width:26px;height:26px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.74rem;font-weight:900;color:#001020;flex-shrink:0;
+  font-family:'Orbitron',monospace;
+}
+.step-li h5{font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.step-li p{font-size:.74rem;color:var(--muted);line-height:1.5}
+
+/* Game challenge box */
+.game-box{
+  background:linear-gradient(135deg,rgba(176,96,255,.07),rgba(0,212,255,.04));
+  border:1px solid rgba(176,96,255,.2);border-radius:12px;
+  padding:14px;margin:10px 0;
+}
+.gb-title{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;
+  color:var(--ep);margin-bottom:7px}
+.gb-text{font-size:.8rem;color:#6080A0;line-height:1.65}
+
+/* XP award box */
+.xp-award-box{
+  background:rgba(255,214,10,.05);border:1px solid rgba(255,214,10,.15);
+  border-radius:12px;padding:12px 14px;margin-top:10px;
+  display:flex;align-items:center;gap:12px;
+}
+.xaw-coin{width:38px;height:auto;flex-shrink:0}
+.xaw-info h4{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+.xaw-info p{font-size:.72rem;color:var(--muted)}
+
+/* Weekly challenge */
+.week-challenge{
+  background:rgba(255,140,0,.05);border:1px solid rgba(255,140,0,.15);
+  border-radius:12px;padding:14px;margin-top:12px;
+}
+.wc-title{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--orange);margin-bottom:7px}
+.wc-text{font-size:.8rem;color:#6080A0;line-height:1.65}
+
+/* Task checklist */
+.task-item{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:9px;padding:9px 12px;cursor:pointer;transition:.15s;margin-bottom:6px;
+}
+.task-item:hover{background:rgba(0,212,255,.03);border-color:rgba(0,212,255,.15)}
+.task-item.done{opacity:.5}
+.task-cb{
+  width:21px;height:21px;border-radius:6px;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:.72rem;transition:.15s;color:#001020;
+}
+.task-item.done .task-cb{background:var(--cg);border-color:var(--cg)}
+.task-b h5{font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.task-b p{font-size:.72rem;color:var(--muted);line-height:1.5}
+
+.det-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+
+/* ── RIGHT PANEL ── */
+.right-panel{
+  background:var(--s1);border-left:1px solid var(--border);
+  padding:16px;overflow-y:auto;max-height:calc(100vh - 52px);
+  position:sticky;top:52px;
+}
+
+/* Streak box */
+.streak-box{
+  background:linear-gradient(135deg,rgba(255,140,0,.1),rgba(255,51,85,.06));
+  border:1px solid rgba(255,140,0,.2);border-radius:14px;
+  padding:14px;text-align:center;margin-bottom:12px;
+  box-shadow:0 0 14px rgba(255,140,0,.06);
+}
+.streak-n{
+  font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;
+  color:var(--orange);display:block;}
+.streak-l{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* Prog */
+.prog-row{margin-bottom:10px}
+.pr-top{display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:4px}
+.pr-val{font-family:'Orbitron',monospace;font-weight:700;color:var(--text)}
+.pr-bar{height:5px;background:rgba(255,255,255,.05);border-radius:100px;overflow:hidden}
+.pr-fill{height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--nb),var(--ep));
+  box-shadow:0 0 6px var(--nb);transition:.6s}
+
+/* History */
+.hist-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:7px;padding:6px 9px;margin-bottom:4px;
+}
+.hi-left{font-size:.68rem;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hi-pts{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.hi-coin{width:16px;height:auto}
+.hi-val{font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;color:var(--gold)}
+
+/* ════ CONFETTI ════ */
+#confetti-canvas{position:fixed;inset:0;z-index:800;pointer-events:none}
+
+/* ════ TOAST ════ */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);
+  z-index:700;opacity:0;transition:all .3s;pointer-events:none;
+  background:rgba(3,5,15,.96);border:1px solid rgba(0,212,255,.25);
+  border-radius:14px;padding:12px 20px;
+  display:flex;align-items:center;gap:12px;
+  backdrop-filter:blur(16px);
+  box-shadow:0 0 24px rgba(0,212,255,.15);
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.t-coin{width:34px;height:auto}
+.t-msg{font-size:.84rem;font-weight:700;color:var(--text)}
+.t-pts{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--gold)}
+
+/* ════ LEVEL UP OVERLAY ════ */
+.lvl-overlay{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(16px);
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:40px;
+}
+.lvl-overlay.on{display:flex;animation:fadeUp .4s ease}
+
+/* Medal VIDEO in level up */
+.lvl-medal-wrap{
+  width:180px;height:180px;border-radius:50%;overflow:hidden;
+  border:3px solid var(--gold);margin-bottom:20px;
+  box-shadow:0 0 48px rgba(255,214,10,.4);
+  animation:medalGlow 2s ease-in-out infinite;
+}
+@keyframes medalGlow{0%,100%{box-shadow:0 0 48px rgba(255,214,10,.4)}50%{box-shadow:0 0 72px rgba(255,214,10,.7)}}
+.lvl-medal-video{width:100%;height:100%;object-fit:cover}
+
+.lvl-h{
+  font-family:'Orbitron',monospace;font-size:2.8rem;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--nb),var(--ep));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(255,214,10,.4));
+}
+.lvl-sub{font-size:1rem;color:var(--muted);margin-bottom:8px}
+.lvl-skill{
+  font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;
+  color:var(--cg);letter-spacing:.08em;margin-bottom:24px;
+}
+
+/* Scanline effect on level up */
+.lvl-overlay::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(0,212,255,.02) 0px,rgba(0,212,255,.02) 1px,transparent 1px,transparent 3px);
+  pointer-events:none;
+}
+
+/* ── PARTICLES ── */
+@keyframes particle-float{
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  100%{transform:translateY(-80px) rotate(180deg);opacity:0}
+}
+
+/* ════ PHASE COMPLETE OVERLAY ════ */
+.phase-overlay{
+  position:fixed;inset:0;z-index:850;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(16px);
+  display:none;align-items:center;justify-content:center;
+}
+.phase-overlay.on{display:flex;animation:fadeUp .4s ease}
+.phase-ov-content{
+  text-align:center;padding:40px;max-width:480px;
+  position:relative;z-index:1;
+}
+.phase-medal-wrap{
+  width:200px;height:200px;border-radius:50%;overflow:hidden;
+  margin:0 auto 20px;position:relative;
+  box-shadow:0 0 60px var(--pm-color,rgba(255,214,10,.5));
+  border:3px solid var(--pm-color,rgba(255,214,10,.5));
+  animation:medalFloat 3s ease-in-out infinite;
+}
+@keyframes medalFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-10px) scale(1.03)}
+}
+.phase-medal-vid{width:100%;height:100%;object-fit:cover}
+.phase-medal-glow{
+  position:absolute;inset:-20px;border-radius:50%;
+  background:radial-gradient(circle,var(--pm-color,rgba(255,214,10,.3)),transparent 70%);
+  animation:glowPulse 2s ease-in-out infinite;pointer-events:none;
+}
+@keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
+.phase-ov-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);border:1px solid var(--pm-color,rgba(255,214,10,.3));
+  border-radius:100px;padding:5px 16px;margin-bottom:10px;
+  font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;
+  color:var(--pm-color,var(--gold));letter-spacing:.1em;
+}
+.phase-ov-title{
+  font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--nb),var(--ep));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+  filter:drop-shadow(0 0 20px rgba(255,214,10,.4));
+}
+.phase-ov-sub{font-size:.92rem;color:var(--muted);margin-bottom:6px}
+.phase-ov-skill{
+  font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;
+  color:var(--cg);letter-spacing:.08em;margin-bottom:4px;
+}
+/* scanlines on overlay */
+.phase-overlay::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(0,212,255,.015) 0px,rgba(0,212,255,.015) 1px,transparent 1px,transparent 3px);
+  pointer-events:none;z-index:0;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .game-wrap{grid-template-columns:1fr}
+  .left-panel,.right-panel{display:none}
+  .center{max-height:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<canvas id="particles-canvas"></canvas>
+
+<!-- ════ TOPBAR ════ -->
+<nav class="topbar" id="topbar" style="display:none">
+  <div class="tb-logo-wrap">
+    <img class="tb-logo-img" id="tb-logo" src="" alt="Nuvem Veloz" 
+  style="height:32px;width:32px;border-radius:50%;object-fit:cover;
+  filter:drop-shadow(0 0 6px #00D4FF)">
+    <div>
+      <div class="tb-brand">NEXUS ACADEMY</div>
+      <div class="tb-by">by Nuvem Veloz</div>
+    </div>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-nav">
+    <button class="tb-nb on" onclick="showSection('missions',this)">⚡ Missões</button>
+    <button class="tb-nb" onclick="showSection('story',this)">📡 História</button>
+    <button class="tb-nb" onclick="showSection('ranking',this)">🏆 Ranking</button>
+  </div>
+  <div class="tb-right">
+    <div class="lives-display" id="lives-display">
+      <span class="life">❤️</span><span class="life">❤️</span><span class="life">❤️</span>
+    </div>
+    <div class="tb-streak" id="tb-streak">🔥 <span id="tb-streak-val">0</span></div>
+    <div class="tb-xp-pill">
+      <video class="tb-xp-video" id="tb-coin-video" autoplay loop muted playsinline></video>
+      <span class="tb-xp-val" id="tb-xp">0</span>
+    </div>
+    <div class="tb-lvl" id="tb-lvl">Nível 1<br>Explorador</div>
+    <button class="btn btn-ghost" style="padding:5px 12px;font-size:.68rem" onclick="goIntro()">↩</button>
+  </div>
+</nav>
+
+<!-- ════ SCREEN: INTRO ════ -->
+<div class="screen on" id="s-intro">
+  <div style="position:relative;display:inline-block;margin:0 auto 20px">
+  <img class="intro-logo" id="intro-logo" src="" alt="Nuvem Veloz" 
+    style="display:block;height:80px;width:auto;
+    filter:drop-shadow(0 0 16px #00D4FF) drop-shadow(0 0 32px rgba(0,212,255,0.4));
+    border-radius:50%;
+    animation:logoPulse 3s ease-in-out infinite">
+</div>
+
+  <div class="nexus-badge">
+    <span class="nb-dot"></span>
+    <span class="nb-text">Sistema Online · Nuvem Veloz</span>
+    <span class="nb-dot"></span>
+  </div>
+
+  <h1 class="nexus-title">NEXUS<br>ACADEMY</h1>
+  <div class="nexus-sub">Desperte o Gênio Que Existe em Você!</div>
+
+  <!-- Animated coin showcase — all 6 coins + video -->
+  <div class="intro-coins-showcase" id="intro-coins-showcase" style="
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    flex-wrap:wrap;margin-bottom:28px;padding:20px;
+    background:rgba(255,214,10,.05);
+    border:1px solid rgba(255,214,10,.15);
+    border-radius:20px;max-width:480px;margin-left:auto;margin-right:auto;
+    position:relative;overflow:hidden;
+  ">
+    <!-- Glow bg -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(255,214,10,.08),transparent 70%);pointer-events:none"></div>
+    <!-- Coin video (big, center) -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1">
+      <video id="intro-coin-vid" autoplay loop muted playsinline style="
+        width:100px;height:100px;border-radius:50%;object-fit:cover;
+        border:2px solid rgba(255,214,10,.5);
+        box-shadow:0 0 32px rgba(255,214,10,.4);
+        animation:coinFloat 3s ease-in-out infinite;
+      "></video>
+      <span style="font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;color:rgba(255,214,10,.7);letter-spacing:.08em">COIN XP</span>
+    </div>
+    <!-- Static coins row -->
+    <div style="display:flex;flex-direction:column;gap:8px;z-index:1">
+      <div style="display:flex;gap:8px">
+        <div class="intro-coin-static" id="ic-1" style="--delay:0s">
+          <img id="ic-img-1" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>1 XP</span>
+        </div>
+        <div class="intro-coin-static" id="ic-5" style="--delay:.15s">
+          <img id="ic-img-5" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>5 XP</span>
+        </div>
+        <div class="intro-coin-static" id="ic-10" style="--delay:.3s">
+          <img id="ic-img-10" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>10 XP</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="intro-coin-static" id="ic-50" style="--delay:.45s">
+          <img id="ic-img-50" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>50 XP</span>
+        </div>
+        <div class="intro-coin-static" id="ic-100" style="--delay:.6s">
+          <img id="ic-img-100" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>100 XP</span>
+        </div>
+        <div class="intro-coin-static" id="ic-500" style="--delay:.75s">
+          <img id="ic-img-500" src="" style="width:44px;height:44px;object-fit:contain">
+          <span>500 XP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+    <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:10px 16px;text-align:center">
+      <span style="font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--nb);display:block">32</span>
+      <span style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Missões</span>
+    </div>
+    <div style="background:rgba(176,96,255,.06);border:1px solid rgba(176,96,255,.15);border-radius:12px;padding:10px 16px;text-align:center">
+      <span style="font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--ep);display:block">6</span>
+      <span style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Fases</span>
+    </div>
+    <div style="background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);border-radius:12px;padding:10px 16px;text-align:center">
+      <span style="font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--cg);display:block">∞</span>
+      <span style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Potencial</span>
+    </div>
+  </div>
+
+  <div class="setup-box">
+    <span class="sl">Identificação do Agente</span>
+    <input class="si" id="inp-name" type="text" placeholder="Seu nome..." maxlength="30">
+    <span class="sl">Avatar</span>
+    <div class="av-row">
+      <div class="av on" data-av="🚀" onclick="pickAv(this)">🚀</div>
+      <div class="av" data-av="⚡" onclick="pickAv(this)">⚡</div>
+      <div class="av" data-av="🎨" onclick="pickAv(this)">🎨</div>
+      <div class="av" data-av="🦁" onclick="pickAv(this)">🦁</div>
+      <div class="av" data-av="🔥" onclick="pickAv(this)">🔥</div>
+      <div class="av" data-av="💎" onclick="pickAv(this)">💎</div>
+      <div class="av" data-av="🌙" onclick="pickAv(this)">🌙</div>
+      <div class="av" data-av="⚔️" onclick="pickAv(this)">⚔️</div>
+    </div>
+    <button class="btn btn-cyber" style="width:100%" onclick="startGame()">
+      ⚡ INICIAR MISSÃO
+    </button>
+  </div>
+  <p style="font-size:.68rem;color:var(--muted)">Progresso salvo automaticamente · 32 missões · Sistema de XP completo</p>
+</div>
+
+<!-- ════ SCREEN: GAME ════ -->
+<div class="screen" id="s-game">
+  <div class="game-wrap">
+
+    <!-- LEFT -->
+    <aside class="left-panel">
+      <div class="player-card" id="player-card">
+        <span class="pc-av" id="pc-av">🚀</span>
+        <div class="pc-name" id="pc-name" contenteditable="true">Agente</div>
+        <span class="pc-xp" id="pc-xp">0 XP</span>
+        <span class="pc-lv" id="pc-lv">🌱 Explorador de Ideias</span>
+        <div class="xp-bar-bg"><div class="xp-bar" id="pc-bar" style="width:0%"></div></div>
+        <div class="pc-streak" id="pc-streak">🔥 0 missões seguidas</div>
+      </div>
+
+      <div class="pst">📡 Fases</div>
+      <div id="phase-nav"></div>
+
+      <div class="pst" style="margin-top:14px">🏅 Recompensas</div>
+      <div id="rewards-list"></div>
+
+      <div style="margin-top:14px">
+        <button class="btn btn-danger" style="width:100%" onclick="resetGame()">↩ Reiniciar</button>
+      </div>
+    </aside>
+
+    <!-- CENTER -->
+    <main class="center" id="center"></main>
+
+    <!-- RIGHT -->
+    <aside class="right-panel">
+      <div class="pst">🔥 Streak</div>
+      <div class="streak-box">
+        <span class="streak-n" id="streak-n">0</span>
+        <span class="streak-l">Missões seguidas</span>
+      </div>
+
+      <div class="pst">📊 Progresso</div>
+      <div class="prog-row">
+        <div class="pr-top">
+          <span style="color:var(--muted);font-size:.68rem">Missões</span>
+          <span class="pr-val" id="pr-missions">0/32</span>
+        </div>
+        <div class="pr-bar"><div class="pr-fill" id="pr-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="pst">⚡ Histórico</div>
+      <div id="hist-list">
+        <div style="font-size:.7rem;color:var(--muted);text-align:center;padding:10px">Sem ações ainda</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- PHASE COMPLETE OVERLAY -->
+<div class="phase-overlay" id="phase-overlay">
+  <div class="phase-ov-content">
+    <!-- Medal video -->
+    <div class="phase-medal-wrap">
+      <video class="phase-medal-vid" id="phase-medal-vid" autoplay loop muted playsinline></video>
+      <div class="phase-medal-glow"></div>
+    </div>
+    <div class="phase-ov-badge" id="phase-ov-badge">FASE 1</div>
+    <h2 class="phase-ov-title">FASE CONCLUÍDA!</h2>
+    <p class="phase-ov-sub" id="phase-ov-sub">Você dominou as habilidades desta fase</p>
+    <div class="phase-ov-skill" id="phase-ov-skill">⚡ PRÓXIMA FASE DESBLOQUEADA</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px" id="phase-ov-coins"></div>
+    <button class="btn btn-cyber" onclick="closePhaseOverlay()" style="margin-top:24px">PRÓXIMA FASE ⚡</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <img class="t-coin" id="t-coin" src="" alt="">
+  <span class="t-msg" id="t-msg">XP!</span>
+  <span class="t-pts" id="t-pts">+0</span>
+</div>
+
+<!-- LEVEL UP -->
+<div class="lvl-overlay" id="lvl-ov">
+  <div class="lvl-medal-wrap">
+    <video class="lvl-medal-video" id="lvl-medal-video" autoplay loop muted playsinline></video>
+  </div>
+  <div class="lvl-h" id="lvl-h">NÍVEL UP!</div>
+  <div class="lvl-sub" id="lvl-sub">Nova habilidade desbloqueada</div>
+  <div class="lvl-skill" id="lvl-skill">⚡ HABILIDADE</div>
+  <button class="btn btn-cyber" onclick="closeLvl()">CONTINUAR ⚡</button>
+</div>
+
+
+
+<script>
+
+const IMG = {
+  logo:         'assets/logo.png',
+  xp1:          'assets/xp1.png',
+  xp5:          'assets/xp5.png',
+  xp10:         'assets/xp10.png',
+  xp50:         'assets/xp50.png',
+  xp100:        'assets/xp100.png',
+  xp500:        'assets/xp500.png',
+  boy_coin:     'assets/boy-coin.png',
+  blank_medal:  'assets/medal-blank.png',
+  teacher_medal:'assets/medal-teacher.png',
+  medal_ph1:    'assets/medal-ph1.png',
+  medal_ph2:    'assets/medal-ph2.png',
+  medal_ph3:    'assets/medal-ph3.png',
+  medal_ph4:    'assets/medal-ph4.png',
+  medal_ph5:    'assets/medal-ph5.png',
+  medal_ph6:    'assets/medal-ph6.png',
+};
+
+const VID = {
+  coin:  'assets/coin-video.mp4',
+  medal: 'assets/medal-video.mp4',
+};
+);
+}
+
+/* ════════════════════════════════════
+   ASSETS  (injected below)
+════════════════════════════════════ */
+// IMG and VID populated from inline assets below
+
+/* ════════════════════════════════════
+   DATA
+════════════════════════════════════ */
+const LEVELS = [
+  {n:1,icon:'🌱',title:'Explorador de Ideias',skill:'Criatividade',min:0,max:150,color:'#00FF88'},
+  {n:2,icon:'🔧',title:'Inventor de Soluções',skill:'Resolução de Problemas',min:150,max:350,color:'#00D4FF'},
+  {n:3,icon:'🎨',title:'Mestre da Marca',skill:'Identidade Visual',min:350,max:600,color:'#FFD60A'},
+  {n:4,icon:'📣',title:'Comunicador',skill:'Comunicação Digital',min:600,max:900,color:'#FF8C00'},
+  {n:5,icon:'🎯',title:'Estrategista',skill:'Marketing Avançado',min:900,max:1300,color:'#FF3355'},
+  {n:6,icon:'🌀',title:'Mestre do Funil',skill:'Vendas & Funil Completo',min:1300,max:2000,color:'#B060FF'},
+];
+
+const REWARDS = [
+  {xp:100,label:'🏷️ Adesivo de Agente',coin:'xp100'},
+  {xp:300,label:'🥇 Medalha de Nível',coin:'xp100'},
+  {xp:600,label:'🗺️ Missão Bônus',coin:'xp500'},
+  {xp:1000,label:'📜 Certificado Especial',coin:'xp500'},
+  {xp:1500,label:'🏆 Título Mestre do Funil',coin:'xp500'},
+];
+
+const PHASES = [
+  {id:1,icon:'🌱',name:'Despertar Criativo',color:'#00FF88',total:4},
+  {id:2,icon:'🎨',name:'Criar Marca',color:'#00D4FF',total:6},
+  {id:3,icon:'📣',name:'Conteúdo',color:'#FFD60A',total:6},
+  {id:4,icon:'🎯',name:'Marketing Digital',color:'#FF8C00',total:6},
+  {id:5,icon:'🌀',name:'Funil de Vendas',color:'#FF3355',total:6},
+  {id:6,icon:'💰',name:'Dinheiro & Finanças',color:'#B060FF',total:4},
+];
+
+const NARRATIVES = {
+  1:{ch:'// CAPÍTULO_01 — DESPERTAR',title:'NEXUS detectou você',
+    text:`Sinal identificado. Processando...\n\nAgente, você foi encontrado pelos algoritmos da <strong>NEXUS ACADEMY</strong> — o programa mais avançado de formação de jovens criadores digitais do mundo.\n\nNossos scanners identificaram em você algo que 99% das pessoas nunca desenvolve: a combinação exata de curiosidade, criatividade e ousadia que define os grandes empreendedores.\n\nSua missão começa agora. 32 fases. 6 módulos. Um objetivo: <strong>despertar o gênio que existe em você.</strong>`},
+  2:{ch:'// CAPÍTULO_02 — IDENTIDADE',title:'Proteja sua ideia',
+    text:`Alerta de segurança no sistema NEXUS.\n\nSua ideia está circulando sem proteção. Qualquer outro agente pode copiá-la.\n\n<strong>A única forma de blindar uma ideia é transformá-la em marca.</strong>\n\nUma marca cria um campo de força invisível. Ela diz: "Isto foi criado por mim." Ninguém consegue copiar uma identidade genuína.\n\nFase 2: você vai dar um rosto à sua empresa. Nome, logo, cores, slogan, personalidade.`},
+  3:{ch:'// CAPÍTULO_03 — TRANSMISSÃO',title:'O mundo precisa ouvir você',
+    text:`Diagnóstico do sistema: marca criada. Status de comunicação: <strong>offline.</strong>\n\nUma empresa com identidade forte mas sem voz é como um satélite que não transmite sinal. Existe — mas ninguém sabe.\n\nFase 3: <strong>aprenda a criar conteúdo que para o scroll</strong>. Posts que prendem. Histórias que criam desejo. Textos que fazem agir.\n\nOs maiores criadores não são os mais talentosos — são os mais consistentes.`},
+  4:{ch:'// CAPÍTULO_04 — ALVO',title:'Encontre seu cliente ideal',
+    text:`NEXUS liberou arquivo classificado: <strong>o perfil do seu cliente perfeito.</strong>\n\nEle existe. Tem nome, rotina, sonhos, medos.\n\nO erro fatal de 90% dos empreendedores: tentar atingir todo mundo. Resultado: não atingem ninguém.\n\nFase 4: marketing de precisão cirúrgica. Você vai aprender a falar exatamente para a pessoa certa, com a mensagem certa, no momento certo.`},
+  5:{ch:'// CAPÍTULO_05 — SISTEMA',title:'Monte a máquina que vende 24/7',
+    text:`Imagine acordar às 7h com uma notificação: <strong>"Nova venda processada."</strong>\n\nIsso não é sorte. É funil de vendas.\n\nUm funil é uma máquina automática: atrai curiosos no topo, os educa no meio e os transforma em compradores no fundo.\n\nFase 5: você vai construir essa máquina. Isca digital, sequência de mensagens, oferta irresistível, fechamento. Tudo integrado.`},
+  6:{ch:'// CAPÍTULO_06 — TESOURO',title:'Guarde o que você vai ganhar',
+    text:`Dados do NEXUS revelam: <strong>9 em cada 10 empresas que fecham, fecham por má gestão financeira.</strong> Não por falta de clientes.\n\nVocê chegou até aqui. Criou, comunicou, vendeu. Falta o módulo final: saber o que fazer com o dinheiro que vai entrar.\n\nApós esta fase, você estará pronto para o <strong>DEMO DAY</strong> — a apresentação mais importante da sua vida até agora.`},
+};
+
+function coinKey(xp){
+  if(xp>=500)return'xp500';if(xp>=100)return'xp100';
+  if(xp>=50)return'xp50';if(xp>=10)return'xp10';
+  if(xp>=5)return'xp5';return'xp1';
+}
+
+/* ════ MISSIONS DATA ════ */
+const MISSIONS = [
+{id:1,phase:1,num:'1.1',title:'NEXUS Online — Bem-vindo',skill:'Orientação',xp:50,
+story:'Sistema iniciado. Identidade do agente não reconhecida. Primeira missão: registrar-se no banco de dados da NEXUS ACADEMY.',
+obj:'Criar ficha de agente e gerar primeiras 10 ideias de negócio.',
+blocks:[
+ {icon:'⚡',title:'Briefing de missão',time:'10 min',
+  scripts:[{lbl:'Abertura',txt:'NEXUS Academy é o programa mais avançado de formação de jovens empreendedores. Você foi selecionado. Não é coincidência.',tip:'Tom de mistério. Pause. Faça contato visual.'},
+           {lbl:'O mapa',txt:'32 missões. 6 módulos. Cada módulo vai desbloquear uma habilidade. No final: empresa criada, marca construída, sistema de vendas funcionando.',tip:'Mostrar o mapa visual das fases.'}]},
+ {icon:'📡',title:'Download de conhecimento',time:'15 min',
+  scripts:[{lbl:'O que é empreendedorismo?',txt:'Empreendedor é qualquer pessoa que vê um problema e tenta resolvê-lo de forma criativa. O Minecraft nasceu na cabeça de uma pessoa. O YouTube era só uma pergunta: "Como compartilho esse vídeo?"',tip:'Pergunte: qual app você usa todo dia? Quem teve essa ideia?'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Ficha de Agente (20 min)',p:'Nome real, codinome, habilidade secreta, missão de vida, superpoder criativo.'},
+         {n:2,h:'10 Ideias em 10 minutos (25 min)',p:'Sem filtro! Hotel para cachorro com piscina? Drone de coxinha? Tudo vale. Quantidade > qualidade neste momento.'},
+         {n:3,h:'Apresentação (15 min)',p:'Cada agente apresenta sua ideia favorita em 1 minuto. Por que escolheu? O que resolve?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: MERCADO MALUCO\n5 objetos aleatórios na mesa. 5 minutos para criar um "negócio" usando pelo menos 2. Apresentar em 2 minutos. Ideia mais criativa: +10 XP bônus.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Ficha de agente criada: +20 XP','10+ ideias geradas: +20 XP','Apresentou no desafio: +10 XP'],
+  next:'Próxima missão: protocolo de caça a problemas está ativado.'}
+],
+challenge:'🔍 MISSÃO EXTERNA: OBSERVADOR\nEsta semana: observe 3 situações onde as pessoas reclamam de algo. Anote. Traga na próxima aula.'},
+
+{id:2,phase:1,num:'1.2',title:'Protocolo: Caça aos Problemas',skill:'Criatividade',xp:60,
+story:'Os "óculos de empreendedor" foram ativados no seu perfil NEXUS. Com eles, você começa a enxergar o que a maioria ignora: problemas que escondem negócios valiosos.',
+obj:'Mapear 12 problemas reais e convertê-los em oportunidades.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Missão',txt:'Todo negócio do mundo começou com alguém incomodado com alguma coisa. Airbnb: não tinha onde dormir. YouTube: não conseguia compartilhar vídeo. Uber: não tinha táxi. O seu problema favorito pode ser um negócio.',tip:'Escreva no quadro: Problema + Criatividade = Negócio'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'O que é problema de negócio?',txt:'Não precisa ser gigante. "Difícil organizar figurinhas" → app de colecionador. "Difícil lembrar de beber água" → app com alertas. "Nada pra fazer no fim de semana" → serviço de eventos jovens.',tip:'Peça 3 coisas que os incomodam no dia a dia.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Mapa de Problemas (25 min)',p:'4 quadrantes: Escola, Casa, Lazer, Tecnologia. 3 problemas reais em cada.'},
+         {n:2,h:'Converter em oportunidade (25 min)',p:'"E se existisse um produto/serviço que..." para cada problema. 12 mínimo.'},
+         {n:3,h:'Votação (10 min)',p:'Apresentar e votar nos 3 melhores problemas.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: SHARK TANK MIRRIM\n3 minutos para apresentar o melhor problema e solução. Instrutor = investidor: 3 perguntas difíceis. Melhor resposta: +15 XP.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Mapa com 12+ problemas: +25 XP','Converteu em oportunidades: +20 XP','Apresentou no Shark Tank: +15 XP'],
+  next:'Missão 1.3: Laboratório de Invenções desbloqueado.'}
+],
+challenge:'💡 MISSÃO EXTERNA: INVENTOR\nEscolha o melhor problema. Crie 3 ideias de solução. Traga na próxima aula.'},
+
+{id:3,phase:1,num:'1.3',title:'Laboratório de Invenções',skill:'Prototipagem',xp:70,
+story:'"Inventores não esperam ter tudo perfeito para começar." Acesso ao Laboratório de Invenções da NEXUS liberado. Aqui, ideias viram protótipos.',
+obj:'Criar o protótipo em papel do produto ou serviço escolhido.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Missão',txt:'O primeiro protótipo do iPhone era uma tela de vidro com botões desenhados à mão. O Google era um projeto de faculdade. Hoje vocês vão tirar a ideia da cabeça e colocar no mundo.',tip:'Mostrar protótipos famosos: iPhone v1, Post-it como acidente.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'O Método 3P',txt:'P1 — Problema: qual dor você resolve? P2 — Pessoa: quem tem esse problema? P3 — Produto: o que você vai oferecer? Apple: música no bolso era difícil (P1) → jovens que amavam música (P2) → iPod (P3).',tip:'Aplicar ao vivo com exemplos dos alunos.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Desenhar o produto (20 min)',p:'Nome provisório, o que faz, como funciona em 3 passos, para quem é.'},
+         {n:2,h:'Protótipo em papel (25 min)',p:'Se app: desenhar as telas. Se produto físico: maquete simples. Criatividade total.'},
+         {n:3,h:'Pitch do protótipo (15 min)',p:'3 minutos: mostra o protótipo, explica o problema, a solução e para quem é.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: PRODUTO IMPOSSÍVEL\nProblema absurdo: "Como tornar um livro mais viciante que TikTok?" ou "Como resolver meias perdidas na lavagem?" 10 minutos para inventar.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Protótipo criado: +30 XP','Pitch apresentado: +25 XP','Desafio completado: +15 XP'],
+  next:'Última missão da Fase 1: sua empresa entra no sistema NEXUS oficialmente.'}
+],
+challenge:'🛠️ MISSÃO EXTERNA: CONSTRUTOR\nMelhore o protótipo com base nas perguntas que fizeram. Versão melhorada na próxima aula.'},
+
+{id:4,phase:1,num:'1.4',title:'Registro NEXUS — Minha Empresa',skill:'Estratégia',xp:80,
+story:'Agente, você passou pelos primeiros testes com distinção. O sistema NEXUS libera o Módulo de Registro de Empresas. Preencher o Canvas significa que sua empresa existe oficialmente.',
+obj:'Canvas completo + Elevator Pitch de 60 segundos memorizado.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'NÍVEL 2 SE APROXIMA',txt:'Esta é a última missão da Fase 1. Quando você terminar hoje, vai ter algo que a maioria dos adultos nunca teve: uma ideia de empresa com problema definido, produto criado e cliente imaginado.',tip:'Clima de cerimônia. Fale com orgulho.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Os 4 pilares de toda empresa',txt:'(1) Um problema que resolve. (2) Um produto ou serviço. (3) Um cliente específico. (4) Um motivo para esse cliente pagar. Hoje você monta os 4.',tip:'Exemplos: Nubank, Netflix, Roblox.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Canvas da Empresa (30 min)',p:'Nome, problema, produto, cliente, por que vai pagar, como vai divulgar.'},
+         {n:2,h:'5 opções de nome (20 min)',p:'Fácil de lembrar, diz o que é ou cria curiosidade. Escolher e justificar.'},
+         {n:3,h:'Elevator Pitch (10 min)',p:'60 segundos. Sem papel. De cor. "Minha empresa [nome] resolve o problema de..."'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO FINAL: ELEVATOR PITCH\n60 segundos. Sem anotações. Para o investidor da NEXUS. Se ele pedir para saber mais = SUCESSO. +20 XP.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Canvas completo: +30 XP','Nome criado: +20 XP','Elevator Pitch: +20 XP','⚡ Fase concluída! Próxima fase desbloqueada'],
+  next:'FASE 1 CONCLUÍDA! NEXUS libera Fase 2: Identidade da Empresa.'}
+],
+challenge:'🚀 MISSÃO DE TRANSIÇÃO\nPesquise 3 logos que você acha impressionantes. Anote por que cada uma funciona.'},
+
+{id:5,phase:2,num:'2.1',title:'O Poder de uma Marca',skill:'Branding',xp:60,
+story:'O sistema NEXUS projeta duas empresas lado a lado. Produtos idênticos. Preços semelhantes. Uma tem marca forte, a outra não. A de marca forte vende 8× mais.',
+obj:'Criar o moodboard e definir a personalidade da marca.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O que uma marca realmente é',txt:'Nike não vende tênis. Vende a sensação de ser atleta. Starbucks não vende café. Vende status e ritual. Marca é a promessa emocional que sua empresa faz.',tip:'Traga um tênis Nike e um genérico. Mesma função. Preço diferente. Por quê?'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Os 5 elementos de toda marca',txt:'Nome, Logo, Cores (emoções), Slogan (frase que fica), Personalidade (se fosse uma pessoa, como seria?). A Apple é: confiante, minimalista, criativa. Qual é a da sua?',tip:'Mostrar logos e pedir para descrever a personalidade de cada.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Moodboard (25 min)',p:'Imagens, cores e palavras que representam a empresa.'},
+         {n:2,h:'Personalidade (20 min)',p:'"Se minha marca fosse uma pessoa, ela seria [adj1], [adj2], [adj3]. Falaria de um jeito [formal/divertido/intenso]."'},
+         {n:3,h:'Paleta de cores (15 min)',p:'3 cores para a marca com justificativa emocional de cada.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: DECODIFICA A MARCA\nMostrar apenas as CORES de marcas famosas (sem nome/logo). Identificar. Depois: apresentar as cores da sua marca e explicar as emoções de cada uma.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Moodboard criado: +25 XP','Personalidade definida: +20 XP','Paleta com justificativa: +15 XP'],
+  next:'Missão 2.2: Estúdio de Design NEXUS desbloqueado — criar o logo no Canva.'}
+],
+challenge:'🎨 MISSÃO EXTERNA: OBSERVADOR DE MARCAS\n5 logos vistos esta semana. Para cada: cor principal, símbolo, uma palavra que sentiu.'},
+
+{id:6,phase:2,num:'2.2',title:'Estúdio NEXUS — Logo no Canva',skill:'Design',xp:80,
+story:'"Agente — acesso ao Estúdio de Design NEXUS liberado." O Canva é a arma que permite criar em horas o que gráficos profissionais cobram milhares.',
+obj:'Criar 3 versões de logo e escolher a definitiva.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Missão',txt:'Hoje você sai com um logo real, feito por você, que pode ser usado em qualquer lugar.',tip:'Abrir o Canva e demonstrar em 2 minutos antes de liberar.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'3 Regras de ouro do logo',txt:'(1) Funciona em preto e branco. (2) Fica bom pequeno e grande. (3) É reconhecível em 3 segundos. Logos simples vencem. Nike, Apple, McDonald\'s — todos simples.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Explorar (10 min)',p:'10 templates. Anotar o que gostou em cada.'},
+         {n:2,h:'Criar 3 versões (35 min)',p:'V1: símbolo + nome. V2: só tipografia. V3: livre criatividade.'},
+         {n:3,h:'Refinar e exportar (15 min)',p:'Ajustar. Baixar PNG transparente. Logo pronto para o mundo.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: CRÍTICA CONSTRUTIVA\n2 elogios específicos + 1 sugestão de melhoria para o logo do colega. Debate mediado pelo instrutor.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['3 versões criadas: +35 XP','Feedback dado: +15 XP','Logo finalizado e exportado: +30 XP'],
+  next:'Missão 2.3: criar o slogan que vai ficar na memória para sempre.'}
+],
+challenge:'🎨 MISSÃO EXTERNA\nCriar cartão de visitas com o logo. Trazer impresso ou na tela.'},
+
+{id:7,phase:2,num:'2.3',title:'Código: Slogan que Gruda',skill:'Copywriting',xp:70,
+story:'"Amo muito tudo isso." "Just do it." "Red Bull dá asas." Três frases. Bilhões em valor. O sistema NEXUS projeta: "Hoje você cria a sua."',
+obj:'Criar 10 slogans e escolher o definitivo.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O poder de uma frase',txt:'Qual frase vem na cabeça quando digo McDonald\'s? E Nike? Slogans ficam por décadas. Hoje vocês criam o que vai definir como as pessoas vão lembrar da sua marca.',tip:'Teste: fale uma marca sem o slogan e o aluno completa.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'3 Fórmulas',txt:'F1 — Benefício direto: "Entregamos felicidade, não só comida." F2 — Promessa + emoção: "Onde suas ideias ganham vida." F3 — Provocação: "Para os que recusam o comum." Regra: menos de 8 palavras.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'10 opções (20 min)',p:'Usar as 3 fórmulas. Quantidade primeiro.'},
+         {n:2,h:'Filtrar (25 min)',p:'Eliminar os 7 piores. Refinar os 3 melhores. Testar em voz alta.'},
+         {n:3,h:'Aplicar no Canva (15 min)',p:'Adicionar slogan ao logo. Assinatura da marca completa.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: QUAL É A MARCA?\nEscrever o slogan. O colega adivinhar o que a empresa vende. Acertou em 10s = slogan eficaz (+20 XP).'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['10 opções criadas: +20 XP','Slogan finalizado: +25 XP','Aplicado no Canva: +25 XP'],
+  next:'Missão 2.4: criar o manual que protege a identidade da marca.'}
+],
+challenge:'✍️ MISSÃO EXTERNA\nMostrar logo + slogan para 3 pessoas. O que acharam que a empresa vende?'},
+
+{id:8,phase:2,num:'2.4',title:'Manual da Marca NEXUS',skill:'Identidade Visual',xp:70,
+story:'"Alerta de segurança." Uma cópia deformada do seu logo está circulando — cores erradas, fonte diferente. "Documente sua identidade antes que alguém a destrua."',
+obj:'Criar o guia de identidade visual.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Por que manual?',txt:'Sem manual, amanhã alguém usa o logo em verde em vez de azul. O manual é o DNA da marca documentado.',tip:'Mostrar manual real do Google ou Nubank.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'O que entra',txt:'Logo (versões), Cores (código exato), Fontes, Tom de voz, Slogan, O que NÃO fazer.',tip:'O manual pode ser 1 página no Canva.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Estruturar (15 min)',p:'Capa, logo, cores, fontes, slogan, tom de voz, erros a evitar.'},
+         {n:2,h:'Criar página por página (35 min)',p:'Preencher com as decisões já tomadas. Exemplos visuais.'},
+         {n:3,h:'Revisão (10 min)',p:'Tudo consistente? Fazer ajustes finais.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: CONSULTOR DE MARCA\nAnalisar o manual do colega. 3 sugestões de melhoria. Debate.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Manual completo: +40 XP','Feedback dado: +15 XP','Manual revisado: +15 XP'],
+  next:'Missão 2.5: protocolo de pitch de 30 segundos ativado.'}
+],
+challenge:'📋 MISSÃO EXTERNA\nOlhe para marcas do material escolar. Elas têm manual? Como percebe a consistência?'},
+
+{id:9,phase:2,num:'2.5',title:'Protocolo: Pitch 30 Segundos',skill:'Comunicação',xp:75,
+story:'"Alerta da NEXUS: o maior investidor do país entra no elevador em 60 segundos. Você tem esse tempo para convencê-lo. É agora ou nunca."',
+obj:'Criar e memorizar o elevator pitch.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O elevador',txt:'Você entra no elevador. Lá está o investidor mais importante do Brasil. 30 segundos. O que você diz?',tip:'Simular fisicamente. Timer na tela.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'A fórmula',txt:'"Minha empresa [nome] resolve o problema de [problema]." (5s) "Fazemos isso através de [como]." (10s) "Nosso cliente é [quem] que sofre com [dor] e quer [desejo]." (10s) "Nossa diferença é [único]." (5s)',tip:'Pratique você mesmo primeiro.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Escrever (20 min)',p:'Usar a fórmula. Adaptar para soar como conversa.'},
+         {n:2,h:'Ensaiar (25 min)',p:'5 vezes em voz alta. Cronometrar. Gravar no celular.'},
+         {n:3,h:'Apresentar ao vivo (15 min)',p:'Sem papel. De cor. Feedback imediato.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: PITCH RELÂMPAGO\n5 versões em 15 min: para criança de 7 anos, para avó, para amigo, cantado (rima!), em 10 segundos. +10 XP cada versão.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Pitch memorizado: +30 XP','Apresentou sem papel: +25 XP','Variações: +20 XP'],
+  next:'Missão final da Fase 2: Brand Reveal — mostrar tudo para o mundo.'}
+],
+challenge:'🎤 MISSÃO EXTERNA\nFaça o pitch para alguém de fora. Ficaram curiosos? Melhorar com base nas reações.'},
+
+{id:10,phase:2,num:'2.6',title:'BRAND REVEAL — Celebração',skill:'Identidade Visual',xp:90,
+story:'"Fase 2 concluída, Agente." O sistema NEXUS exibe a marca completa em tamanho gigante. "Agora é a hora de mostrar para o mundo."',
+obj:'Apresentação completa da marca + primeiro post real.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O grande dia',txt:'Quando saírem hoje, vão ter algo que leva anos para a maioria das empresas construir: identidade completa. Logo, cores, slogan, manual, pitch.',tip:'Ambiente de evento. Organize a sala como apresentação.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'O poder da marca',txt:'Marca forte aumenta valor percebido, faz o cliente lembrar, cria confiança antes da compra, permite cobrar mais. Starbucks vende café igual ao de qualquer padaria — a marca justifica o preço.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Portfólio (30 min)',p:'Logo, moodboard, paleta, slogan, manual, cartão. Pasta organizada.'},
+         {n:2,h:'Primeiro post real (20 min)',p:'Post no Canva com marca completa: logo + cores + fonte + slogan.'},
+         {n:3,h:'Preparar apresentação (10 min)',p:'5 minutos de apresentação para a cerimônia.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO FINAL: BRAND REVEAL\nApresentação completa: logo + slogan + cores + pitch + post. Avaliação por estrelas em cada categoria. Mais estrelas: +25 XP bônus.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Portfólio organizado: +30 XP','Post criado: +25 XP','Apresentação: +35 XP','🔓 NÍVEL 3: +10 XP'],
+  next:'FASE 2 CONCLUÍDA! Fase 3: Conteúdo — dar voz à marca.'}
+],
+challenge:'🌟 MISSÃO DE TRANSIÇÃO\nPostar (ou simular) o primeiro conteúdo com a marca.'},
+
+{id:11,phase:3,num:'3.1',title:'Conteúdo é Poder',skill:'Marketing de Conteúdo',xp:60,
+story:'"O MrBeast começou com zero seguidores em 2012. Hoje: 200 milhões. Não tinha dinheiro. Tinha câmera, ideias e consistência." O Módulo de Comunicação NEXUS está online.',
+obj:'Mapa de 20 ideias de conteúdo + primeiro post de valor.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O ativo invisível',txt:'O conteúdo que você cria hoje é o ativo que trabalha por você enquanto você dorme. Cada post é um vendedor 24/7.',tip:'Mostrar crescimento de canais que os alunos conhecem.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Conteúdo de negócio',txt:'Qualquer coisa criada para atrair atenção para a marca. A diferença: conteúdo de negócio resolve um problema ou entrega valor. Não é "olha eu aqui" — é "aqui está algo útil para você".',tip:'Exemplos: empreendedores jovens no Instagram/TikTok.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Mapa de 20 ideias (25 min)',p:'Ensinar (7), Bastidores (7), Entreter (6). Para a sua marca especificamente.'},
+         {n:2,h:'Primeiro post de valor (25 min)',p:'1 ideia de "Ensinar" → post no Canva com texto + visual.'},
+         {n:3,h:'Análise (10 min)',p:'O título chama atenção? Visual com a cara da marca? Alguém pararia?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: SCROLL STOP\nInstrutor faz scroll rápido. Alunos gritam STOP quando um post os faria parar. Depois: refazer o próprio post para ser mais Scroll Stop.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['20 ideias mapeadas: +20 XP','Post de valor criado: +25 XP','Post melhorado: +15 XP'],
+  next:'Missão 3.2: storytelling — histórias que criam desejo.'}
+],
+challenge:'📱 MISSÃO EXTERNA\n1 post por dia, 3 dias. Usar os 3 tipos: ensinar, bastidores, entreter.'},
+
+{id:12,phase:3,num:'3.2',title:'Storytelling que Vende',skill:'Narrativa',xp:70,
+story:'"Por que você chora em filmes com personagens fictícios? Porque o cérebro é programado para histórias." O módulo de Narrativa NEXUS está ativo.',
+obj:'Escrever história de cliente + legenda AIDA + vídeo.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O segredo',txt:'Toda boa venda começa com uma boa história. Dados convencem. Histórias movem.',tip:'Conte história emocionante de um produto sem revelar qual é. Depois revele.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'A estrutura',txt:'(1) Herói = seu cliente. (2) Problema = o que enfrenta. (3) Guia = sua marca ajuda. (4) Plano = como usar. (5) Transformação = vida melhorada. Erro: colocar a MARCA como herói. Herói = CLIENTE.',tip:'Nike: o herói é o atleta, não a Nike.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Escrever a história (20 min)',p:'Cliente fictício que usou o produto e teve a vida melhorada. 5 passos.'},
+         {n:2,h:'Legenda AIDA (25 min)',p:'Atenção → Interesse → Desejo → Ação. Com gancho e CTA.'},
+         {n:3,h:'Vídeo 30s (15 min)',p:'Gravar contando a história. Qualidade importa menos que conteúdo.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: VENDEDOR DE HISTÓRIAS\nProduto aleatório. 5 min para criar história de 1 minuto que faça qualquer pessoa querer comprar — sem falar preço ou características técnicas.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['História criada: +25 XP','Legenda AIDA: +25 XP','Vídeo gravado: +20 XP'],
+  next:'Missão 3.3: Estúdio de Vídeo NEXUS ativado.'}
+],
+challenge:'🎬 MISSÃO EXTERNA\nEscolha produto do dia a dia. Escreva a história usando os 5 passos.'},
+
+{id:13,phase:3,num:'3.3',title:'Vídeo Curto Real',skill:'Produção',xp:80,
+story:'"Missão de alto risco." O Módulo de Produção NEXUS é liberado. "Vídeo é a arma mais poderosa do marketing digital. Gratuita. Democrática. Quem aprende primeiro, ganha."',
+obj:'Criar, gravar e avaliar um vídeo curto.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A arma',txt:'Reels e TikTok mudaram tudo. Com um celular, você pode ter mais alcance que empresa de 20 anos.',tip:'Mostrar vídeos de empreendedores jovens com milhões de views.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Anatomia do vídeo perfeito',txt:'0–3s: Gancho (pergunta, fato chocante, afirmação). 3–20s: Desenvolvimento. 20–30s: CTA ("salva", "comenta", "me segue"). Se a primeira frase não prende, ninguém vê o resto.',tip:'Analisar vídeo real ao vivo identificando cada parte.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Roteiro (15 min)',p:'30 segundos: gancho + 3 pontos + CTA. Escrever cada fala.'},
+         {n:2,h:'Gravar (30 min)',p:'Mínimo 3 takes. Escolher o melhor.'},
+         {n:3,h:'Avaliar (15 min)',p:'Gancho prendeu? Mensagem clara? Próximo passo: gravar melhoria.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: TROCA DE MARCAS\nCriar vídeo de 20s MAS para a marca do colega — sem combinar. Força criatividade e mostra como outsiders veem a marca.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Roteiro criado: +20 XP','Vídeo gravado: +35 XP','Autoavaliação: +25 XP'],
+  next:'Missão 3.4: copywriting — textos que criam ação.'}
+],
+challenge:'🎬 MISSÃO EXTERNA\n2 vídeos com ganchos diferentes. Alguém assistiu até o final?'},
+
+{id:14,phase:3,num:'3.4',title:'Copywriting — Textos que Vendem',skill:'Escrita Persuasiva',xp:75,
+story:'"Interceptamos comunicações de um concorrente. Ele usa copywriting avançado e vende 10× mais com o mesmo produto." O sistema decodifica as técnicas. Agora são suas.',
+obj:'Dominar as 3 fórmulas de copywriting.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O poder das palavras',txt:'Todo anúncio que você viu e ficou com vontade de comprar: um bom copywriter por trás.',tip:'Mostrar dois anúncios: fraco e com boa copy. Qual convence mais?'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'3 fórmulas',txt:'PAS: Problema→Agitação→Solução. AIDA: Atenção→Interesse→Desejo→Ação. Antes/Depois: "Antes eu tinha [problema]. Agora eu [resultado]."',tip:'Praticar uma fórmula ao vivo juntos.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'3 headlines (20 min)',p:'Uma pergunta, uma promessa, um "segredo revelado". Qual prende mais?'},
+         {n:2,h:'Legenda AIDA completa (25 min)',p:'Com gancho e CTA forte.'},
+         {n:3,h:'Reescrever o pitch (15 min)',p:'Pitch com técnicas de copywriting. Ficou melhor?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: COPY BATTLE\nMesmo produto para os dois. Copys diferentes. Instrutor lê sem revelar quem escreveu. Votação. Debate.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['3 headlines: +20 XP','Copy AIDA: +30 XP','Pitch melhorado: +25 XP'],
+  next:'Missão 3.5: calendário de conteúdo — consistência é a chave.'}
+],
+challenge:'✍️ MISSÃO EXTERNA\n3 legendas para o mesmo produto usando PAS, AIDA e Antes/Depois.'},
+
+{id:15,phase:3,num:'3.5',title:'Calendário de Conteúdo',skill:'Planejamento',xp:65,
+story:'"87% dos perfis que cresceram rápido têm uma coisa em comum: nunca perderam uma semana sem postar." NEXUS ativa o Módulo de Planejamento.',
+obj:'Criar calendário mensal + primeiros 3 posts prontos.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Consistência vence talento',txt:'A diferença entre quem cresce e quem estagna: consistência. A única forma de postar toda semana sem enlouquecer é ter um plano.',tip:'Mostrar calendário de algum criador público.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Calendário simples',txt:'Dia, formato (post/story/vídeo), tema (ensinar/bastidores/entreter), título provisório. Segredo: criar o conteúdo da semana toda em um único dia.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Calendário mensal (25 min)',p:'4 semanas, mínimo 3 posts/semana. Dia, formato, tema.'},
+         {n:2,h:'Posts da semana 1 prontos (30 min)',p:'Os 3 primeiros posts no Canva — não só planejados, mas criados.'},
+         {n:3,h:'Definir "dia de criação" (5 min)',p:'Qual dia da semana reservado para criar tudo?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: CONTEÚDO URGENTE\nTema surpresa. 10 minutos para criar post adaptado para a marca. Go!'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Calendário mensal: +25 XP','3 posts prontos: +25 XP','Rotina definida: +15 XP'],
+  next:'Última da Fase 3: Portfólio de Conteúdo.'}
+],
+challenge:'📅 MISSÃO EXTERNA\nSeguir o calendário. Criar os posts planejados. Trazer para revisão.'},
+
+{id:16,phase:3,num:'3.6',title:'Portfólio de Conteúdo',skill:'Apresentação',xp:85,
+story:'"Fase 3 quase concluída." NEXUS exibe a galeria virtual do conteúdo criado. "Você criou mais em semanas do que a maioria dos empresários em anos."',
+obj:'Organizar portfólio e apresentar como Diretor de Conteúdo.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Portfólio é prova',txt:'No mundo digital, mostrar o trabalho é mais poderoso que falar sobre ele.',tip:'Organizar como evento de apresentação de portfólio.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'75 min',
+  steps:[{n:1,h:'Montar portfólio digital (30 min)',p:'Pasta: capa com logo, posts, legendas, vídeo, calendário.'},
+         {n:2,h:'Ensaiar (15 min)',p:'5 minutos: o que criou, como, o que aprendeu, o que faria diferente.'},
+         {n:3,h:'Apresentação ao vivo (30 min)',p:'Com confiança. Depois: pitch de CMO de Conteúdo.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'15 min',
+  game:'🎲 PROTOCOLO FINAL: PITCH DE CONTEÚDO\nPapel de Diretor de Conteúdo: melhor conteúdo criado? Próximos 30 dias se a marca fosse real?'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Portfólio organizado: +30 XP','Apresentação: +35 XP','🔓 NÍVEL 4: +20 XP'],
+  next:'FASE 3 CONCLUÍDA! Fase 4: Marketing Digital — encontre seu cliente.'}
+],
+challenge:'📁 MISSÃO DE TRANSIÇÃO\nAdicionar 1 conteúdo ao portfólio antes da próxima aula.'},
+
+{id:17,phase:4,num:'4.1',title:'Perfil: Cliente Ideal',skill:'Avatar',xp:65,
+story:'"Missão de infiltração." NEXUS liberou o arquivo secreto: o perfil do seu cliente perfeito. Ele existe. Tem nome, rotina, sonhos, medos.',
+obj:'Criar o avatar completo do cliente ideal.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A armadilha',txt:'Nike não vende para todo mundo. Nubank não é para todo mundo. Quanto mais específico o cliente, mais certeiro o marketing.',tip:'"Para quem exatamente você quer vender?"'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'O que é avatar',txt:'Pessoa fictícia representando o cliente ideal: nome, idade, rotina, sonhos, medos, redes sociais, o que assiste, o que compra.',tip:'Criar ao vivo: "Cliente de tênis para skatistas de 12 anos."'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Avatar completo (35 min)',p:'Nome, Idade, hobbies, redes favoritas, 3 sonhos, 3 medos, por que compraria.'},
+         {n:2,h:'Desenhar (15 min)',p:'Rosto e estilo visual da persona.'},
+         {n:3,h:'Carta para o avatar (10 min)',p:'5 linhas falando diretamente com ele.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: ENTREVISTA COM O AVATAR\nUm faz o papel do Avatar do colega. O outro entrevista com 5+ perguntas. Depois trocam. Revela insights que não estavam no papel.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Avatar completo: +30 XP','Desenho: +15 XP','Carta escrita: +20 XP'],
+  next:'Missão 4.2: dores, desejos e gatilhos mentais — a psicologia da venda.'}
+],
+challenge:'🔍 MISSÃO EXTERNA\nConversar com alguém parecido com o avatar. 5 perguntas. Anotar respostas exatas.'},
+
+{id:18,phase:4,num:'4.2',title:'Dores, Desejos e Gatilhos',skill:'Psicologia de Vendas',xp:75,
+story:'"Arquivo secreto: os 6 gatilhos mentais que movem qualquer decisão de compra." NEXUS projeta padrões de comportamento do consumidor.',
+obj:'Mapear dores/desejos e aplicar gatilhos mentais.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Por que as pessoas compram',txt:'Por duas razões: fugir de uma dor ou buscar um prazer. Entender isso é entender como funciona qualquer venda.',tip:'"Pensa na última compra por impulso. O que motivou?"'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Gatilhos mentais',txt:'Dor + Desejo + Gatilho. Escassez: "só 10 unidades". Urgência: "até meia-noite". Prova social: "9.843 clientes satisfeitos". Autoridade: expert recomenda.',tip:'Aplicar em exemplos do dia a dia.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Mapa dores + desejos (25 min)',p:'5 dores + 5 desejos do avatar. Específico — não genérico.'},
+         {n:2,h:'2 copys (20 min)',p:'Uma focada em DOR, outra em DESEJO. Qual é mais impactante?'},
+         {n:3,h:'Aplicar gatilhos (15 min)',p:'1 gatilho em cada copy. Reescrever com ele incluído.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: PSICÓLOGO DO CONSUMIDOR\n5 produtos mostrados. 1 minuto para cada: qual dor resolve, qual desejo satisfaz, qual gatilho funciona. Mais acertos: +20 XP.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Mapa dores/desejos: +25 XP','2 copys: +25 XP','Gatilhos aplicados: +25 XP'],
+  next:'Missão 4.3: proposta de valor — por que você e não o concorrente?'}
+],
+challenge:'🧠 MISSÃO EXTERNA\n5 gatilhos em propagandas. Screenshot + análise.'},
+
+{id:19,phase:4,num:'4.3',title:'Proposta de Valor',skill:'Posicionamento',xp:70,
+story:'"Novo concorrente detectado." NEXUS exibe empresa similar. "Mais dinheiro, mais experiência. O que você tem que eles não têm? Sua proposta de valor única."',
+obj:'Criar a proposta de valor definitiva.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A pergunta de um milhão',txt:'Por que alguém escolheria você e não o concorrente? A resposta é a proposta de valor.',tip:'"Qual é a proposta de valor do Google? E da Apple? E do Nubank?"'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'A fórmula',txt:'"Nós ajudamos [quem] a [fazer o quê] através de [como] sem [medo do cliente]." Ex: "Ajudamos jovens a criar marcas profissionais em horas, sem precisar de designer."',tip:'Praticar ao vivo.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'5 versões (20 min)',p:'Cada uma com foco diferente: resultado, velocidade, simplicidade, exclusividade, emoção.'},
+         {n:2,h:'Escolher e refinar (20 min)',p:'Está clara? Específica? Diferente?'},
+         {n:3,h:'Aplicar na identidade (20 min)',p:'Na bio, no pitch, no manual.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: DIFERENCIAÇÃO EXTREMA\nProduto commodity (água, sal). Criar proposta que justifique 10× o preço. Criatividade máxima.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['5 versões: +20 XP','Proposta finalizada: +25 XP','Aplicada: +25 XP'],
+  next:'Missão 4.4: criando anúncios — amplificar o alcance.'}
+],
+challenge:'📝 MISSÃO EXTERNA\nReescrever a proposta depois de 3 dias. Mudou algo?'},
+
+{id:20,phase:4,num:'4.4',title:'Anúncios NEXUS',skill:'Publicidade',xp:75,
+story:'"Orçamento de marketing liberado: R$10/dia." NEXUS simula campanha real. "Com R$10 e o anúncio certo: 5.000 pessoas. Com o anúncio errado: R$10 jogado fora."',
+obj:'Criar 2 anúncios A/B.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O poder do anúncio certo',txt:'Conteúdo orgânico cresce devagar. Anúncios amplificam. Com R$10/dia e o anúncio certo, uma empresa pequena atinge 5.000 pessoas novas.',tip:'Mostrar exemplos de anúncios que funcionaram.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Anatomia do anúncio',txt:'(1) Visual: para o scroll em 0.3s. (2) Headline: fala à dor ou ao desejo. (3) Corpo: o que é e por que importa. (4) CTA: "Clique aqui", "Saiba mais". Sem CTA: admira mas não age.',tip:'Analisar anúncio real ao vivo.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'2 anúncios A/B (35 min)',p:'Versão A: focado em dor. Versão B: focado em desejo.'},
+         {n:2,h:'Segmentação (15 min)',p:'Para quem enviaria? Idade, interesses, localização.'},
+         {n:3,h:'Debate (10 min)',p:'Qual funcionaria melhor? Por quê?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: QUAL ANÚNCIO CLICARIA?\n6 anúncios reais. Votar. O que os bons tinham que os ruins não tinham?'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['2 anúncios A/B: +35 XP','Segmentação: +15 XP','Debate: +25 XP'],
+  next:'Missão 4.5: tráfego orgânico — crescer sem gastar.'}
+],
+challenge:'📢 MISSÃO EXTERNA\n5 anúncios da semana. Screenshot + análise.'},
+
+{id:21,phase:4,num:'4.5',title:'Tráfego Orgânico',skill:'Crescimento',xp:70,
+story:'"Os maiores canais do YouTube cresceram sem gastar um centavo em publicidade." O Módulo de Crescimento Orgânico NEXUS está ativo.',
+obj:'Biblioteca de hashtags + collab + plano 30 dias.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'Orgânico vs Pago',txt:'Tráfego pago: rápido mas custa. Orgânico: mais lento mas seu para sempre. Os dois juntos = máquina de crescimento.',tip:'Como youtubers e tiktokers cresceram só com conteúdo.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'4 estratégias',txt:'(1) Hashtags de nicho. (2) Consistência. (3) Colaboração. (4) SEO — palavras-chave no título.',tip:'Demonstração ao vivo: pesquisar hashtags no Instagram.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'30 Hashtags (20 min)',p:'Mega (1M+), Grandes (100k–1M), Nicho (10k–100k). Biblioteca organizada.'},
+         {n:2,h:'Estratégia collab (20 min)',p:'3 marcas/criadores para parceria. Que conteúdo criariam?'},
+         {n:3,h:'Plano 30 dias (20 min)',p:'Frequência, hashtags por categoria, 1 collab planejada.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: CRESCIMENTO SIMULADO\nComeça com "100 seguidores". Estratégia correta = instrutor adiciona seguidores virtuais. Quem terminar com mais ganha.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Biblioteca hashtags: +20 XP','Estratégia collab: +20 XP','Plano 30 dias: +30 XP'],
+  next:'Missão final da Fase 4: CMO por um dia.'}
+],
+challenge:'📱 MISSÃO EXTERNA\nPesquisar 3 hashtags de nicho novas. Criar 1 post usando-as.'},
+
+{id:22,phase:4,num:'4.6',title:'CMO por Um Dia',skill:'Estratégia',xp:90,
+story:'"Fase 4 completa." O dossiê do agente projeta: avatar, proposta, anúncios, crescimento. "Você tem conhecimento suficiente para ser o CMO da sua empresa."',
+obj:'Apresentar estratégia completa de marketing.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O grande dia da estratégia',txt:'Última missão da Fase 4. Reunir tudo numa estratégia que qualquer investidor entenderia.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'75 min',
+  steps:[{n:1,h:'Dossiê de marketing (35 min)',p:'Avatar + proposta + calendário + 2 anúncios + plano orgânico.'},
+         {n:2,h:'Apresentação 5 slides (15 min)',p:'Visual e profissional no Canva.'},
+         {n:3,h:'Pitch de CMO (25 min)',p:'"Quem é nosso cliente, como falar com ele e como crescer."'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'15 min',
+  game:'🎲 PROTOCOLO FINAL: CMO CHALLENGE\n5 minutos. 3 perguntas difíceis do investidor. Avaliação: clareza, coerência, confiança.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Dossiê completo: +35 XP','Apresentação: +25 XP','🔓 NÍVEL 5: +30 XP'],
+  next:'FASE 4 CONCLUÍDA! Fase 5: o funil que vende enquanto você dorme.'}
+],
+challenge:'🚀 MISSÃO DE TRANSIÇÃO\nPesquisar "funil de vendas". 5 linhas com suas palavras. Bônus: desenhar um funil.'},
+
+{id:23,phase:5,num:'5.1',title:'O Funil de Vendas',skill:'Funil',xp:65,
+story:'"Missão de infiltração." NEXUS mapeou o sistema de vendas de empresa que fatura R$50k/mês. "Não vendem mais pelo produto. Vendem pelo funil."',
+obj:'Entender e mapear o funil completo.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O funil',txt:'No topo entram curiosos. No fundo saem compradores. Entre um e outro: conteúdo, confiança e oferta.',tip:'Trazer funil físico de cozinha. Demonstrar com água.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'4 etapas',txt:'TOPO — Descoberta (post, vídeo, anúncio). MEIO — Interesse (seguem, salvam). FUNDO — Decisão (quase comprando). COMPRA — Ação + fidelização.',tip:'Desenhar o funil no quadro.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Mapear a jornada (25 min)',p:'Para a própria marca: o que acontece em cada etapa?'},
+         {n:2,h:'Conteúdo por etapa (25 min)',p:'1 conteúdo/ação para cada etapa.'},
+         {n:3,h:'Visualizar (10 min)',p:'Desenhar o funil com os conteúdos.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: EM QUE ETAPA ESTOU?\nInstrutor descreve comportamentos de cliente fictício. Agentes identificam a etapa e o que fariam.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Jornada mapeada: +25 XP','Conteúdo por etapa: +25 XP','Funil visualizado: +15 XP'],
+  next:'Missão 5.2: criar a isca digital — o presente que captura contatos.'}
+],
+challenge:'🌀 MISSÃO EXTERNA\n3 marcas que você segue. Em qual etapa do funil você está com cada uma?'},
+
+{id:24,phase:5,num:'5.2',title:'Isca Digital',skill:'Captação',xp:75,
+story:'"Tática de inteligência detectada." NEXUS revela: os maiores empreendedores dão algo de graça para conseguir algo que vale muito mais — o contato do cliente.',
+obj:'Criar isca digital profissional.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O anzol',txt:'Antes de vender, você precisa da atenção e do contato das pessoas. A isca é o presente que você oferece de graça em troca.',tip:'Exemplos: e-books, quizzes, checklists, vídeo-aula.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'Regra de ouro',txt:'A isca deve resolver um problema pequeno mas real do avatar. Deve parecer tão boa que a pessoa pense: "E é de graça?"',tip:'Criar exemplo ao vivo para marca fictícia.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Decidir o tipo (10 min)',p:'Qual formato funciona melhor para o avatar? Justificar.'},
+         {n:2,h:'Criar no Canva (40 min)',p:'Mínimo 3 páginas. Design na identidade da marca.'},
+         {n:3,h:'Promessa (10 min)',p:'"Baixe grátis: [título] e descubra como [benefício] em [tempo]."'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: EU BAIXARIA?\nApresentar a isca para o colega. "Eu baixaria?" + justificativa honesta. Feedback para melhorar.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Isca criada: +35 XP','Promessa escrita: +20 XP','Feedback recebido: +20 XP'],
+  next:'Missão 5.3: lista de contatos e WhatsApp — o ativo mais valioso.'}
+],
+challenge:'🎁 MISSÃO EXTERNA\nMelhorar a isca com base no feedback. Versão melhorada na próxima.'},
+
+{id:25,phase:5,num:'5.3',title:'Lista e WhatsApp',skill:'Relacionamento',xp:70,
+story:'"Alerta vermelho NEXUS: o Instagram foi banido amanhã. Todos os seguidores, perdidos. Quem tem lista de contatos: está seguro. Quem não tem: perdeu tudo."',
+obj:'Script de WhatsApp + sequência de 3 mensagens.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'O ativo mais valioso',txt:'Não os seguidores — esses pertencem à plataforma. A lista de contatos é sua. O Instagram pode fechar. Sua lista: nunca.',tip:'Exemplos de empresas que perderam tudo quando plataformas fecharam.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'WhatsApp = 98% de abertura',txt:'Email: 20%. WhatsApp: 98%. Estratégia: isca → pessoa envia mensagem → você responde + se apresenta → conteúdo de valor semanal → oferta no timing certo.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Script de boas-vindas (20 min)',p:'Apresentação + entrega da isca + pergunta que inicia conversa.'},
+         {n:2,h:'Sequência de 3 mensagens (30 min)',p:'Dia 1: boas-vindas. Dia 3: valor. Dia 7: oferta suave.'},
+         {n:3,h:'Lista fictícia (10 min)',p:'10 "perfis" de contatos que baixaram a isca.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: ATENDENTE CAMPEÃO\nRoleplay: cliente manda mensagem. Vendedor responde seguindo o script. Natural? Gerou interesse? Trocam os papéis.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Script criado: +20 XP','Sequência de 3: +30 XP','Roleplay: +20 XP'],
+  next:'Missão 5.4: oferta irresistível — fazer o cliente sentir que seria louco de não aceitar.'}
+],
+challenge:'💬 MISSÃO EXTERNA\nPraticar o script com familiar/amigo. Anotar o que funcionou.'},
+
+{id:26,phase:5,num:'5.4',title:'Oferta Irresistível',skill:'Vendas',xp:80,
+story:'"Missão: Operação Oferta Irresistível." NEXUS revela: empresas que mais vendem não têm melhor produto — têm melhor oferta.',
+obj:'Criar oferta com produto + bônus + garantia + escassez.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A frase de Hormozi',txt:'"Torne sua oferta tão boa que as pessoas se sintam burras de não aceitar." — Alex Hormozi. Oferta irresistível não é desconto. É valor empilhado.',tip:'Mostrar oferta bem feita que empilha bônus.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'A fórmula',txt:'(1) Produto principal. (2) Bônus complementares. (3) Garantia. (4) Escassez/urgência. (5) Preço com âncora. "Por apenas [preço], você leva [produto] + [bônus] + [garantia]. Vale [valor total], mas hoje é só [preço]."',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Montar a oferta (30 min)',p:'Produto + 2 bônus + garantia + escassez. Calcular valor total vs. preço.'},
+         {n:2,h:'Página visual (20 min)',p:'No Canva: título + o que inclui + bônus + preço + CTA.'},
+         {n:3,h:'Script de apresentação (10 min)',p:'5 frases que empilham valor e terminam com CTA.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: FECHAR A VENDA\nRoleplay: 3 objeções ("caro", "pensar", "já tenho"). Rebater cada uma. +15 XP por objeção rebatida.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Oferta criada: +35 XP','Página visual: +25 XP','Script pronto: +20 XP'],
+  next:'Missão 5.5: técnicas de fechamento — transformar interesse em venda.'}
+],
+challenge:'💰 MISSÃO EXTERNA\nApresentar oferta para alguém. Reações? Objeções levantadas?'},
+
+{id:27,phase:5,num:'5.5',title:'Técnicas de Fechamento',skill:'Fechamento',xp:85,
+story:'"Missão mais difícil até agora." NEXUS simula o cliente mais resistente. "Aprenda a transformar não em sim — com respeito, técnica, confiança."',
+obj:'5 técnicas de fechamento + respostas para objeções.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A verdade sobre vendas',txt:'A venda não acontece quando você apresenta — acontece quando faz a pergunta certa no momento certo. Os melhores vendedores conduzem, não esperam.',tip:'Objeção não é rejeição — é pedido de mais informação.'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'5 técnicas',txt:'(1) Direto: "Quer começar hoje?" (2) Escassez: "Só 3 vagas." (3) Resumo: "Você disse que precisa de X. O produto faz exatamente isso." (4) Pergunta: "O que impede de começar hoje?" (5) Silêncio: fazer a oferta e calar.',tip:'Demonstrar cada ao vivo.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'5 objeções + respostas (25 min)',p:'"Caro", "Pensar", "Sem dinheiro", "Já tenho parecido", "Vou consultar". Escrever cada resposta.'},
+         {n:2,h:'Script completo (25 min)',p:'Abertura → pitch → oferta → objeção → fechamento.'},
+         {n:3,h:'Ensaio (10 min)',p:'Script completo em voz alta 2 vezes.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: VENDA EM 5 MINUTOS\n5 min para tentar vender para o instrutor. Objeções reais. Usar 2+ técnicas. +30 XP se fechar a venda simulada!'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['5 objeções resolvidas: +25 XP','Script completo: +30 XP','Venda simulada fechada: +30 XP'],
+  next:'Missão final da Fase 5: simulação completa do funil.'}
+],
+challenge:'🎯 MISSÃO EXTERNA\nTentar vender algo real para alguém. Usar 1 técnica. Trazer o relato.'},
+
+{id:28,phase:5,num:'5.6',title:'Simulação Total do Funil',skill:'Funil Completo',xp:100,
+story:'"NEXUS entra em modo de simulação total." Você vai executar o funil completo — do topo ao fechamento. "Esta é a prova mais difícil. E você está pronto."',
+obj:'Simulação completa: isca → WhatsApp → oferta → fechamento.',
+blocks:[
+ {icon:'⚡',title:'Briefing épico',time:'10 min',
+  scripts:[{lbl:'Hoje é o dia',txt:'Não existe teoria hoje: só prática. Tudo que aprenderam vai ser testado em simulação completa.',tip:'Organizar o espaço como "escritório de vendas". Clima de evento!'}]},
+ {icon:'📡',title:'Revisão total',time:'15 min',
+  scripts:[{lbl:'O funil completo',txt:'Topo→Isca. Meio→WhatsApp. Fundo→Oferta. Fechamento→Técnicas. Pós-venda→Fidelização.',tip:''}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Mapa visual do funil (20 min)',p:'Cada etapa, conteúdo, mensagem, gatilho.'},
+         {n:2,h:'Preparar materiais (20 min)',p:'Isca, script WhatsApp, oferta visual, respostas para objeções.'},
+         {n:3,h:'Simulação ao vivo (20 min)',p:'Vendedor e cliente. Percorrer o funil completo.'}]},
+ {icon:'🎮',title:'Desafio NEXUS FINAL',time:'30 min',
+  game:'🎲 PROTOCOLO FINAL FASE 5: PITCH COMPLETO\n7 min: funil + oferta + fechar com o instrutor. Avaliado: clareza, força da oferta, confiança. Melhor: título "Mestre do Funil" provisório + 50 XP.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Funil mapeado: +30 XP','Simulação executada: +40 XP','🔓 NÍVEL 6: +30 XP'],
+  next:'FASE 5 CONCLUÍDA! Fase 6 final: cuide do dinheiro que vai ganhar.'}
+],
+challenge:'💰 MISSÃO DE TRANSIÇÃO\n5 vendas/mês: quanto entra? Quanto sobra? Fazer a conta.'},
+
+{id:29,phase:6,num:'6.1',title:'Educação Financeira',skill:'Finanças',xp:65,
+story:'"NEXUS revela dados confidenciais: 9/10 empresas que fecham, fecham por má gestão financeira — não por falta de clientes." Você vai ser a exceção.',
+obj:'3 destinos do dinheiro + simulação financeira.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A armadilha',txt:'De nada vale criar empresa incrível e não saber o que fazer com o dinheiro.',tip:'"Se recebesse R$1000 da empresa hoje, o que faria?"'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'3 destinos',txt:'(1) Reinvestimento: volta para a empresa crescer. (2) Reserva: emergências (mínimo 3 meses). (3) Lucro: o que vai para o dono. Regra: NUNCA misture dinheiro da empresa com o pessoal.',tip:'Números pequenos e reais para a realidade dos alunos.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Simular entradas e saídas (25 min)',p:'Preço do produto, vendas por mês, subtrair custos, calcular lucro real.'},
+         {n:2,h:'Dividir nos 3 destinos (20 min)',p:'Definir proporção. Ex: 40/30/30.'},
+         {n:3,h:'Planilha simples (15 min)',p:'Entradas, Saídas, Lucro, Reinvestimento, Reserva, Lucro pessoal.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: GERENTE FINANCEIRO\n5 cenários. Diagnosticar o problema financeiro e receitar a solução. "A empresa vende 100/mês mas nunca tem dinheiro em caixa..."'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Simulação financeira: +25 XP','Distribuição definida: +20 XP','Planilha criada: +20 XP'],
+  next:'Missão 6.2: precificação — o preço certo não é um chute.'}
+],
+challenge:'💰 MISSÃO EXTERNA\nAnotar todas as compras da semana. Necessidade ou desejo?'},
+
+{id:30,phase:6,num:'6.2',title:'Precificação',skill:'Precificação',xp:75,
+story:'"Preço errado mata negócio." NEXUS alerta: cobrar barato = trabalhar de graça. Cobrar caro sem justificar = cliente vai embora.',
+obj:'3 métodos de precificação + tabela de preços.',
+blocks:[
+ {icon:'⚡',title:'Briefing',time:'10 min',
+  scripts:[{lbl:'A estratégia',txt:'Preço errado mata negócio. O preço certo é uma estratégia, não um chute.',tip:'"Quanto cobrariam pelo produto? Por quê?"'}]},
+ {icon:'📡',title:'Conhecimento',time:'15 min',
+  scripts:[{lbl:'3 métodos',txt:'(1) Custo + margem: Custo × 3 = Preço. (2) Por valor: quanto o cliente acha que vale? (3) Por mercado: o que os concorrentes cobram?',tip:'Fazer a conta ao vivo para produto fictício.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Calcular o custo (20 min)',p:'Todos os custos para criar/entregar 1 unidade.'},
+         {n:2,h:'Preço pelos 3 métodos (25 min)',p:'3 preços diferentes. Qual usar e por quê.'},
+         {n:3,h:'Tabela de preços (15 min)',p:'Produto, custo, preço de venda, margem. Básico e premium.'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PROTOCOLO: NEGOCIADOR\nInstrutor = cliente que acha caro. Agente defende o preço sem abaixar — empilhando valor. Quem sustentar mais tempo sem dar desconto ganha.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Custo calculado: +20 XP','Preço com justificativa: +30 XP','Tabela criada: +25 XP'],
+  next:'Missão 6.3: a venda real — usar tudo o que aprendeu.'}
+],
+challenge:'🔢 MISSÃO EXTERNA\n3 concorrentes. Você está onde queria estar?'},
+
+{id:31,phase:6,num:'6.3',title:'A Venda Real',skill:'Vendas Reais',xp:100,
+story:'"Alerta dourado NEXUS: você tem todas as armas. Empresa, marca, conteúdo, marketing, funil, oferta. Falta uma coisa: uma venda real."',
+obj:'Executar venda real ou simulação máxima.',
+blocks:[
+ {icon:'⚡',title:'Briefing histórico',time:'10 min',
+  scripts:[{lbl:'O momento',txt:'Chegou o dia. Tudo que aprenderam vai ser testado agora. Quem fechar a primeira venda entra para a história da NEXUS Academy.',tip:'Clima de batalha épica. Música de fundo.'}]},
+ {icon:'📡',title:'Revisão total',time:'15 min',
+  scripts:[{lbl:'A jornada',txt:'Empresa + Marca + Conteúdo + Marketing + Funil + Oferta + Fechamento. HOJE usa tudo isso.',tip:'Listar tudo criado no curso.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Preparação final (15 min)',p:'Logo, oferta, script, respostas prontas.'},
+         {n:2,h:'A Venda (30 min)',p:'Opção A: pessoa real (responsável, professor). Opção B: simulação máxima com instrutor.'},
+         {n:3,h:'Debriefing (15 min)',p:'O que foi bem? O que travou? O que faria diferente?'}]},
+ {icon:'🎮',title:'Desafio NEXUS',time:'30 min',
+  game:'🎲 PRIMEIRA VENDA REAL\n+100 XP + Badge exclusivo "Primeira Venda" se fechar venda real. Simulação: +50 XP.'},
+ {icon:'⚡',title:'XP & Evolução',time:'5 min',
+  xpItems:['Preparação: +25 XP','Venda executada: +50 XP','Venda REAL fechada: +100 XP especial 🎉'],
+  next:'Missão final: DEMO DAY — apresentação mais importante da vida.'}
+],
+challenge:'🚀 MISSÃO FINAL\nPrepare o Demo Day. Revise todos os materiais.'},
+
+{id:32,phase:6,num:'6.4',title:'🎓 DEMO DAY — Projeto Final',skill:'Empreendedorismo Completo',xp:150,
+story:'"Agente — você chegou ao fim." NEXUS projeta a retrospectiva: 32 missões. Empresa + Marca + Conteúdo + Marketing + Funil + Vendas + Finanças.\n\n<strong>Agora é a hora de mostrar tudo para o mundo.</strong>\n\nO DEMO DAY é o protocolo final da NEXUS ACADEMY.',
+obj:'Apresentação completa do negócio — o Demo Day.',
+blocks:[
+ {icon:'⚡',title:'O grande dia',time:'10 min',
+  scripts:[{lbl:'Protocolo final',txt:'Não é uma prova. É uma conquista. Tudo que você criou desde a primeira missão vai ser apresentado.',tip:'Convidar responsáveis se possível. Clima de evento!'}]},
+ {icon:'📡',title:'Estrutura do pitch',time:'15 min',
+  scripts:[{lbl:'9 pontos',txt:'(1) Problema. (2) Solução. (3) Marca. (4) Cliente. (5) Marketing. (6) Funil. (7) Oferta. (8) Por que vai dar certo. (9) Sonho em 1 ano.',tip:'15 min para revisão final.'}]},
+ {icon:'🛠️',title:'Missão prática',time:'60 min',
+  steps:[{n:1,h:'Preparação final (20 min)',p:'Última revisão. Slides. Logo. Oferta. Organizado.'},
+         {n:2,h:'Ensaio cronometrado (15 min)',p:'10 minutos. Praticar em voz alta.'},
+         {n:3,h:'DEMO DAY OFICIAL (25 min)',p:'Até 10 minutos de pitch. 5 min de perguntas do painel.'}]},
+ {icon:'🎮',title:'Cerimônia de Formatura',time:'30 min',
+  game:'🎓 PROTOCOLO DE FORMATURA\nApresentações → Entrega do Certificado de Conclusão "Jovem Criador Digital" → Foto → Badge Mestre do Funil desbloqueado.\n\nPARABÉNS — você é oficialmente um Jovem Empreendedor Digital da NEXUS ACADEMY by Nuvem Veloz!'},
+ {icon:'⚡',title:'XP Final',time:'5 min',
+  xpItems:['Projeto apresentado: +100 XP','Respondeu perguntas: +30 XP','🎓 CERTIFICADO EMITIDO!'],
+  next:'Você completou a NEXUS ACADEMY. Continue criando. O mundo precisa do que você vai construir. 🚀'}
+],
+challenge:'🌟 Isso não é o fim. É o começo. Seu próximo negócio começa amanhã.'}
+];
+
+/* ════════════════════════════════════
+   STATE
+════════════════════════════════════ */
+let G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},lives:3};
+
+function loadG(){try{const s=localStorage.getItem('nexus_g');if(s)G=JSON.parse(s);}catch(e){}}
+function saveG(){try{localStorage.setItem('nexus_g',JSON.stringify(G));}catch(e){}}
+
+/* ════════════════════════════════════
+   PARTICLES ENGINE
+════════════════════════════════════ */
+const pc = document.getElementById('particles-canvas');
+const pctx = pc.getContext('2d');
+let particles = [];
+
+function resizeCanvas(){
+  pc.width = window.innerWidth;
+  pc.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function spawnParticle(x, y, color='#00D4FF'){
+  for(let i=0;i<6;i++){
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 3;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2,
+      alpha: 1,
+      size: 2 + Math.random() * 3,
+      color,
+      decay: 0.02 + Math.random() * 0.02
+    });
+  }
+}
+
+function spawnBurstAt(x, y){
+  const colors = ['#00D4FF','#B060FF','#00FF88','#FFD60A'];
+  colors.forEach(c => {
+    for(let i=0;i<8;i++){
+      const angle = (Math.PI * 2 / 8) * i;
+      const speed = 2 + Math.random() * 4;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 1,
+        size: 3 + Math.random() * 4,
+        color: c,
+        decay: 0.015 + Math.random() * 0.02
+      });
+    }
+  });
+}
+
+function animParticles(){
+  pctx.clearRect(0, 0, pc.width, pc.height);
+  particles = particles.filter(p => p.alpha > 0);
+  particles.forEach(p => {
+    pctx.save();
+    pctx.globalAlpha = p.alpha;
+    pctx.fillStyle = p.color;
+    pctx.shadowBlur = 8;
+    pctx.shadowColor = p.color;
+    pctx.beginPath();
+    pctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    pctx.fill();
+    pctx.restore();
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.05;
+    p.alpha -= p.decay;
+  });
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+
+/* ════════════════════════════════════
+   CONFETTI ENGINE
+════════════════════════════════════ */
+const cc = document.getElementById('confetti-canvas');
+const cctx = cc.getContext('2d');
+let confettiPieces = [];
+let confettiActive = false;
+
+function resizeCC(){cc.width=window.innerWidth;cc.height=window.innerHeight}
+resizeCC();window.addEventListener('resize',resizeCC);
+
+function launchConfetti(){
+  confettiPieces = [];
+  const colors = ['#00D4FF','#B060FF','#00FF88','#FFD60A','#FF3355','#FF8C00'];
+  for(let i=0;i<120;i++){
+    confettiPieces.push({
+      x: Math.random() * cc.width,
+      y: -20 - Math.random() * 200,
+      w: 8 + Math.random() * 10,
+      h: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random() * Math.PI * 2,
+      rotV: (Math.random() - 0.5) * 0.15,
+      vy: 3 + Math.random() * 4,
+      vx: (Math.random() - 0.5) * 2,
+      alpha: 1,
+    });
+  }
+  confettiActive = true;
+  animConfetti();
+}
+
+function animConfetti(){
+  if(!confettiActive) return;
+  cctx.clearRect(0,0,cc.width,cc.height);
+  let alive = false;
+  confettiPieces.forEach(p => {
+    if(p.y < cc.height + 20) alive = true;
+    cctx.save();
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.rot);
+    cctx.globalAlpha = Math.max(0, p.alpha);
+    cctx.fillStyle = p.color;
+    cctx.shadowBlur = 4;
+    cctx.shadowColor = p.color;
+    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    cctx.restore();
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rot += p.rotV;
+    p.vy += 0.05;
+    if(p.y > cc.height * 0.7) p.alpha -= 0.02;
+  });
+  if(alive) requestAnimationFrame(animConfetti);
+  else {cctx.clearRect(0,0,cc.width,cc.height);confettiActive=false;}
+}
+
+/* ════════════════════════════════════
+   SOUND ENGINE (Web Audio)
+════════════════════════════════════ */
+let audioCtx = null;
+function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+
+function playSound(type){
+  try{
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    if(type==='xp'){
+      osc.frequency.setValueAtTime(440,ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880,ctx.currentTime+0.1);
+      gain.gain.setValueAtTime(0.15,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);
+      osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.3);
+    } else if(type==='levelup'){
+      [261,329,392,523].forEach((f,i)=>{
+        const o=ctx.createOscillator();const g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=f;
+        g.gain.setValueAtTime(0.15,ctx.currentTime+i*0.12);
+        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.12+0.3);
+        o.start(ctx.currentTime+i*0.12);o.stop(ctx.currentTime+i*0.12+0.3);
+      });
+    } else if(type==='complete'){
+      [523,659,784,1047].forEach((f,i)=>{
+        const o=ctx.createOscillator();const g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=f;o.type='sine';
+        g.gain.setValueAtTime(0.1,ctx.currentTime+i*0.08);
+        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.08+0.25);
+        o.start(ctx.currentTime+i*0.08);o.stop(ctx.currentTime+i*0.08+0.25);
+      });
+    }
+  }catch(e){}
+}
+
+/* ════════════════════════════════════
+   INTRO
+════════════════════════════════════ */
+function pickAv(el){
+  document.querySelectorAll('.av').forEach(a=>a.classList.remove('on'));
+  el.classList.add('on');G.av=el.dataset.av;
+}
+function startGame(){
+  const n=document.getElementById('inp-name').value.trim();
+  if(!n){document.getElementById('inp-name').style.borderColor='#FF3355';return;}
+  G.name=n;saveG();
+  switchScreen('s-game');
+  document.getElementById('topbar').style.display='flex';
+  renderGame();
+  // Spawn welcome particles
+  setTimeout(()=>spawnBurstAt(window.innerWidth/2, window.innerHeight/2),300);
+}
+function goIntro(){
+  switchScreen('s-intro');
+  document.getElementById('topbar').style.display='none';
+  document.getElementById('inp-name').value=G.name;
+}
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+/* ════════════════════════════════════
+   GAME
+════════════════════════════════════ */
+function getLevel(){return LEVELS.slice().reverse().find(l=>G.xp>=l.min)||LEVELS[0];}
+function unlockedPhase(){
+  let max=1;
+  PHASES.forEach(ph=>{
+    const done=MISSIONS.filter(m=>m.phase===ph.id&&G.completed.includes(m.id)).length;
+    if(done>0)max=Math.max(max,ph.id);
+    if(done>=ph.total&&ph.id<6)max=Math.max(max,ph.id+1);
+  });
+  return Math.min(6,max);
+}
+
+function renderGame(){
+  renderLeft();renderCenter();renderRight();updateTopbar();
+}
+
+function renderLeft(){
+  const lv=getLevel();
+  document.getElementById('pc-av').textContent=G.av;
+  document.getElementById('pc-name').textContent=G.name;
+  document.getElementById('pc-xp').textContent=G.xp+' XP';
+  document.getElementById('pc-lv').textContent=`${lv.icon} ${lv.title}`;
+  const pct=Math.min(100,((G.xp-lv.min)/(lv.max-lv.min))*100);
+  document.getElementById('pc-bar').style.width=pct+'%';
+  document.getElementById('pc-streak').textContent=`🔥 ${G.streak} missões seguidas`;
+
+  // Phase nav
+  const nav=document.getElementById('phase-nav');
+  const ul=unlockedPhase();
+  nav.innerHTML=PHASES.map(ph=>{
+    const done=MISSIONS.filter(m=>m.phase===ph.id&&G.completed.includes(m.id)).length;
+    const locked=ph.id>ul;
+    const active=G.phase===ph.id;
+    return`<button class="phase-btn${active?' on':''}${locked?' locked':''}"
+      onclick="${locked?'':('setPhase('+ph.id+')')}">
+      <span class="pi">${ph.icon}</span>
+      <span class="pd">
+        <span class="pn">Fase ${ph.id} · ${done}/${ph.total}</span>
+        <span class="pp">${ph.name}</span>
+      </span>
+      ${locked?'<span style="font-size:.75rem">🔒</span>':''}
+    </button>`;
+  }).join('');
+
+  // Rewards
+  document.getElementById('rewards-list').innerHTML=REWARDS.map(r=>`
+    <div class="reward-row${G.xp>=r.xp?' earned':''}">
+      <img class="rr-coin" src="${IMG[r.coin]||''}" alt="">
+      <div class="rr-info">
+        <div class="rr-xp">${r.xp} XP</div>
+        <div class="rr-label">${r.label}</div>
+      </div>
+      ${G.xp>=r.xp?'<span class="rr-done">✓</span>':''}
+    </div>`).join('');
+}
+
+function renderCenter(){
+  const ph=PHASES.find(p=>p.id===G.phase);
+  const narr=NARRATIVES[G.phase];
+  const pms=MISSIONS.filter(m=>m.phase===G.phase);
+  const done=pms.filter(m=>G.completed.includes(m.id)).length;
+
+  let html=`
+  <div class="narr-box">
+    <div class="narr-ch">${narr.ch}</div>
+    <h2 class="narr-title">${narr.title}</h2>
+    <p class="narr-text">${narr.text.replace(/\n/g,'<br>')}</p>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <span class="nchip" style="color:${ph.color}">${ph.icon} ${ph.name}</span>
+      <span class="nchip">${done}/${ph.total} missões</span>
+      <span class="nchip">⚡ ${G.xp} XP total</span>
+    </div>
+  </div>
+  <div class="missions-title">// MISSÕES · FASE ${G.phase}</div>`;
+
+  html+=pms.map(m=>{
+    const d=G.completed.includes(m.id);
+    const ck=coinKey(m.xp);
+    return`<div class="mission-card${d?' done':''}" style="--lc:${ph.color}" onclick="openMission(${m.id})">
+      <div class="mc-top">
+        <span class="mc-phase">${ph.icon} MISSÃO ${m.num}</span>
+        ${d?'<span class="mc-check">✓ CONCLUÍDA</span>':''}
+      </div>
+      <div class="mc-title">${m.title}</div>
+      <div class="mc-desc">${m.story.split('.')[0]}.</div>
+      <div class="mc-foot">
+        <div class="mc-xp-row">
+          <img class="mc-coin" src="${IMG[ck]||''}" alt="">
+          <span class="mc-xp-val">+${m.xp} XP</span>
+        </div>
+        <span class="mc-skill">${m.skill}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('center').innerHTML=html;
+}
+
+function openMission(id){
+  const m=MISSIONS.find(x=>x.id===id);
+  if(!m)return;
+  const ph=PHASES.find(p=>p.id===m.phase);
+  const d=G.completed.includes(id);
+  const ck=coinKey(m.xp);
+
+  let html=`<div class="det-wrap">
+  <div class="det-head" style="--dhc:rgba(0,212,255,.06);--dlc:${ph.color}">
+    <button class="det-close" onclick="renderCenter()">✕</button>
+    <span class="det-ph" style="color:${ph.color}">${ph.icon} FASE ${m.phase} · ${ph.name.toUpperCase()}</span>
+    <div class="det-num">// MISSÃO ${m.num}${d?' · ✅ CONCLUÍDA':''}</div>
+    <h1 class="det-title">${m.title}</h1>
+    <div class="det-chips">
+      <span class="dchip" style="color:${ph.color}">+${m.xp} XP</span>
+      <span class="dchip">🎯 ${m.skill}</span>
+      <span class="dchip">⏰ 2h30</span>
+    </div>
+  </div>
+  <div class="det-body" style="--lc:${ph.color}">
+    <div style="border-left:2px solid ${ph.color};border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:14px;background:rgba(0,212,255,.03)">
+      <div style="font-family:Orbitron,monospace;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${ph.color};margin-bottom:5px">// NARRATIVA</div>
+      <p style="font-size:.84rem;color:#6080A0;line-height:1.75">${m.story.replace(/\n/g,'<br>')}</p>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-family:Orbitron,monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">// OBJETIVO</div>
+      <p style="font-size:.84rem;color:var(--text)">${m.obj}</p>
+    </div>`;
+
+  m.blocks.forEach(b=>{
+    html+=`<div style="margin-bottom:18px">
+      <div class="block-title" style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div class="block-icon" style="width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem">${b.icon}</div>
+        <span style="font-family:Orbitron,monospace;font-size:.82rem;font-weight:700;color:var(--text)">${b.title}</span>
+        ${b.time?`<span style="font-size:.65rem;color:var(--muted);margin-left:auto">⏱ ${b.time}</span>`:''}
+      </div>`;
+
+    if(b.scripts)b.scripts.forEach(s=>{html+=`<div class="script-line">
+      <div class="sl-label">${s.lbl}</div>
+      <p class="sl-text">${s.txt}</p>
+      ${s.tip?`<em class="sl-tip">💡 ${s.tip}</em>`:''}
+    </div>`;});
+
+    if(b.steps){html+=`<div class="steps-ul">`;b.steps.forEach(s=>{
+      html+=`<div class="step-li">
+        <div class="step-n" style="background:${ph.color};color:#001020">${s.n}</div>
+        <div><h5>${s.h}</h5><p>${s.p}</p></div>
+      </div>`;
+    });html+=`</div>`;}
+
+    if(b.game){html+=`<div class="game-box">
+      <div class="gb-title">🎮 ${b.game.split('\n')[0]}</div>
+      <p class="gb-text">${b.game.split('\n').slice(1).join('<br>')}</p>
+    </div>`;}
+
+    if(b.xpItems){html+=`<div class="xp-award-box">
+      <img class="xaw-coin" src="${IMG[ck]}" alt="">
+      <div class="xaw-info">
+        <h4>XP desta missão</h4>
+        <p>${b.xpItems.join(' · ')}</p>
+      </div>
+    </div>`;}
+
+    if(b.next)html+=`<p style="font-size:.76rem;color:var(--muted);margin-top:8px;font-style:italic">➜ ${b.next}</p>`;
+    html+=`</div>`;
+  });
+
+  // Tasks
+  html+=`<div style="margin-top:4px">
+    <div style="font-family:Orbitron,monospace;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">// TAREFAS</div>`;
+  m.blocks.filter(b=>b.steps).forEach(b=>{
+    b.steps.forEach((s,si)=>{
+      const tk=`t_${id}_${si}`;
+      const td=G.tasks[tk];
+      html+=`<div class="task-item${td?' done':''}" onclick="toggleTask('${tk}',this)">
+        <div class="task-cb">${td?'✓':''}</div>
+        <div class="task-b"><h5>${s.h}</h5><p>${s.p}</p></div>
+      </div>`;
+    });
+  });
+  html+=`</div>`;
+
+  if(m.challenge){html+=`<div class="week-challenge">
+    <div class="wc-title">🏠 Missão Semanal</div>
+    <p class="wc-text">${m.challenge.replace(/\n/g,'<br>')}</p>
+  </div>`;}
+
+  html+=`<div class="det-actions">`;
+  if(!d)html+=`<button class="btn btn-green" onclick="completeMission(${id})" style="flex:1">⚡ CONCLUIR MISSÃO (+${m.xp} XP)</button>`;
+  else html+=`<div style="display:flex;align-items:center;gap:8px;color:var(--cg);font-weight:800;font-size:.82rem;font-family:Orbitron,monospace">✅ +${m.xp} XP GANHOS</div>`;
+  html+=`<button class="btn btn-ghost" onclick="renderCenter()">← VOLTAR</button></div>`;
+  html+=`</div></div>`;
+
+  document.getElementById('center').innerHTML=html;
+  document.getElementById('center').scrollTo(0,0);
+}
+
+function toggleTask(key,el){
+  G.tasks[key]=!G.tasks[key];
+  el.classList.toggle('done');
+  el.querySelector('.task-cb').textContent=G.tasks[key]?'✓':'';
+  if(G.tasks[key]) spawnParticle(
+    el.getBoundingClientRect().left + 10,
+    el.getBoundingClientRect().top + 10,
+    '#00FF88'
+  );
+  saveG();
+}
+
+function completeMission(id){
+  if(G.completed.includes(id))return;
+  const m=MISSIONS.find(x=>x.id===id);
+  const prevLv=getLevel().n;
+  G.completed.push(id);
+  G.xp+=m.xp;
+  G.streak++;
+  G.hist.unshift({label:`Missão ${m.num}: ${m.title}`,pts:m.xp,ck:coinKey(m.xp)});
+
+  // Update lives (reset on mission complete)
+  G.lives=Math.min(3,G.lives+1);
+  saveG();
+
+  // Sound & particles
+  playSound('complete');
+  const btn=event?.target;
+  if(btn){
+    const r=btn.getBoundingClientRect();
+    spawnBurstAt(r.left+r.width/2, r.top+r.height/2);
+  }
+
+  // Streak milestone confetti
+  if(G.streak%5===0||m.xp>=100){
+    setTimeout(launchConfetti, 500);
+  }
+
+  const newLv=getLevel().n;
+  showToast(m.title,m.xp,coinKey(m.xp));
+
+  // Check phase completion
+  const ph=PHASES.find(p=>p.id===m.phase);
+  const phDone=MISSIONS.filter(mx=>mx.phase===m.phase&&G.completed.includes(mx.id)).length;
+  const phComplete = phDone >= ph.total;
+
+  setTimeout(()=>{
+    if(phComplete && m.phase < 6){
+      // Phase complete! Show phase overlay THEN level-up if needed
+      playSound('complete');
+      launchConfetti();
+      showPhaseComplete(ph, newLv > prevLv ? getLevel() : null);
+    } else if(newLv>prevLv){
+      playSound('levelup');
+      launchConfetti();
+      showLvlUp(getLevel());
+    } else {
+      renderGame();
+      openMission(id);
+    }
+  }, 1800);
+}
+
+function showToast(label,pts,ck){
+  const t=document.getElementById('toast');
+  document.getElementById('t-coin').src=IMG[ck]||'';
+  document.getElementById('t-msg').textContent=label;
+  document.getElementById('t-pts').textContent=`+${pts}`;
+  t.classList.add('on');
+  playSound('xp');
+  setTimeout(()=>t.classList.remove('on'),2500);
+}
+
+function showPhaseComplete(ph, nextLv=null){
+  const ov = document.getElementById('phase-overlay');
+  const colors = {1:'#00FF88',2:'#00D4FF',3:'#FFD60A',4:'#FF8C00',5:'#FF3355',6:'#B060FF'};
+  const phColor = colors[ph.id] || 'var(--gold)';
+  
+  ov.style.setProperty('--pm-color', phColor + '80');
+  document.getElementById('phase-ov-badge').textContent = `${ph.icon} FASE ${ph.id} — ${ph.name.toUpperCase()}`;
+  document.getElementById('phase-ov-sub').textContent = `Você dominou todos os módulos desta fase!`;
+  document.getElementById('phase-ov-skill').textContent = ph.id < 6
+    ? `🔓 FASE ${ph.id+1} DESBLOQUEADA: ${PHASES[ph.id]?.name?.toUpperCase()}`
+    : '🏆 TODAS AS FASES CONCLUÍDAS!';
+  
+  // Show XP coins earned in this phase
+  const totalXP = MISSIONS.filter(m=>m.phase===ph.id).reduce((s,m)=>s+m.xp,0);
+  const coinsDiv = document.getElementById('phase-ov-coins');
+  coinsDiv.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,214,10,.08);border:1px solid rgba(255,214,10,.2);border-radius:12px;padding:10px 20px;">
+      <img src="${IMG['xp100']||''}" style="width:36px;height:auto">
+      <span style="font-family:'Orbitron',monospace;font-size:.9rem;font-weight:900;color:var(--gold)">${totalXP} XP<br><span style="font-size:.6rem;color:var(--muted);font-weight:400">nesta fase</span></span>
+    </div>`;
+  
+  // Play medal video
+  const mv = document.getElementById('phase-medal-vid');
+  if(VID.medal){mv.src=VID.medal;mv.load();mv.play().catch(()=>{});}
+  
+  // Store next level-up for after phase overlay closes
+  ov._nextLv = nextLv;
+  ov.classList.add('on');
+}
+
+function closePhaseOverlay(){
+  const ov = document.getElementById('phase-overlay');
+  const nextLv = ov._nextLv;
+  ov.classList.remove('on');
+  ov._nextLv = null;
+  
+  if(nextLv){
+    setTimeout(()=>{
+      playSound('levelup');
+      launchConfetti();
+      showLvlUp(nextLv);
+    }, 400);
+  } else {
+    renderGame();
+  }
+}
+
+function showLvlUp(lv){
+  const ov=document.getElementById('lvl-ov');
+  document.getElementById('lvl-h').textContent=`NÍVEL ${lv.n}!`;
+  document.getElementById('lvl-sub').textContent=lv.title;
+  document.getElementById('lvl-skill').textContent=`⚡ NOVA HABILIDADE: ${lv.skill.toUpperCase()}`;
+  ov.classList.add('on');
+  // Play medal video
+  const mv=document.getElementById('lvl-medal-video');
+  if(VID.medal&&mv.src!==VID.medal){mv.src=VID.medal;mv.load();}
+  mv.play().catch(()=>{});
+}
+function closeLvl(){
+  document.getElementById('lvl-ov').classList.remove('on');
+  renderGame();
+}
+
+function renderRight(){
+  document.getElementById('streak-n').textContent=G.streak;
+  const done=G.completed.length;
+  document.getElementById('pr-missions').textContent=`${done}/32`;
+  document.getElementById('pr-bar').style.width=`${(done/32)*100}%`;
+
+  // Lives
+  document.querySelectorAll('.life').forEach((el,i)=>{
+    el.classList.toggle('lost',i>=G.lives);
+  });
+
+  const hl=document.getElementById('hist-list');
+  if(!G.hist.length){
+    hl.innerHTML='<div style="font-size:.68rem;color:var(--muted);text-align:center;padding:10px">Nenhuma ação ainda</div>';
+    return;
+  }
+  hl.innerHTML=G.hist.slice(0,12).map(h=>`
+    <div class="hist-item">
+      <span class="hi-left">${h.label}</span>
+      <div class="hi-pts">
+        <img class="hi-coin" src="${IMG[h.ck]||''}" alt="">
+        <span class="hi-val">+${h.pts}</span>
+      </div>
+    </div>`).join('');
+}
+
+function updateTopbar(){
+  const lv=getLevel();
+  // Update coin video in topbar
+  const tv=document.getElementById('tb-coin-video');
+  if(VID.coin&&!tv.src){tv.src=VID.coin;tv.load();tv.play().catch(()=>{});}
+  document.getElementById('tb-xp').textContent=G.xp+' XP';
+  document.getElementById('tb-lvl').textContent=`${lv.icon} Nível ${lv.n}\n${lv.title}`;
+  document.getElementById('tb-streak-val').textContent=G.streak;
+  const stEl=document.getElementById('tb-streak');
+  stEl.classList.toggle('hot',G.streak>=5);
+}
+
+function setPhase(p){G.phase=p;saveG();renderGame();}
+function showSection(s,btn){
+  document.querySelectorAll('.tb-nb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(s==='missions')renderCenter();
+}
+function resetGame(){
+  if(!confirm('Tem certeza? Todo progresso será perdido.'))return;
+  // Clear localStorage completely
+  try{ localStorage.removeItem('nexus_g'); }catch(e){}
+  // Reset state
+  G={name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},lives:3};
+  saveG();
+  // Go back to intro screen
+  goIntro();
+  // Clear name input
+  const ni = document.getElementById('inp-name');
+  if(ni) ni.value = '';
+  // Reset avatar selection
+  document.querySelectorAll('.av').forEach(a=>{
+    a.classList.toggle('on', a.dataset.av==='🚀');
+  });
+}
+
+/* ════════════════════════════════════
+   CLICK PARTICLES on document
+════════════════════════════════════ */
+document.addEventListener('click',e=>{
+  if(e.target.closest('.mission-card')||e.target.closest('.phase-btn')){
+    spawnParticle(e.clientX,e.clientY,'#00D4FF');
+  }
+});
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+// Init video blobs immediately (synchronous, before DOM ready)
+document.addEventListener('DOMContentLoaded',()=>{
+
+  // Logo
+  const logoEl=document.getElementById('intro-logo');
+  if(logoEl&&IMG.logo){logoEl.src=IMG.logo;}
+
+  // Intro coin video
+  const icv=document.getElementById('intro-coin-vid');
+  if(icv&&VID.coin){icv.src=VID.coin;icv.load();icv.play().catch(()=>{});}
+  
+  // Set all intro coin static images
+  const introCoins = {
+    'ic-img-1': 'xp1', 'ic-img-5': 'xp5', 'ic-img-10': 'xp10',
+    'ic-img-50': 'xp50', 'ic-img-100': 'xp100', 'ic-img-500': 'xp500'
+  };
+  Object.entries(introCoins).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if(el && IMG[key]) el.src = IMG[key];
+  });
+
+  loadG();
+  if(G.name){
+    document.getElementById('inp-name').value=G.name;
+    document.querySelectorAll('.av').forEach(a=>{
+      a.classList.toggle('on',a.dataset.av===G.av);
+    });
+  }
+});
+
+
+</script>
+
+
+
+</body>
+</html>

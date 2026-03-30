@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apostila — Academia dos Jovens Empreendedores</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0D1117; --gold:#FFD60A; --gold2:#C78000;
+  --ph1:#00C85A; --ph2:#00A8D8; --ph3:#D4A800;
+  --ph4:#E07010; --ph5:#CC3040; --ph6:#9040D8;
+  --body:#374151;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'Nunito',sans-serif;background:#D6E8F5;color:var(--body);padding:24px}
+
+/* ── PRINT BUTTON ── */
+.print-btn{
+  position:fixed;bottom:20px;right:20px;z-index:200;
+  background:linear-gradient(135deg,#FF6B35,#E84000);
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:.88rem;font-weight:800;
+  padding:12px 22px;border-radius:100px;border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(255,107,53,.4);
+  display:flex;align-items:center;gap:8px;transition:.2s;
+}
+.print-btn:hover{transform:scale(1.05)}
+
+/* ── PAGE ── */
+.page{
+  background:white;width:210mm;min-height:297mm;
+  margin:0 auto 28px;padding:16mm 18mm 20mm;
+  border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.12);
+  position:relative;overflow:hidden;page-break-after:always;
+}
+
+/* ── COVER ── */
+.cover{
+  background:linear-gradient(150deg,#050D1E 0%,#0C1B40 40%,#091535 100%);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:14mm 16mm;
+  min-height:297mm;
+}
+.cover-logo{width:160px;height:auto;margin-bottom:18px;
+  filter:drop-shadow(0 6px 24px rgba(26,111,232,.6))}
+.cover-badge{
+  display:inline-block;
+  background:rgba(255,214,10,.15);border:1.5px solid rgba(255,214,10,.4);
+  color:var(--gold);font-size:.65rem;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 16px;border-radius:100px;margin-bottom:18px;
+}
+.cover-title{
+  font-family:'Baloo 2',cursive;font-size:2.6rem;font-weight:800;
+  color:white;line-height:1.1;margin-bottom:8px;
+}
+.cover-title span{color:var(--gold)}
+.cover-sub{font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.6;
+  max-width:320px;margin:0 auto 24px;}
+.cover-phases-row{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;
+}
+.cover-phase-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:7px 12px;
+}
+.cpb-img{width:32px;height:auto}
+.cpb-txt{font-size:.62rem;font-weight:800;color:rgba(255,255,255,.7);text-align:left;line-height:1.3}
+.cpb-name{display:block;color:white;font-size:.7rem}
+.cover-name-box{
+  background:rgba(255,255,255,.08);border:1.5px dashed rgba(255,255,255,.25);
+  border-radius:14px;padding:14px 28px;color:rgba(255,255,255,.5);
+  font-size:.8rem;font-weight:700;margin-bottom:18px;
+}
+.cover-name-line{border-bottom:1.5px solid rgba(255,255,255,.3);
+  height:26px;width:200px;margin:6px auto 0}
+.cover-footer{
+  position:absolute;bottom:12mm;left:0;right:0;
+  text-align:center;color:rgba(255,255,255,.3);
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+}
+.cover-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.st{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.5);border-radius:50%}
+
+/* ── PAGE HEADER STRIP ── */
+.page-strip{
+  position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--sc,#00C85A),var(--sc2,#00A8D8));
+}
+.page-num{
+  position:absolute;bottom:8mm;right:18mm;
+  font-size:.6rem;color:#9CA3AF;font-weight:700;
+}
+
+/* ── CHAPTER HEADER ── */
+.ch-head{
+  display:flex;align-items:center;gap:12px;
+  border-radius:14px;padding:12px 18px;margin-bottom:18px;
+}
+.ch-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+.ch-tag{font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:3px;display:block}
+.ch-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;line-height:1.15}
+.ch-medal{width:52px;height:auto;margin-left:auto;flex-shrink:0;opacity:.8}
+
+/* ── CALLOUT ── */
+.callout{border-radius:14px;padding:14px 18px;margin:12px 0;display:flex;gap:12px;align-items:flex-start}
+.callout-icon{font-size:1.5rem;flex-shrink:0;margin-top:1px}
+.callout h4{font-size:.85rem;font-weight:800;margin-bottom:3px}
+.callout p{font-size:.78rem;line-height:1.65;color:var(--body)}
+
+/* ── FACT BOX ── */
+.fact{background:var(--ink);color:white;border-radius:18px;padding:18px 22px;margin:12px 0}
+.fact h4{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:8px}
+.fact p{font-size:.8rem;line-height:1.65;color:#CBD5E1}
+
+/* ── ACTIVITY ── */
+.activity{border:2.5px dashed;border-radius:18px;padding:16px 18px;margin:12px 0}
+.activity h4{font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.activity p{font-size:.78rem;line-height:1.65;color:var(--body);margin-bottom:8px}
+.wl{border-bottom:1.5px solid;margin-bottom:7px;height:24px}
+
+/* ── VOCAB ── */
+.vocab-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.vocab{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:8px 12px;margin:2px;font-size:.78rem}
+.vocab-emoji{font-size:1.1rem}
+.vocab-word{font-weight:800;display:block}
+.vocab-def{font-size:.68rem;opacity:.75}
+
+/* ── COIN DISPLAY ── */
+.coin-row{display:flex;gap:10px;align-items:center;justify-content:center;
+  flex-wrap:wrap;margin:12px 0;padding:14px;
+  background:linear-gradient(135deg,rgba(255,214,10,.06),rgba(200,127,0,.04));
+  border:1.5px solid rgba(255,214,10,.2);border-radius:14px;}
+.coin-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.coin-img{width:50px;height:auto}
+.coin-val{font-size:.65rem;font-weight:800;color:var(--gold2)}
+
+/* ── LEVEL MAP ── */
+.lv-map{display:flex;align-items:center;justify-content:center;gap:0;
+  flex-wrap:wrap;margin:14px 0;}
+.lv-node{display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 4px}
+.lv-circle{width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  border:2.5px solid white;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.lv-label{font-size:.52rem;font-weight:800;color:var(--body);text-align:center;max-width:52px}
+.lv-arrow{width:20px;height:2.5px;background:#CBD5E1;margin-top:-16px}
+
+/* ── CANVAS TEMPLATE ── */
+.canvas-t{border:2px solid #E5E7EB;border-radius:14px;overflow:hidden;margin:10px 0}
+.ct-cell{border:1px solid #E5E7EB;padding:10px 12px;min-height:55px}
+.ct-label{font-size:.56rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:4px;display:block}
+.ct-line{border-bottom:1.5px solid #CBD5E1;height:18px;margin-top:3px}
+
+/* ── XP TABLE ── */
+.xp-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:8px 0}
+.xp-table th{background:var(--ink);color:white;padding:8px 12px;text-align:left;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase}
+.xp-table td{padding:8px 12px;border-bottom:1px solid #F0F0F0;vertical-align:middle}
+.xp-table tr:nth-child(even) td{background:#F9FAFB}
+.xp-table img{width:30px;height:auto;vertical-align:middle}
+
+/* ── TIP STRIP ── */
+.tip{background:linear-gradient(135deg,var(--gold),#E8A820);border-radius:12px;
+  padding:10px 16px;display:flex;align-items:center;gap:10px;margin:8px 0}
+.tip-icon{font-size:1.3rem}
+.tip p{font-size:.78rem;font-weight:700;color:var(--ink)}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.step-row{display:flex;gap:10px;align-items:flex-start}
+.step-ball{width:26px;height:26px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:.74rem;
+  font-weight:900;color:white;flex-shrink:0}
+.step-row h5{font-size:.8rem;font-weight:800;margin-bottom:2px;color:var(--ink)}
+.step-row p{font-size:.74rem;line-height:1.5;color:var(--body)}
+
+/* ── 2/3-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}
+.mini-card{border-radius:12px;padding:12px;text-align:center}
+.mini-card-icon{font-size:1.8rem;display:block;margin-bottom:5px}
+.mini-card h5{font-size:.74rem;font-weight:800;margin-bottom:3px;color:var(--ink)}
+.mini-card p{font-size:.66rem;color:var(--body);line-height:1.45}
+
+/* ── DIARY / MISSION LOG ── */
+.log-entry{border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.log-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:6px;flex-wrap:wrap;gap:6px}
+.log-phase{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:7px;padding:3px 9px;border:1.5px solid}
+.log-xp-badge{display:flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#1a1000;font-size:.65rem;font-weight:900;
+  padding:3px 10px;border-radius:100px}
+.log-xp-badge img{width:18px;height:auto}
+.log-field{font-size:.64rem;font-weight:700;color:#9CA3AF;margin-bottom:3px}
+.log-lines .wl{border-color:#E5E7EB;height:20px;margin-bottom:5px}
+
+/* ── PRINT ── */
+@media print{
+  body{background:white;padding:0}
+  .print-btn{display:none}
+  .page{box-shadow:none;margin:0;border-radius:0;
+    page-break-after:always;width:100%;min-height:100vh;padding:12mm 15mm 15mm}
+  .cover{min-height:100vh}
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimir Apostila</button>
+
+<!-- ASSETS injected by script below -->
+
+<!-- ══════════════════ PÁG 1 — CAPA ══════════════════ -->
+<div class="page cover" id="pg-cover">
+  <div class="cover-stars" id="cover-stars"></div>
+
+  <img class="cover-logo" id="cover-logo" src="" alt="Nuvem Veloz">
+  <div class="cover-badge">✦ Material do Aluno · Nuvem Veloz 2025</div>
+
+  <h1 class="cover-title">Academia dos<br><span>Jovens</span><br>Empreendedores</h1>
+  <p class="cover-sub">Sua apostila de treinamento para criar ideias, construir marcas e vender no mundo digital.</p>
+
+  <div class="cover-phases-row" id="cover-phases-row">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- XP Coins preview -->
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:18px">
+    <img id="coin-prev-1"  src="" style="width:36px;height:auto" alt="1XP">
+    <img id="coin-prev-5"  src="" style="width:36px;height:auto" alt="5XP">
+    <img id="coin-prev-10" src="" style="width:36px;height:auto" alt="10XP">
+    <img id="coin-prev-50" src="" style="width:36px;height:auto" alt="50XP">
+    <img id="coin-prev-100" src="" style="width:36px;height:auto" alt="100XP">
+    <img id="coin-prev-500" src="" style="width:40px;height:auto" alt="500XP">
+  </div>
+
+  <div class="cover-name-box">
+    Esta apostila pertence a:<br>
+    <div class="cover-name-line"></div>
+  </div>
+
+  <div class="cover-footer">Academia dos Jovens Empreendedores · Nuvem Veloz · 2025</div>
+</div>
+
+<!-- ══════════════════ PÁG 2 — CARTA + MAPA ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#00C85A;--sc2:#00D8FF"></div>
+
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:2.5rem;margin-bottom:8px">📜</div>
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--ink);margin-bottom:3px">Uma carta para você</h2>
+    <p style="color:#6B7280;font-size:.76rem">Do Diretor da Academia Nuvem Veloz</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:18px;padding:20px 24px;margin-bottom:16px;border-left:4px solid #3B82F6">
+    <p style="font-size:.85rem;line-height:1.85;color:var(--body);font-style:italic">
+      Olá, Jovem Agente.<br><br>
+      Se você está lendo isso, é porque foi <strong>encontrado</strong>. Não qualquer pessoa chega até a Academia — só aqueles que têm dentro de si a faísca criativa, a curiosidade diferente, o jeito único de ver o mundo.<br><br>
+      Esta apostila é o seu <strong>Diário de Missões</strong>. Aqui você vai anotar ideias, completar desafios e guardar provas de que é capaz de construir algo incrível.<br><br>
+      Não existe resposta certa ou errada aqui. Existe <strong>a sua resposta</strong> — única, criativa e valiosa.<br><br>
+      Boa jornada. O mundo está esperando pelo que você vai criar. 🚀
+    </p>
+    <p style="text-align:right;margin-top:12px;font-size:.78rem;font-weight:800;color:#3B82F6">— Academia Nuvem Veloz</p>
+  </div>
+
+  <h3 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:10px">🗺️ O mapa da sua jornada</h3>
+
+  <div class="lv-map" id="lv-map"><!-- injected by JS --></div>
+
+  <div class="activity" style="border-color:#3B82F6;margin-top:14px">
+    <h4 style="color:#1D4ED8">✏️ Minha missão pessoal</h4>
+    <p>Complete antes de começar o curso:</p>
+    <p style="font-size:.78rem;font-style:italic;margin-bottom:7px">"Quando terminar a Academia, eu quero ter aprendido a..."</p>
+    <div class="wl" style="border-color:#93C5FD"></div>
+    <div class="wl" style="border-color:#93C5FD"></div>
+    <div class="wl" style="border-color:#93C5FD"></div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+<!-- ══════════════════ PÁG 3 — O QUE É EMPREENDEDORISMO ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#00C85A;--sc2:#00D8FF"></div>
+  <div class="ch-head" style="background:linear-gradient(135deg,#DCFCE7,#BBF7D0)">
+    <div class="ch-icon" style="background:linear-gradient(135deg,#10B981,#059669)">💡</div>
+    <div style="flex:1">
+      <span class="ch-tag" style="color:#059669">Conceito Fundamental</span>
+      <div class="ch-title" style="color:#065F46">O que é Empreendedorismo?</div>
+    </div>
+    <img class="ch-medal" id="medal-ph1" src="" alt="Fase 1">
+  </div>
+
+  <div class="callout" style="background:#FEF9C3;border:1.5px solid #FDE047">
+    <span class="callout-icon">🤔</span>
+    <div>
+      <h4 style="color:#854D0E">Você sabia?</h4>
+      <p><strong>Empreendedor</strong> é qualquer pessoa que vê um problema e tenta resolvê-lo de um jeito criativo. Não precisa ser adulto. Não precisa ter dinheiro. Só precisa de uma ideia e vontade de tentar.</p>
+    </div>
+  </div>
+
+  <div class="fact">
+    <h4>🌍 Negócios que começaram pequenos e viraram gigantes</h4>
+    <div class="three-col" style="margin-top:8px">
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.08);border-radius:8px">
+        <div style="font-size:1.3rem;margin-bottom:3px">🎮</div>
+        <div style="font-size:.68rem;font-weight:800;color:var(--gold)">Minecraft</div>
+        <div style="font-size:.6rem;color:#94A3B8;margin-top:2px">1 pessoa, 1 computador</div>
+      </div>
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.08);border-radius:8px">
+        <div style="font-size:1.3rem;margin-bottom:3px">📱</div>
+        <div style="font-size:.68rem;font-weight:800;color:var(--gold)">Instagram</div>
+        <div style="font-size:.6rem;color:#94A3B8;margin-top:2px">Era só um botão de filtro</div>
+      </div>
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.08);border-radius:8px">
+        <div style="font-size:1.3rem;margin-bottom:3px">🟡</div>
+        <div style="font-size:.68rem;font-weight:800;color:var(--gold)">Post-it</div>
+        <div style="font-size:.6rem;color:#94A3B8;margin-top:2px">Começou como um erro!</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;color:var(--ink);margin:12px 0 8px">📚 Palavras importantes</h3>
+  <div class="vocab-wrap">
+    <div class="vocab" style="background:#DCFCE7;border:1.5px solid #86EFAC"><span class="vocab-emoji">💡</span><div><span class="vocab-word" style="color:#15803D">Ideia</span><span class="vocab-def" style="color:#166534">O começo de tudo</span></div></div>
+    <div class="vocab" style="background:#DBEAFE;border:1.5px solid #93C5FD"><span class="vocab-emoji">👤</span><div><span class="vocab-word" style="color:#1D4ED8">Cliente</span><span class="vocab-def" style="color:#1E40AF">Quem paga pelo produto</span></div></div>
+    <div class="vocab" style="background:#FEF9C3;border:1.5px solid #FDE047"><span class="vocab-emoji">🛒</span><div><span class="vocab-word" style="color:#854D0E">Produto</span><span class="vocab-def" style="color:#92400E">O que você vende</span></div></div>
+    <div class="vocab" style="background:#F3E8FF;border:1.5px solid #C4B5FD"><span class="vocab-emoji">💰</span><div><span class="vocab-word" style="color:#6D28D9">Lucro</span><span class="vocab-def" style="color:#7C3AED">O que sobra após custos</span></div></div>
+    <div class="vocab" style="background:#FFE4E6;border:1.5px solid #FCA5A5"><span class="vocab-emoji">🎯</span><div><span class="vocab-word" style="color:#B91C1C">Nicho</span><span class="vocab-def" style="color:#DC2626">Grupo específico</span></div></div>
+    <div class="vocab" style="background:#CCFBF1;border:1.5px solid #5EEAD4"><span class="vocab-emoji">📊</span><div><span class="vocab-word" style="color:#0F766E">Marketing</span><span class="vocab-def" style="color:#115E59">Como atrair clientes</span></div></div>
+  </div>
+
+  <div class="activity" style="border-color:#10B981">
+    <h4 style="color:#059669">✏️ Empreendedor do dia a dia</h4>
+    <p>3 serviços/produtos que você usa. Para cada um, escreva quem pode ter criado:</p>
+    <div class="three-col" style="margin-top:6px">
+      <div><p style="font-size:.65rem;font-weight:700;color:#059669;margin-bottom:3px">Produto:</p><div class="wl" style="border-color:#6EE7B7"></div><p style="font-size:.65rem;font-weight:700;color:#059669;margin:6px 0 3px">Criador:</p><div class="wl" style="border-color:#6EE7B7"></div></div>
+      <div><p style="font-size:.65rem;font-weight:700;color:#059669;margin-bottom:3px">Produto:</p><div class="wl" style="border-color:#6EE7B7"></div><p style="font-size:.65rem;font-weight:700;color:#059669;margin:6px 0 3px">Criador:</p><div class="wl" style="border-color:#6EE7B7"></div></div>
+      <div><p style="font-size:.65rem;font-weight:700;color:#059669;margin-bottom:3px">Produto:</p><div class="wl" style="border-color:#6EE7B7"></div><p style="font-size:.65rem;font-weight:700;color:#059669;margin:6px 0 3px">Criador:</p><div class="wl" style="border-color:#6EE7B7"></div></div>
+    </div>
+  </div>
+  <div class="page-num">3</div>
+</div>
+
+<!-- ══════════════════ PÁG 4 — FICHA DE AGENTE ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#FFD60A;--sc2:#FF9020"></div>
+  <div style="text-align:center;margin-bottom:14px">
+    <div style="display:inline-block;background:var(--ink);border-radius:12px;padding:8px 18px;margin-bottom:8px">
+      <span style="font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">🔐 Documento Secreto</span>
+    </div>
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:var(--ink)">Ficha do Agente</h2>
+    <p style="font-size:.76rem;color:#6B7280">Missão 1.1 — Seu passaporte na Academia</p>
+  </div>
+
+  <div style="border:2.5px solid var(--ink);border-radius:18px;overflow:hidden">
+    <div style="background:var(--ink);padding:12px 18px;display:flex;align-items:center;gap:12px">
+      <img id="ficha-boy-coin" src="" style="width:56px;height:auto" alt="">
+      <div>
+        <div style="font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)">Academia Nuvem Veloz</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white">Registro de Agente Ativo</div>
+        <div style="font-size:.6rem;color:#94A3B8">Confidencial</div>
+      </div>
+    </div>
+
+    <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <p style="font-size:.62rem;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">Nome real</p>
+        <div style="border-bottom:2px solid var(--ink);height:22px"></div>
+      </div>
+      <div>
+        <p style="font-size:.62rem;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">🔐 Codinome</p>
+        <div style="border-bottom:2px solid var(--ink);height:22px"></div>
+      </div>
+      <div>
+        <p style="font-size:.62rem;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">Idade</p>
+        <div style="border-bottom:2px solid var(--ink);height:22px"></div>
+      </div>
+      <div>
+        <p style="font-size:.62rem;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">Data de ingresso</p>
+        <div style="border-bottom:2px solid var(--ink);height:22px"></div>
+      </div>
+      <div style="grid-column:1/-1">
+        <p style="font-size:.62rem;font-weight:800;color:#10B981;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">⚡ Minha super habilidade secreta</p>
+        <div style="border-bottom:2px solid #10B981;height:22px;margin-bottom:6px"></div>
+      </div>
+      <div style="grid-column:1/-1">
+        <p style="font-size:.62rem;font-weight:800;color:#3B82F6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">🌍 Minha missão de vida</p>
+        <div style="border-bottom:2px solid #93C5FD;height:22px;margin-bottom:6px"></div>
+        <div style="border-bottom:2px solid #93C5FD;height:22px"></div>
+      </div>
+      <div style="grid-column:1/-1">
+        <p style="font-size:.62rem;font-weight:800;color:#F97316;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">🔥 Meu superpoder criativo</p>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Desenhar e criar</label>
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Inventar histórias</label>
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Resolver problemas</label>
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Organizar e planejar</label>
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Convencer pessoas</label>
+          <label style="display:flex;align-items:center;gap:3px;font-size:.72rem"><input type="checkbox"> Outro: <span style="border-bottom:1px solid #ccc;display:inline-block;width:70px"></span></label>
+        </div>
+      </div>
+      <div style="grid-column:1/-1">
+        <p style="font-size:.62rem;font-weight:800;color:#8B5CF6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px">🎯 Objetivo ao terminar</p>
+        <div style="border-bottom:2px solid #C4B5FD;height:22px;margin-bottom:6px"></div>
+        <div style="border-bottom:2px solid #C4B5FD;height:22px"></div>
+      </div>
+    </div>
+
+    <div style="background:#F9FAFB;padding:10px 18px;border-top:2px solid var(--ink);display:flex;align-items:center;gap:10px">
+      <span style="font-size:.64rem;font-weight:800;color:#6B7280;text-transform:uppercase">XP Acumulado:</span>
+      <div style="display:flex;align-items:center;gap:4px;background:var(--gold);color:#1a1000;font-size:.72rem;font-weight:900;padding:3px 12px;border-radius:100px">
+        <img id="ficha-coin" src="" style="width:18px;height:auto" alt=""> 0 XP
+      </div>
+    </div>
+  </div>
+  <div class="page-num">4</div>
+</div>
+
+<!-- ══════════════════ PÁG 5 — SISTEMA DE XP ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#FFD60A;--sc2:#FF9020"></div>
+  <div style="text-align:center;margin-bottom:16px">
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--ink)">⚡ Sistema de XP</h2>
+    <p style="font-size:.76rem;color:#6B7280">Como ganhar pontos na Academia</p>
+  </div>
+
+  <div class="coin-row" id="coin-row-main"><!-- JS --></div>
+
+  <table class="xp-table">
+    <thead>
+      <tr>
+        <th>Ação</th><th>Moeda</th><th>XP</th>
+      </tr>
+    </thead>
+    <tbody id="xp-table-body"><!-- JS --></tbody>
+  </table>
+
+  <h3 style="font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;color:var(--ink);margin:14px 0 8px">🏆 Recompensas por Nível de XP</h3>
+  <div id="rewards-table-wrap"><!-- JS --></div>
+
+  <h3 style="font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;color:var(--ink);margin:14px 0 8px">📍 Registre seu XP</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:.76rem">
+    <thead>
+      <tr style="background:var(--ink);color:white">
+        <th style="padding:7px 10px;text-align:left;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase">Aula / Missão</th>
+        <th style="padding:7px 10px;text-align:center;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase">XP</th>
+        <th style="padding:7px 10px;text-align:center;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${[...Array(10)].map((_,i)=>`
+        <tr style="background:${i%2===0?'white':'#F9FAFB'}">
+          <td style="padding:7px 10px;border-bottom:1px solid #F0F0F0"><div style="border-bottom:1px solid #E5E7EB;height:16px"></div></td>
+          <td style="padding:7px 10px;border-bottom:1px solid #F0F0F0;text-align:center"><div style="border-bottom:1px solid #E5E7EB;height:16px"></div></td>
+          <td style="padding:7px 10px;border-bottom:1px solid #F0F0F0;text-align:center"><div style="border-bottom:1px solid #E5E7EB;height:16px"></div></td>
+        </tr>`).join('')}
+      <tr style="background:#FEF9C3">
+        <td style="padding:8px 10px;font-weight:800;font-size:.76rem;color:#78350F">TOTAL GERAL</td>
+        <td></td>
+        <td style="padding:8px 10px;border-bottom:2px solid #78350F;text-align:center"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="page-num">5</div>
+</div>
+
+<!-- ══════════════════ PÁG 6 — CANVAS DA EMPRESA ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#00C85A;--sc2:#00D8FF"></div>
+  <div style="text-align:center;margin-bottom:12px">
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--ink)">🏢 Canvas da Minha Empresa</h2>
+    <p style="font-size:.72rem;color:#6B7280">Missão 1.4 — Preencha com as informações da sua empresa</p>
+  </div>
+
+  <div class="canvas-t">
+    <div class="ct-cell" style="background:var(--ink);text-align:center;padding:12px">
+      <span class="ct-label" style="color:var(--gold)">🚀 Nome da Empresa (pode mudar!)</span>
+      <div style="border-bottom:2px solid rgba(255,255,255,.3);height:28px;max-width:300px;margin:6px auto 0"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr">
+      <div class="ct-cell" style="background:#F0FDF4">
+        <span class="ct-label" style="color:#059669">😤 Problema que resolve</span>
+        <div class="ct-line" style="border-color:#86EFAC"></div>
+        <div class="ct-line" style="border-color:#86EFAC;margin-top:4px"></div>
+        <div class="ct-line" style="border-color:#86EFAC;margin-top:4px"></div>
+      </div>
+      <div class="ct-cell" style="background:#EFF6FF">
+        <span class="ct-label" style="color:#1D4ED8">🛒 Produto / Serviço</span>
+        <div class="ct-line" style="border-color:#93C5FD"></div>
+        <div class="ct-line" style="border-color:#93C5FD;margin-top:4px"></div>
+        <div class="ct-line" style="border-color:#93C5FD;margin-top:4px"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr">
+      <div class="ct-cell" style="background:#FEF9C3">
+        <span class="ct-label" style="color:#854D0E">👤 Quem vai comprar</span>
+        <div class="ct-line" style="border-color:#FDE047"></div>
+        <div class="ct-line" style="border-color:#FDE047;margin-top:4px"></div>
+        <div class="ct-line" style="border-color:#FDE047;margin-top:4px"></div>
+      </div>
+      <div class="ct-cell" style="background:#F5F3FF">
+        <span class="ct-label" style="color:#6D28D9">💰 Por que vai pagar</span>
+        <div class="ct-line" style="border-color:#C4B5FD"></div>
+        <div class="ct-line" style="border-color:#C4B5FD;margin-top:4px"></div>
+        <div class="ct-line" style="border-color:#C4B5FD;margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="ct-cell" style="background:#FFF1F2">
+      <span class="ct-label" style="color:#BE123C">🔥 Por que acredito nessa ideia</span>
+      <div class="ct-line" style="border-color:#FCA5A5"></div>
+      <div class="ct-line" style="border-color:#FCA5A5;margin-top:4px"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px">
+    <div style="background:#F9FAFB;border:1.5px dashed #E5E7EB;border-radius:10px;padding:8px 14px;flex:1">
+      <p style="font-size:.6rem;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Esboço do Logo</p>
+      <div style="height:52px;border:1.5px dashed #CBD5E1;border-radius:7px;display:flex;align-items:center;justify-content:center">
+        <span style="font-size:.62rem;color:#9CA3AF">Desenhe aqui</span>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div style="display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;font-size:.72rem;font-weight:900;padding:6px 14px;border-radius:100px">
+        <img id="canvas-coin" src="" style="width:22px;height:auto" alt="">+80 XP
+      </div>
+      <p style="font-size:.6rem;color:#6B7280;margin-top:4px">Canvas completo</p>
+    </div>
+  </div>
+
+  <!-- Avatar do cliente -->
+  <div style="margin-top:14px">
+    <h3 style="font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:8px">👤 Avatar do meu Cliente Ideal</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:#FFEDD5;border:1.5px solid #FDBA74;border-radius:10px;padding:10px">
+        <p style="font-size:.62rem;font-weight:700;color:#C2410C;margin-bottom:3px">Nome fictício:</p>
+        <div class="wl" style="border-color:#FDBA74"></div>
+        <p style="font-size:.62rem;font-weight:700;color:#C2410C;margin:6px 0 3px">Idade / Interesses:</p>
+        <div class="wl" style="border-color:#FDBA74"></div>
+        <p style="font-size:.62rem;font-weight:700;color:#C2410C;margin:6px 0 3px">3 sonhos:</p>
+        <div class="wl" style="border-color:#FDBA74;margin-bottom:4px"></div>
+        <div class="wl" style="border-color:#FDBA74;margin-bottom:4px"></div>
+        <div class="wl" style="border-color:#FDBA74"></div>
+      </div>
+      <div>
+        <p style="font-size:.62rem;font-weight:700;color:#C2410C;margin-bottom:3px">3 frustrações / dores:</p>
+        <div class="wl" style="border-color:#FDBA74;margin-bottom:4px"></div>
+        <div class="wl" style="border-color:#FDBA74;margin-bottom:4px"></div>
+        <div class="wl" style="border-color:#FDBA74;margin-bottom:8px"></div>
+        <div style="border:1.5px dashed #FDBA74;border-radius:8px;height:72px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:.62rem;color:#9CA3AF">Desenhe o avatar aqui</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">6</div>
+</div>
+
+<!-- ══════════════════ PÁG 7 — DIÁRIO DE MISSÕES ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#C060FF;--sc2:#FF4455"></div>
+  <div style="text-align:center;margin-bottom:14px">
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--ink)">📓 Diário de Missões</h2>
+    <p style="font-size:.74rem;color:#6B7280">Registre o que aprendeu após cada aula</p>
+  </div>
+
+  <div id="diary-entries"><!-- JS injects colored entries --></div>
+
+  <div class="page-num">7</div>
+</div>
+
+<!-- ══════════════════ PÁG 8 — FUNIL + FINANÇAS ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#FF4455;--sc2:#C060FF"></div>
+  <div class="ch-head" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)">
+    <div class="ch-icon" style="background:linear-gradient(135deg,#EF4444,#DC2626)">🌀</div>
+    <div style="flex:1">
+      <span class="ch-tag" style="color:#991B1B">Fase 5 · Funil de Vendas</span>
+      <div class="ch-title" style="color:#7F1D1D">O Caminho do Cliente</div>
+    </div>
+    <img class="ch-medal" id="medal-ph5" src="" alt="Fase 5">
+  </div>
+
+  <!-- Funnel visual -->
+  <div style="max-width:280px;margin:0 auto 14px">
+    <div style="background:#FEF9C3;border:2px solid #FDE047;border-radius:10px 10px 0 0;padding:9px;text-align:center;font-size:.76rem;font-weight:800;color:#78350F">
+      🔝 TOPO — Descoberta<br><span style="font-size:.64rem;font-weight:400;color:#92400E">Post, vídeo, anúncio → muita gente vê</span>
+    </div>
+    <div style="background:#DBEAFE;border-left:2px solid #93C5FD;border-right:2px solid #93C5FD;padding:9px;text-align:center;font-size:.76rem;font-weight:800;color:#1E3A8A;margin:0 14px">
+      🎯 MEIO — Interesse<br><span style="font-size:.64rem;font-weight:400">Seguem, salvam, interagem</span>
+    </div>
+    <div style="background:#DCFCE7;border-left:2px solid #86EFAC;border-right:2px solid #86EFAC;padding:9px;text-align:center;font-size:.76rem;font-weight:800;color:#14532D;margin:0 28px">
+      ⚡ FUNDO — Decisão<br><span style="font-size:.64rem;font-weight:400">Pronto para comprar</span>
+    </div>
+    <div style="background:var(--ink);border-radius:0 0 10px 10px;padding:9px;text-align:center;font-size:.76rem;font-weight:800;color:var(--gold);margin:0 42px">
+      💰 VENDA!
+    </div>
+  </div>
+
+  <div class="activity" style="border-color:#EF4444">
+    <h4 style="color:#DC2626">✏️ Meu Funil</h4>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px">
+      <div style="display:flex;gap:7px;align-items:center">
+        <span style="background:#FEF9C3;border:1.5px solid #FDE047;border-radius:7px;padding:3px 8px;font-size:.6rem;font-weight:800;color:#78350F;white-space:nowrap">🔝 Topo</span>
+        <div class="wl" style="border-color:#FCA5A5;flex:1;margin:0"></div>
+      </div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <span style="background:#DBEAFE;border:1.5px solid #93C5FD;border-radius:7px;padding:3px 8px;font-size:.6rem;font-weight:800;color:#1E3A8A;white-space:nowrap">🎯 Meio</span>
+        <div class="wl" style="border-color:#FCA5A5;flex:1;margin:0"></div>
+      </div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <span style="background:#DCFCE7;border:1.5px solid #86EFAC;border-radius:7px;padding:3px 8px;font-size:.6rem;font-weight:800;color:#14532D;white-space:nowrap">⚡ Fundo</span>
+        <div class="wl" style="border-color:#FCA5A5;flex:1;margin:0"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ch-head" style="background:linear-gradient(135deg,#F3E8FF,#E9D5FF);margin-top:12px">
+    <div class="ch-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED)">💰</div>
+    <div style="flex:1">
+      <span class="ch-tag" style="color:#6D28D9">Fase 6 · Dinheiro</span>
+      <div class="ch-title" style="color:#4C1D95">3 Destinos do Dinheiro</div>
+    </div>
+    <img class="ch-medal" id="medal-ph6" src="" alt="Fase 6">
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <div style="background:white;border:1.5px solid #C4B5FD;border-radius:8px;padding:8px 12px;font-size:.76rem;flex:1;min-width:80px;text-align:center">🔄 <strong>Reinvestir</strong><br><span style="font-size:.62rem;color:#6B7280">Volta pra empresa</span></div>
+    <div style="background:white;border:1.5px solid #C4B5FD;border-radius:8px;padding:8px 12px;font-size:.76rem;flex:1;min-width:80px;text-align:center">🏦 <strong>Reserva</strong><br><span style="font-size:.62rem;color:#6B7280">Emergências</span></div>
+    <div style="background:white;border:1.5px solid #C4B5FD;border-radius:8px;padding:8px 12px;font-size:.76rem;flex:1;min-width:80px;text-align:center">🎉 <strong>Lucro</strong><br><span style="font-size:.62rem;color:#6B7280">Para o dono!</span></div>
+  </div>
+
+  <div class="activity" style="border-color:#8B5CF6">
+    <h4 style="color:#7C3AED">✏️ Simulação Financeira</h4>
+    <p>Preencha com os números da sua empresa simulada:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+      <div><p style="font-size:.62rem;font-weight:700;color:#6D28D9;margin-bottom:3px">Preço do produto:</p><div class="wl" style="border-color:#C4B5FD"></div></div>
+      <div><p style="font-size:.62rem;font-weight:700;color:#6D28D9;margin-bottom:3px">Vendas por mês:</p><div class="wl" style="border-color:#C4B5FD"></div></div>
+      <div><p style="font-size:.62rem;font-weight:700;color:#6D28D9;margin-bottom:3px">Total que entra:</p><div class="wl" style="border-color:#C4B5FD"></div></div>
+      <div><p style="font-size:.62rem;font-weight:700;color:#6D28D9;margin-bottom:3px">Custos totais:</p><div class="wl" style="border-color:#C4B5FD"></div></div>
+      <div style="grid-column:1/-1"><p style="font-size:.62rem;font-weight:700;color:#6D28D9;margin-bottom:3px">💰 Lucro final:</p><div class="wl" style="border-color:#C4B5FD"></div></div>
+    </div>
+  </div>
+  <div class="page-num">8</div>
+</div>
+
+<!-- ══════════════════ PÁG 9 — ROTEIRO DO PROJETO FINAL ══════════════════ -->
+<div class="page">
+  <div class="page-strip" style="--sc:#FFD60A;--sc2:#FF9020"></div>
+  <div style="background:linear-gradient(135deg,var(--ink),#1E2A4A);border-radius:18px;padding:16px 20px;margin-bottom:14px;text-align:center">
+    <div style="font-size:1.8rem;margin-bottom:6px">🎤</div>
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:white;margin-bottom:3px">Projeto Final — Demo Day</h2>
+    <p style="font-size:.74rem;color:rgba(255,255,255,.6)">Meu Primeiro Negócio Digital</p>
+  </div>
+
+  <div class="steps">
+    <div class="step-row">
+      <div class="step-ball" style="background:#EF4444">1</div>
+      <div style="flex:1">
+        <h5>O Problema (30 seg)</h5>
+        <p>Qual dor você resolve? Por que importa?</p>
+        <div class="wl" style="border-color:#FCA5A5;margin-top:4px"></div>
+        <div class="wl" style="border-color:#FCA5A5;margin-top:3px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:#F97316">2</div>
+      <div style="flex:1">
+        <h5>A Solução (30 seg)</h5>
+        <p>O que é o produto? Como funciona?</p>
+        <div class="wl" style="border-color:#FDBA74;margin-top:4px"></div>
+        <div class="wl" style="border-color:#FDBA74;margin-top:3px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:#3B82F6">3</div>
+      <div style="flex:1">
+        <h5>A Marca (1 min)</h5>
+        <p>Nome, logo, slogan, identidade visual</p>
+        <div class="wl" style="border-color:#93C5FD;margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:#10B981">4</div>
+      <div style="flex:1">
+        <h5>O Cliente (30 seg)</h5>
+        <p>Quem é seu avatar? O que precisa?</p>
+        <div class="wl" style="border-color:#6EE7B7;margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:#F59E0B">5</div>
+      <div style="flex:1">
+        <h5>Marketing (1 min)</h5>
+        <p>Como vai divulgar? Mostrar conteúdo criado</p>
+        <div class="wl" style="border-color:#FDE047;margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:#8B5CF6">6</div>
+      <div style="flex:1">
+        <h5>Funil e Oferta (2 min)</h5>
+        <p>Como funciona a venda? Qual a oferta completa?</p>
+        <div class="wl" style="border-color:#C4B5FD;margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-ball" style="background:linear-gradient(135deg,var(--gold),var(--gold2))">7</div>
+      <div style="flex:1">
+        <h5>Por que vai dar certo (1 min)</h5>
+        <p>Sua convicção! Por que você acredita nessa empresa?</p>
+        <div class="wl" style="border-color:#FDE047;margin-top:4px"></div>
+        <div class="wl" style="border-color:#FDE047;margin-top:3px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(200,127,0,.06));border:1.5px solid rgba(255,214,10,.3);border-radius:12px;padding:10px 14px;margin-top:12px;display:flex;align-items:center;gap:10px">
+    <img id="final-coin" src="" style="width:40px;height:auto" alt="">
+    <div>
+      <p style="font-size:.72rem;font-weight:800;color:var(--gold2)">🏆 XP do Demo Day</p>
+      <p style="font-size:.68rem;color:#6B7280">Projeto apresentado: +100 XP · Respondeu perguntas: +30 XP · Certificado emitido: 🎓</p>
+    </div>
+  </div>
+  <div class="page-num">9</div>
+</div>
+
+<script>
+/* ════════════════════════════
+   ASSETS object injected below
+════════════════════════════ */
+const A = window.APOSTILA_ASSETS || {};
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Cover logo
+  const cl = document.getElementById('cover-logo');
+  if(cl && A.logo) cl.src = A.logo;
+
+  // Cover stars
+  const sf = document.getElementById('cover-stars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');s.className='st';
+    s.style.cssText=`top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${.2+Math.random()*.5}`;
+    sf.appendChild(s);
+  }
+
+  // Phase medals
+  const medals = [
+    ['medal-ph1','medal_ph1'],['medal-ph5','medal_ph5'],['medal-ph6','medal_ph6']
+  ];
+  medals.forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el&&A[key]) el.src=A[key];
+  });
+
+  // Ficha coins
+  ['ficha-boy-coin','ficha-coin'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&A.boy_coin) el.src=A.boy_coin;
+  });
+
+  // Canvas coin
+  const cc=document.getElementById('canvas-coin');
+  if(cc&&A.xp100) cc.src=A.xp100;
+
+  // Final coin
+  const fc=document.getElementById('final-coin');
+  if(fc&&A.xp500) fc.src=A.xp500;
+
+  // Cover coin previews
+  const coinMap={
+    'coin-prev-1':'xp1','coin-prev-5':'xp5','coin-prev-10':'xp10',
+    'coin-prev-50':'xp50','coin-prev-100':'xp100','coin-prev-500':'xp500'
+  };
+  Object.entries(coinMap).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el&&A[key]) el.src=A[key];
+  });
+
+  // Cover phases row
+  const phases = [
+    {id:1,icon:'🌱',name:'Fase 1',sub:'Criatividade',key:'medal_ph1',color:'#00C85A'},
+    {id:2,icon:'🎨',name:'Fase 2',sub:'Marca',key:'medal_ph2',color:'#00A8D8'},
+    {id:3,icon:'📣',name:'Fase 3',sub:'Conteúdo',key:'medal_ph3',color:'#D4A800'},
+    {id:4,icon:'🎯',name:'Fase 4',sub:'Marketing',key:'medal_ph4',color:'#E07010'},
+    {id:5,icon:'🌀',name:'Fase 5',sub:'Funil',key:'medal_ph5',color:'#CC3040'},
+    {id:6,icon:'💰',name:'Fase 6',sub:'Dinheiro',key:'medal_ph6',color:'#9040D8'},
+  ];
+  const cpr=document.getElementById('cover-phases-row');
+  cpr.innerHTML=phases.map(p=>`
+    <div class="cover-phase-badge">
+      <img class="cpb-img" src="${A[p.key]||''}" alt="">
+      <div class="cpb-txt" style="color:${p.color}">
+        ${p.name}
+        <span class="cpb-name">${p.sub}</span>
+      </div>
+    </div>`).join('');
+
+  // Level map
+  const lvMap = document.getElementById('lv-map');
+  const lvs=[
+    {icon:'🌱',label:'Fase 1\nCriatividade',c:'#00C85A',key:'medal_ph1'},
+    {icon:'🎨',label:'Fase 2\nMarca',c:'#00A8D8',key:'medal_ph2'},
+    {icon:'📣',label:'Fase 3\nConteúdo',c:'#D4A800',key:'medal_ph3'},
+    {icon:'🎯',label:'Fase 4\nMarketing',c:'#E07010',key:'medal_ph4'},
+    {icon:'🌀',label:'Fase 5\nFunil',c:'#CC3040',key:'medal_ph5'},
+    {icon:'💰',label:'Fase 6\nDinheiro',c:'#9040D8',key:'medal_ph6'},
+    {icon:'🏆',label:'Certificado!',c:'#FFD60A',key:'xp500'},
+  ];
+  lvMap.innerHTML=lvs.map((l,i)=>`
+    <div class="lv-node">
+      <div class="lv-circle" style="background:${l.c}">
+        <img src="${A[l.key]||''}" style="width:34px;height:auto" alt="">
+      </div>
+      <span class="lv-label">${l.label.replace('\n','<br>')}</span>
+    </div>
+    ${i<lvs.length-1?'<div class="lv-arrow"></div>':''}`).join('');
+
+  // XP Table
+  const xpRows = [
+    {action:'Participação ativa na aula',key:'xp1',pts:1},
+    {action:'Completou tarefa rápida',key:'xp5',pts:5},
+    {action:'Criou ideia nova',key:'xp10',pts:10},
+    {action:'Tarefa semanal entregue',key:'xp50',pts:50},
+    {action:'Apresentou / Missão concluída',key:'xp100',pts:100},
+    {action:'Fase completa / Projeto final',key:'xp500',pts:500},
+  ];
+  document.getElementById('xp-table-body').innerHTML=xpRows.map((r,i)=>`
+    <tr style="background:${i%2===0?'white':'#F9FAFB'}">
+      <td style="padding:8px 10px;border-bottom:1px solid #F0F0F0">${r.action}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #F0F0F0;text-align:center">
+        <img src="${A[r.key]||''}" style="width:30px;height:auto;vertical-align:middle" alt="${r.pts}XP">
+      </td>
+      <td style="padding:8px 10px;border-bottom:1px solid #F0F0F0;text-align:center;font-weight:800;color:#B45309">+${r.pts} XP</td>
+    </tr>`).join('');
+
+  // Coin row
+  const crm=document.getElementById('coin-row-main');
+  const coinKeys=[{k:'xp1',v:'1'},{'k':'xp5','v':'5'},{'k':'xp10','v':'10'},{'k':'xp50','v':'50'},{'k':'xp100','v':'100'},{'k':'xp500','v':'500'}];
+  crm.innerHTML=coinKeys.map(c=>`
+    <div class="coin-item">
+      <img class="coin-img" src="${A[c.k]||''}" alt="">
+      <span class="coin-val">${c.v} XP</span>
+    </div>`).join('');
+
+  // Rewards table
+  const rewards=[
+    {xp:100,label:'🏷️ Adesivo ou Selo Digital',coin:'xp100'},
+    {xp:300,label:'🥇 Medalha de Nível',coin:'xp100'},
+    {xp:600,label:'🗺️ Missão Bônus',coin:'xp500'},
+    {xp:1000,label:'📜 Certificado Especial',coin:'xp500'},
+    {xp:1500,label:'🏆 Título Mestre do Funil',coin:'xp500'},
+  ];
+  const rtw=document.getElementById('rewards-table-wrap');
+  rtw.innerHTML=`<div style="display:flex;flex-direction:column;gap:6px">
+    ${rewards.map(r=>`
+    <div style="display:flex;align-items:center;gap:10px;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:9px;padding:8px 12px">
+      <img src="${A[r.coin]||''}" style="width:28px;height:auto" alt="">
+      <span style="font-size:.74rem;font-weight:800;color:#B45309;min-width:60px">${r.xp} XP</span>
+      <span style="font-size:.76rem;font-weight:600;color:#374151">${r.label}</span>
+    </div>`).join('')}
+  </div>`;
+
+  // Diary entries
+  const phases2=[
+    {id:1,color:'#00C85A',border:'#86EFAC',bg:'#F0FDF4',label:'Fase 1'},
+    {id:2,color:'#00A8D8',border:'#93C5FD',bg:'#EFF6FF',label:'Fase 2'},
+    {id:3,color:'#D4A800',border:'#FDE047',bg:'#FEF9C3',label:'Fase 3'},
+    {id:4,color:'#E07010',border:'#FDBA74',bg:'#FFEDD5',label:'Fase 4'},
+    {id:5,color:'#CC3040',border:'#FCA5A5',bg:'#FEE2E2',label:'Fase 5'},
+    {id:6,color:'#9040D8',border:'#C4B5FD',bg:'#F5F3FF',label:'Fase 6'},
+  ];
+  const de=document.getElementById('diary-entries');
+  de.innerHTML=phases2.map(p=>`
+    <div class="log-entry">
+      <div class="log-header">
+        <span class="log-phase" style="color:${p.color};border-color:${p.border};background:${p.bg}">${p.label}</span>
+        <span style="font-size:.72rem;font-weight:700;color:#6B7280">Aula _____ · Data: _________</span>
+        <div class="log-xp-badge">
+          <img src="${A.xp50||''}" style="width:18px;height:auto" alt=""> ___ XP
+        </div>
+      </div>
+      <div class="log-field">O que aprendi:</div>
+      <div class="log-lines"><div class="wl" style="border-color:#E5E7EB"></div><div class="wl" style="border-color:#E5E7EB;margin-top:4px"></div></div>
+      <div class="log-field">O que criei:</div>
+      <div class="log-lines"><div class="wl" style="border-color:#E5E7EB"></div></div>
+    </div>`).join('');
+});
+</script>
+
+<!-- APOSTILA ASSETS injected by Python -->
+<script>window.APOSTILA_ASSETS = {
+  "xp1": "assets/xp1.png",
+  "xp5": "assets/xp5.png",
+  "xp10": "assets/xp10.png",
+  "xp50": "assets/xp50.png",
+  "xp100": "assets/xp100.png",
+  "xp500": "assets/xp500.png",
+  "boy_coin": "assets/boy-coin.png",
+  "teacher_medal": "assets/medal-teacher.png",
+  "blank_medal": "assets/medal-blank.png",
+  "logo": "assets/logo.png",
+  "medal_ph1": "assets/medal-ph1.png",
+  "medal_ph2": "assets/medal-ph2.png",
+  "medal_ph3": "assets/medal-ph3.png",
+  "medal_ph4": "assets/medal-ph4.png",
+  "medal_ph5": "assets/medal-ph5.png",
+  "medal_ph6": "assets/medal-ph6.png",
+};
+</script>
+
+</body>
+</html>

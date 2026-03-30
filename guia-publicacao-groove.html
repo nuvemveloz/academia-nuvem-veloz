@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Publicação — Academia no Groove.cm</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0D1117; --gold:#F5C842; --green:#10B981; --blue:#3B82F6;
+  --purple:#8B5CF6; --orange:#F97316; --red:#EF4444;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#F0F4FF;color:#1E293B;padding:24px 20px;max-width:900px;margin:0 auto}
+
+h1{font-size:1.6rem;font-weight:900;color:var(--ink);margin-bottom:4px}
+.page-sub{font-size:.85rem;color:#64748B;margin-bottom:28px}
+
+/* PHASE HEADERS */
+.phase-header{
+  display:flex;align-items:center;gap:14px;
+  background:var(--ink);border-radius:16px 16px 0 0;
+  padding:16px 24px;margin-top:28px;
+}
+.ph-num{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gold);color:var(--ink);
+  font-size:1.1rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ph-title{font-size:1.1rem;font-weight:800;color:white}
+.ph-sub{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:2px}
+.ph-tool{
+  margin-left:auto;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);border-radius:8px;
+  padding:4px 12px;font-size:.7rem;font-weight:800;color:rgba(255,255,255,.8);
+  white-space:nowrap;
+}
+
+/* STEPS */
+.steps-wrap{
+  background:white;border:1px solid #E2E8F0;border-radius:0 0 16px 16px;
+  padding:0;overflow:hidden;margin-bottom:4px;
+}
+.step{
+  display:flex;gap:0;border-bottom:1px solid #F1F5F9;
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:52px;min-height:80px;flex-shrink:0;
+  background:linear-gradient(180deg,#F8FAFC,#F1F5F9);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:20px;font-size:.8rem;font-weight:900;color:#94A3B8;
+  border-right:1px solid #F1F5F9;
+}
+.step-content{padding:16px 20px;flex:1}
+.step-content h3{font-size:.88rem;font-weight:800;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.step-content p{font-size:.82rem;color:#475569;line-height:1.7;margin-bottom:8px}
+.step-content p:last-child{margin-bottom:0}
+.step-content strong{color:var(--ink);font-weight:800}
+.step-content code{
+  background:#F0F4FF;border:1px solid #DBEAFE;
+  border-radius:6px;padding:2px 8px;font-size:.75rem;
+  color:#1D4ED8;font-family:monospace;font-weight:700;
+}
+.step-content a{color:var(--blue);font-weight:700;text-decoration:none}
+.step-content a:hover{text-decoration:underline}
+
+/* VISUAL MOCKUP */
+.mockup{
+  background:#F8FAFC;border:1.5px solid #E2E8F0;
+  border-radius:10px;padding:12px 14px;margin:10px 0;
+  font-size:.76rem;color:#64748B;line-height:1.7;
+}
+.mockup-title{font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:6px}
+.mockup-field{
+  display:flex;align-items:center;gap:8px;
+  background:white;border:1px solid #E2E8F0;border-radius:6px;
+  padding:6px 10px;margin-bottom:5px;font-size:.76rem;
+}
+.mockup-label{color:#94A3B8;min-width:110px;font-size:.68rem;font-weight:700}
+.mockup-val{color:#1E293B;font-weight:700}
+
+/* CALLOUT BOXES */
+.tip{
+  display:flex;gap:10px;
+  background:#FEF9C3;border:1.5px solid #FDE047;border-radius:10px;
+  padding:12px 14px;margin:10px 0;
+}
+.tip p{font-size:.78rem;line-height:1.65;color:#78350F}
+
+.warn{
+  display:flex;gap:10px;
+  background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:10px;
+  padding:12px 14px;margin:10px 0;
+}
+.warn p{font-size:.78rem;line-height:1.65;color:#991B1B}
+
+.success{
+  display:flex;gap:10px;
+  background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;
+  padding:12px 14px;margin:10px 0;
+}
+.success p{font-size:.78rem;line-height:1.65;color:#166534}
+
+/* OVERVIEW CARD */
+.overview{
+  background:var(--ink);border-radius:16px;padding:24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin-bottom:28px;
+}
+.ov-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:14px;text-align:center;
+}
+.ov-icon{font-size:1.6rem;display:block;margin-bottom:6px}
+.ov-tool{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.ov-name{font-size:.82rem;font-weight:800;color:white;margin-bottom:3px}
+.ov-desc{font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.4}
+
+/* PRICE TABLE */
+.price-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:12px 0}
+.price-table th{background:#F8FAFC;padding:8px 12px;text-align:left;border:1px solid #E2E8F0;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:#64748B}
+.price-table td{padding:8px 12px;border:1px solid #E2E8F0;color:#1E293B}
+.price-table tr:hover td{background:#F8FAFF}
+.price-rec{background:#FEF9C3!important;font-weight:800}
+
+/* URL EXAMPLE */
+.url-box{
+  background:#0D1117;border-radius:10px;padding:12px 16px;
+  font-family:monospace;font-size:.8rem;color:#7EE787;
+  margin:8px 0;word-break:break-all;
+}
+
+@media(max-width:600px){
+  .overview{grid-template-columns:1fr}
+  .step-num{width:36px}
+}
+</style>
+</head>
+<body>
+
+<h1>🚀 Guia de Publicação no Groove.cm</h1>
+<p class="page-sub">Passo a passo completo para deixar a Academia dos Jovens Empreendedores vendável</p>
+
+<!-- OVERVIEW -->
+<div class="overview">
+  <div class="ov-card">
+    <span class="ov-icon">📁</span>
+    <div class="ov-tool">Etapa 1</div>
+    <div class="ov-name">GitHub Pages</div>
+    <div class="ov-desc">Hospedar os arquivos HTML gratuitamente e gerar URLs públicas</div>
+  </div>
+  <div class="ov-card">
+    <span class="ov-icon">🛒</span>
+    <div class="ov-tool">Etapa 2</div>
+    <div class="ov-name">GrooveSell + Pages</div>
+    <div class="ov-desc">Página de vendas + checkout para receber pagamentos</div>
+  </div>
+  <div class="ov-card">
+    <span class="ov-icon">🔐</span>
+    <div class="ov-tool">Etapa 3</div>
+    <div class="ov-name">GrooveMember</div>
+    <div class="ov-desc">Área de membros privada onde o aluno acessa os materiais após comprar</div>
+  </div>
+</div>
+
+<!-- ═══ ETAPA 1: GITHUB PAGES ═══ -->
+<div class="phase-header">
+  <div class="ph-num">1</div>
+  <div>
+    <div class="ph-title">Hospedar os arquivos no GitHub Pages</div>
+    <div class="ph-sub">Gratuito, permanente, sem limite de acessos — gera URLs públicas para cada material</div>
+  </div>
+  <div class="ph-tool">github.com</div>
+</div>
+<div class="steps-wrap">
+
+  <div class="step">
+    <div class="step-num">1.1</div>
+    <div class="step-content">
+      <h3>🌐 Crie uma conta gratuita no GitHub</h3>
+      <p>Acesse <a href="https://github.com" target="_blank">github.com</a> e clique em <strong>"Sign up"</strong>. Crie com seu e-mail normal — é 100% gratuito para este uso.</p>
+      <div class="tip"><span>💡</span><p>Se já tiver conta no GitHub, pule para o próximo passo.</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1.2</div>
+    <div class="step-content">
+      <h3>📂 Crie um novo repositório</h3>
+      <p>Após o login, clique no botão verde <strong>"New"</strong> (ou no <strong>"+"</strong> no canto superior direito → "New repository").</p>
+      <div class="mockup">
+        <div class="mockup-title">Preencha assim:</div>
+        <div class="mockup-field"><span class="mockup-label">Repository name:</span><span class="mockup-val">academia-nuvem-veloz</span></div>
+        <div class="mockup-field"><span class="mockup-label">Visibility:</span><span class="mockup-val">✅ Public (obrigatório para GitHub Pages gratuito)</span></div>
+        <div class="mockup-field"><span class="mockup-label">Add README:</span><span class="mockup-val">✅ marque esta opção</span></div>
+      </div>
+      <p>Clique em <strong>"Create repository"</strong>.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1.3</div>
+    <div class="step-content">
+      <h3>⬆️ Faça upload dos arquivos HTML</h3>
+      <p>Dentro do repositório criado, clique em <strong>"uploading an existing file"</strong> (ou "Add file" → "Upload files").</p>
+      <p>Arraste os 6 arquivos .html do curso para a área de upload:</p>
+      <div class="mockup">
+        <div class="mockup-title">Arquivos para fazer upload:</div>
+        <div class="mockup-field"><span class="mockup-val">📄 academia-jovens-empreendedores.html</span></div>
+        <div class="mockup-field"><span class="mockup-val">📄 jogo-narrativo-academia.html</span></div>
+        <div class="mockup-field"><span class="mockup-val">📄 apostila-jovens-empreendedores.html</span></div>
+        <div class="mockup-field"><span class="mockup-val">📄 certificado-academia.html</span></div>
+        <div class="mockup-field"><span class="mockup-val">📄 planilha-acompanhamento.html</span></div>
+        <div class="mockup-field"><span class="mockup-val">📄 ikigai-jovens.html</span></div>
+      </div>
+      <p>Clique em <strong>"Commit changes"</strong> para salvar.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1.4</div>
+    <div class="step-content">
+      <h3>⚙️ Ative o GitHub Pages</h3>
+      <p>No repositório, clique em <strong>"Settings"</strong> (engrenagem) → no menu lateral, clique em <strong>"Pages"</strong>.</p>
+      <div class="mockup">
+        <div class="mockup-title">Configure assim:</div>
+        <div class="mockup-field"><span class="mockup-label">Source:</span><span class="mockup-val">Deploy from a branch</span></div>
+        <div class="mockup-field"><span class="mockup-label">Branch:</span><span class="mockup-val">main / root</span></div>
+      </div>
+      <p>Clique em <strong>"Save"</strong>. Aguarde 1–2 minutos. Sua URL estará disponível assim:</p>
+      <div class="url-box">https://seu-usuario.github.io/academia-nuvem-veloz/academia-jovens-empreendedores.html</div>
+      <div class="success"><span>✅</span><p>Teste abrindo a URL no navegador. Se o arquivo aparecer, está funcionando! A partir de agora, qualquer arquivo que subir aparecerá nessa URL.</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1.5</div>
+    <div class="step-content">
+      <h3>📋 Anote todas as URLs geradas</h3>
+      <p>Cada arquivo vira uma URL. Anote todas para usar no GrooveMember:</p>
+      <div class="url-box">
+        Hub Principal: .../academia-jovens-empreendedores.html<br>
+        Jogo Narrativo: .../jogo-narrativo-academia.html<br>
+        Apostila: .../apostila-jovens-empreendedores.html<br>
+        Certificado: .../certificado-academia.html<br>
+        Planilha: .../planilha-acompanhamento.html<br>
+        Ikigai: .../ikigai-jovens.html
+      </div>
+      <div class="tip"><span>💡</span><p>O botão de imprimir do certificado e todos os outros recursos funcionarão perfeitamente nestas URLs públicas — o problema que existia localmente não ocorre quando hospedado.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ETAPA 2: GROOVESELL + GROOVEPAGES ═══ -->
+<div class="phase-header">
+  <div class="ph-num">2</div>
+  <div>
+    <div class="ph-title">Criar a página de vendas e o produto no Groove</div>
+    <div class="ph-sub">GroovePages (landing page) + GrooveSell (checkout e pagamento)</div>
+  </div>
+  <div class="ph-tool">groove.cm</div>
+</div>
+<div class="steps-wrap">
+
+  <div class="step">
+    <div class="step-num">2.1</div>
+    <div class="step-content">
+      <h3>🛒 Criar o produto no GrooveSell</h3>
+      <p>No painel do Groove.cm, acesse <strong>GrooveSell → Products → Add New Product</strong>.</p>
+      <div class="mockup">
+        <div class="mockup-title">Preencha as informações do produto:</div>
+        <div class="mockup-field"><span class="mockup-label">Product Name:</span><span class="mockup-val">Academia dos Jovens Empreendedores</span></div>
+        <div class="mockup-field"><span class="mockup-label">Type:</span><span class="mockup-val">Digital Product / Course</span></div>
+        <div class="mockup-field"><span class="mockup-label">Price:</span><span class="mockup-val">R$ [seu preço]</span></div>
+        <div class="mockup-field"><span class="mockup-label">Currency:</span><span class="mockup-val">BRL (Real Brasileiro)</span></div>
+      </div>
+      <p>Na aba <strong>"Thank You Page"</strong>, coloque a URL da sua área de membros (configurada na Etapa 3).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2.2</div>
+    <div class="step-content">
+      <h3>💰 Sugestão de preço</h3>
+      <p>O curso tem 32 aulas, apostila, jogo, certificado e acompanhamento. Considere:</p>
+      <table class="price-table">
+        <thead><tr><th>Modalidade</th><th>Preço sugerido</th><th>Público</th></tr></thead>
+        <tbody>
+          <tr><td>Turma presencial — por aluno/mês</td><td>R$ 350–500/mês</td><td>Individual ou dupla</td></tr>
+          <tr class="price-rec"><td>⭐ Turma presencial — pacote completo (4 meses)</td><td>R$ 997–1.497</td><td>Pagamento único (melhor conversão)</td></tr>
+          <tr><td>Acesso online aos materiais</td><td>R$ 197–397</td><td>Autoestudo com suporte</td></tr>
+        </tbody>
+      </table>
+      <div class="tip"><span>💡</span><p>Para começar, cobre pela turma presencial. O produto digital pode ser criado depois, quando tiver depoimentos e provas do resultado.</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2.3</div>
+    <div class="step-content">
+      <h3>📄 Criar a página de vendas no GroovePages</h3>
+      <p>Acesse <strong>GroovePages → + New Website → escolha um template</strong> (ou comece em branco). Recomendo o template de "Course" ou "Online Program".</p>
+      <p>A página de vendas precisa ter:</p>
+      <div class="mockup">
+        <div class="mockup-title">Estrutura da página de vendas (seções obrigatórias):</div>
+        <div class="mockup-field"><span class="mockup-val">1. 🎯 Hero: título impactante + para quem é + botão de compra</span></div>
+        <div class="mockup-field"><span class="mockup-val">2. 🤔 O problema: por que empreendedorismo para jovens?</span></div>
+        <div class="mockup-field"><span class="mockup-val">3. ✨ A solução: o que é a Academia + foto/vídeo</span></div>
+        <div class="mockup-field"><span class="mockup-val">4. 📚 O que está incluso: lista dos materiais</span></div>
+        <div class="mockup-field"><span class="mockup-val">5. 🗺️ As 6 fases: visão geral do conteúdo</span></div>
+        <div class="mockup-field"><span class="mockup-val">6. 💬 Depoimentos (após ter alunos)</span></div>
+        <div class="mockup-field"><span class="mockup-val">7. 💰 Preço + botão de compra</span></div>
+        <div class="mockup-field"><span class="mockup-val">8. ❓ FAQ</span></div>
+      </div>
+      <div class="tip"><span>💡</span><p>Posso escrever o texto completo da página de vendas para você — só me pedir! É só um novo chat com "escreva o copy da página de vendas da Academia."</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2.4</div>
+    <div class="step-content">
+      <h3>🔗 Conectar o botão de compra ao GrooveSell</h3>
+      <p>No editor do GroovePages, clique no botão de compra → <strong>"Link"</strong> → selecione <strong>"GrooveSell Checkout"</strong> → escolha o produto criado no passo 2.1.</p>
+      <p>O Groove cuida de todo o checkout automaticamente — boleto, PIX, cartão de crédito.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ETAPA 3: GROOVEMEMBER ═══ -->
+<div class="phase-header">
+  <div class="ph-num">3</div>
+  <div>
+    <div class="ph-title">Criar a área de membros no GrooveMember</div>
+    <div class="ph-sub">Onde o aluno acessa os materiais após a compra — login protegido</div>
+  </div>
+  <div class="ph-tool">GrooveMember</div>
+</div>
+<div class="steps-wrap">
+
+  <div class="step">
+    <div class="step-num">3.1</div>
+    <div class="step-content">
+      <h3>🔐 Criar a membership</h3>
+      <p>No Groove, acesse <strong>GrooveMember → + Create Membership</strong>.</p>
+      <div class="mockup">
+        <div class="mockup-title">Configure assim:</div>
+        <div class="mockup-field"><span class="mockup-label">Name:</span><span class="mockup-val">Academia dos Jovens Empreendedores</span></div>
+        <div class="mockup-field"><span class="mockup-label">Products:</span><span class="mockup-val">Selecione o produto criado no GrooveSell</span></div>
+        <div class="mockup-field"><span class="mockup-label">Access:</span><span class="mockup-val">Full Access (acesso imediato após compra)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3.2</div>
+    <div class="step-content">
+      <h3>📁 Criar as seções de conteúdo</h3>
+      <p>Dentro da membership, crie seções para organizar os materiais. Clique em <strong>"+ Add Section"</strong> para cada seção:</p>
+      <div class="mockup">
+        <div class="mockup-title">Seções recomendadas:</div>
+        <div class="mockup-field"><span class="mockup-val">📌 Começar aqui — Boas-vindas + instruções</span></div>
+        <div class="mockup-field"><span class="mockup-val">🎮 Hub Principal — Link para o hub das 32 aulas</span></div>
+        <div class="mockup-field"><span class="mockup-val">🕹️ Jogo Narrativo — Link para o jogo</span></div>
+        <div class="mockup-field"><span class="mockup-val">📚 Apostila — Link para imprimir a apostila</span></div>
+        <div class="mockup-field"><span class="mockup-val">✨ Teste Ikigai — Link para o teste</span></div>
+        <div class="mockup-field"><span class="mockup-val">🎓 Certificado — Link para gerar o certificado</span></div>
+        <div class="mockup-field"><span class="mockup-val">📊 Planilha — Link para o modelo de acompanhamento</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3.3</div>
+    <div class="step-content">
+      <h3>🔗 Adicionar os links do GitHub Pages</h3>
+      <p>Em cada seção, clique em <strong>"+ Add Lesson"</strong>. No tipo de conteúdo, selecione <strong>"External URL"</strong> e cole a URL correspondente do GitHub Pages.</p>
+      <div class="tip"><span>💡</span><p>O aluno clica no link e o material abre diretamente no navegador. Como os arquivos já estão hospedados no GitHub Pages, funcionam perfeitamente sem precisar de download.</p></div>
+      <div class="warn"><span>⚠️</span><p>Não use "Embed" (iframe) para os arquivos grandes — use sempre "External URL" para abrir numa nova aba. Os arquivos HTML são grandes e embutir pode ficar lento.</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3.4</div>
+    <div class="step-content">
+      <h3>📧 Configurar e-mail automático de boas-vindas (GrooveMail)</h3>
+      <p>No GrooveMail, crie uma automação: <strong>Gatilho: "Membro adicionado ao produto X"</strong> → <strong>Ação: Enviar e-mail</strong>.</p>
+      <div class="mockup">
+        <div class="mockup-title">Conteúdo do e-mail de boas-vindas:</div>
+        <div class="mockup-field"><span class="mockup-label">Assunto:</span><span class="mockup-val">🎮 Bem-vindo à Academia, [nome]! Sua missão começa agora</span></div>
+        <div class="mockup-field"><span class="mockup-label">Corpo:</span><span class="mockup-val">Link para a área de membros + instrução de primeiro acesso</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ETAPA 4: DOMÍNIO ═══ -->
+<div class="phase-header">
+  <div class="ph-num">4</div>
+  <div>
+    <div class="ph-title">Conectar seu domínio (opcional, mas profissional)</div>
+    <div class="ph-sub">Usar academia.nuvemveloz.com.br em vez do endereço do GitHub ou Groove</div>
+  </div>
+  <div class="ph-tool">Opcional</div>
+</div>
+<div class="steps-wrap">
+  <div class="step">
+    <div class="step-num">4.1</div>
+    <div class="step-content">
+      <h3>🌐 Você já tem domínio?</h3>
+      <p>Se já tem <code>nuvemveloz.com.br</code>, pode criar um subdomínio como <code>academia.nuvemveloz.com.br</code> e apontar para o Groove.</p>
+      <p>No painel do seu domínio (registro.br, GoDaddy, etc.), crie um registro <strong>CNAME</strong>:</p>
+      <div class="mockup">
+        <div class="mockup-field"><span class="mockup-label">Nome/Host:</span><span class="mockup-val">academia</span></div>
+        <div class="mockup-field"><span class="mockup-label">Tipo:</span><span class="mockup-val">CNAME</span></div>
+        <div class="mockup-field"><span class="mockup-label">Valor/Destino:</span><span class="mockup-val">seu-site.groove.page</span></div>
+      </div>
+      <p>Depois, no Groove → Settings → Custom Domain, adicione <code>academia.nuvemveloz.com.br</code>.</p>
+      <div class="tip"><span>💡</span><p>Se não tem domínio ainda, o endereço do Groove (<code>academia-nuvem-veloz.groove.page</code>) funciona perfeitamente para começar vender. Você conecta o domínio depois.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHECKLIST FINAL ═══ -->
+<div class="phase-header" style="margin-top:28px">
+  <div class="ph-num">✓</div>
+  <div>
+    <div class="ph-title">Checklist final antes de lançar</div>
+    <div class="ph-sub">Verifique cada item antes de anunciar para os primeiros clientes</div>
+  </div>
+  <div class="ph-tool">Lançamento</div>
+</div>
+<div class="steps-wrap">
+  <div class="step">
+    <div class="step-num"></div>
+    <div class="step-content" style="padding:20px">
+      <div id="checklist">
+        ${[
+          ['GitHub Pages funcionando — todos os 6 links abrem corretamente','gh'],
+          ['Certificado: botão de imprimir funciona na URL pública','cert'],
+          ['Produto criado no GrooveSell com preço correto','sell'],
+          ['Página de vendas publicada no GroovePages','page'],
+          ['Botão de compra conectado ao checkout do GrooveSell','btn'],
+          ['Área de membros criada no GrooveMember','member'],
+          ['Links dos materiais adicionados à área de membros','links'],
+          ['E-mail automático de boas-vindas configurado','email'],
+          ['Pagamento de teste feito (comprar com cartão de teste)','test'],
+          ['Acesso de membro testado manualmente','access'],
+        ].map(([label, id]) => `
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F1F5F9;cursor:pointer;font-size:.84rem;font-weight:600;color:#374151">
+          <input type="checkbox" id="chk-${id}" onchange="markCheck(this)" style="width:18px;height:18px;cursor:pointer;accent-color:#10B981">
+          ${label}
+        </label>`).join('')}
+      </div>
+      <div id="launch-ready" style="display:none;margin-top:16px;background:#F0FDF4;border:2px solid #86EFAC;border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:2rem;margin-bottom:8px">🚀</div>
+        <div style="font-size:1rem;font-weight:800;color:#166534;margin-bottom:4px">Tudo pronto para o lançamento!</div>
+        <div style="font-size:.82rem;color:#15803D">Agora é só divulgar para os primeiros alunos. Boa sorte, Lúcia!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function markCheck(cb) {
+  const all = document.querySelectorAll('#checklist input[type=checkbox]');
+  const done = document.querySelectorAll('#checklist input[type=checkbox]:checked');
+  cb.parentElement.style.color = cb.checked ? '#15803D' : '#374151';
+  cb.parentElement.style.textDecoration = cb.checked ? 'line-through' : 'none';
+  if (done.length === all.length) {
+    document.getElementById('launch-ready').style.display = 'block';
+  } else {
+    document.getElementById('launch-ready').style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>

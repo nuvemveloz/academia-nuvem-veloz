@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 Academia dos Jovens Empreendedores — Nuvem Veloz</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0D0F1A; --paper:#F9F7F0; --cream:#F0EDE3;
+  --gold:#F5C842; --gold2:#E8A820;
+  --blue:#1A6FE8; --blue2:#0A4BAD;
+  --green:#1DC97A; --red:#E8413A;
+  --purple:#7C3AED; --orange:#F97316;
+  --ph1:#1DC97A; --ph2:#1A6FE8; --ph3:#F5C842;
+  --ph4:#F97316; --ph5:#E8413A; --ph6:#7C3AED;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--ink);color:var(--paper);overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px 24px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(26,111,232,0.25) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 50% at 20% 80%,rgba(245,200,66,0.12) 0%,transparent 60%),var(--ink);
+}
+.star-field{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,200,66,0.15);border:1.5px solid rgba(245,200,66,0.5);
+  color:var(--gold);font-size:.72rem;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 18px;border-radius:100px;margin-bottom:20px;
+  animation:fadeUp .6s .2s both;
+}
+.hero-logo{font-family:'Bangers',cursive;font-size:clamp(3rem,10vw,7rem);
+  line-height:1.0;margin-bottom:12px;animation:fadeUp .6s .3s both;
+  text-shadow:4px 4px 0 var(--blue2),8px 8px 0 rgba(0,0,0,0.3);}
+.hero-logo span{color:var(--gold)}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.3rem);color:#94A3B8;max-width:600px;line-height:1.7;
+  margin-bottom:32px;animation:fadeUp .6s .4s both;}
+.hero-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;animation:fadeUp .6s .5s both}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:16px 24px;text-align:center}
+.stat-n{font-family:'Bangers',cursive;font-size:2.2rem;color:var(--gold);display:block}
+.stat-l{font-size:.72rem;color:#64748B;text-transform:uppercase;letter-spacing:.08em}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .6s both}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-weight:800;border-radius:12px;
+  transition:all .2s;text-decoration:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink);
+  font-size:1rem;padding:14px 32px;box-shadow:0 6px 24px rgba(245,200,66,.35)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,200,66,.45)}
+.btn-ghost{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  color:var(--paper);font-size:.9rem;padding:13px 24px}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+
+/* ── SECTION WRAPPER ── */
+.section{padding:80px 24px;max-width:1100px;margin:0 auto}
+.sec-title{font-family:'Bangers',cursive;font-size:clamp(2rem,5vw,3.2rem);
+  text-align:center;margin-bottom:8px;letter-spacing:.02em}
+.sec-sub{text-align:center;color:#64748B;font-size:1rem;margin-bottom:48px}
+
+/* ── PHASES OVERVIEW ── */
+.phases-section{background:var(--ink)}
+.phases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.phase-card{
+  border-radius:20px;padding:24px;cursor:pointer;
+  border:2px solid;transition:all .25s;position:relative;overflow:hidden;
+}
+.phase-card::before{content:'';position:absolute;inset:0;opacity:.07;
+  background:var(--pc)}
+.phase-card:hover{transform:translateY(-6px) scale(1.02)}
+.phase-num{font-family:'Bangers',cursive;font-size:3rem;opacity:.15;
+  position:absolute;bottom:-8px;right:12px;line-height:1}
+.phase-icon{font-size:2.2rem;margin-bottom:10px;display:block}
+.phase-tag{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:6px;display:block}
+.phase-title{font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:.03em;margin-bottom:8px}
+.phase-info{font-size:.82rem;color:#94A3B8;line-height:1.55}
+.phase-aulas{margin-top:12px;display:inline-block;background:rgba(255,255,255,.08);
+  border-radius:100px;padding:4px 12px;font-size:.72rem;font-weight:700}
+
+/* ── LESSON VIEW ── */
+#lesson-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);
+  backdrop-filter:blur(8px);z-index:200;overflow-y:auto;
+  display:none;padding:24px;
+}
+#lesson-modal.open{display:flex;align-items:flex-start;justify-content:center}
+.lesson-box{
+  background:var(--ink);border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;max-width:860px;width:100%;
+  margin:auto;padding:0;overflow:hidden;
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.lesson-header{padding:28px 32px 24px;position:relative;overflow:hidden}
+.lesson-header::before{content:'';position:absolute;inset:0;opacity:.12;background:var(--lc)}
+.lesson-close{
+  position:absolute;top:16px;right:16px;
+  background:rgba(255,255,255,.1);border:none;
+  color:var(--paper);font-size:1.3rem;width:36px;height:36px;
+  border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.2s;z-index:1
+}
+.lesson-close:hover{background:rgba(255,255,255,.2)}
+.lesson-phase-tag{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:8px;display:block;position:relative;z-index:1}
+.lesson-num{font-family:'Bangers',cursive;font-size:.9rem;color:#94A3B8;
+  position:relative;z-index:1;margin-bottom:4px}
+.lesson-title{font-family:'Bangers',cursive;font-size:clamp(1.6rem,4vw,2.4rem);
+  line-height:1.1;position:relative;z-index:1}
+.lesson-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:1}
+.lesson-chip{background:rgba(255,255,255,.1);border-radius:100px;
+  padding:4px 12px;font-size:.75rem;font-weight:700}
+
+.lesson-body{padding:28px 32px}
+.lesson-block{margin-bottom:28px}
+.lb-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.lb-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;flex-shrink:0}
+.lb-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:.03em}
+.lb-time{font-size:.72rem;color:#64748B;font-weight:700;margin-left:auto}
+
+.script-box{
+  background:rgba(255,255,255,.04);border-left:3px solid var(--lc);
+  border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;
+}
+.script-label{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--lc);margin-bottom:6px}
+.script-box p{font-size:.9rem;line-height:1.7;color:#CBD5E1}
+.script-box em{display:block;font-style:italic;font-size:.82rem;color:#64748B;
+  margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;gap:12px;align-items:flex-start}
+.step-dot{width:26px;height:26px;border-radius:8px;background:var(--lc);
+  color:var(--ink);font-size:.78rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-item h4{font-size:.88rem;font-weight:800;color:var(--paper);margin-bottom:2px}
+.step-item p{font-size:.82rem;color:#94A3B8;line-height:1.55}
+
+.xp-award{
+  background:linear-gradient(135deg,rgba(245,200,66,.12),rgba(232,168,32,.08));
+  border:1px solid rgba(245,200,66,.3);border-radius:14px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;margin-top:16px;
+}
+.xp-icon{font-size:1.8rem}
+.xp-award h4{font-size:.88rem;font-weight:800;color:var(--gold);margin-bottom:2px}
+.xp-award p{font-size:.8rem;color:#94A3B8}
+
+.challenge-box{
+  background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(26,111,232,.08));
+  border:1px solid rgba(124,58,237,.3);border-radius:16px;padding:18px 20px;
+}
+.challenge-box h4{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:.03em;
+  color:#A78BFA;margin-bottom:8px}
+.challenge-box p{font-size:.88rem;color:#94A3B8;line-height:1.6}
+
+/* ── ALL LESSONS GRID ── */
+.lessons-section{background:linear-gradient(180deg,var(--ink) 0%,#0A0C14 100%)}
+.lessons-filter{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.filter-btn{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:#64748B;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;
+  padding:6px 16px;border-radius:100px;cursor:pointer;transition:.2s;
+  letter-spacing:.05em;text-transform:uppercase
+}
+.filter-btn.active,.filter-btn:hover{color:var(--paper);border-color:rgba(255,255,255,.25);
+  background:rgba(255,255,255,.1)}
+.filter-btn[data-f="1"].active{background:var(--ph1);border-color:var(--ph1);color:#fff}
+.filter-btn[data-f="2"].active{background:var(--ph2);border-color:var(--ph2);color:#fff}
+.filter-btn[data-f="3"].active{background:var(--ph3);border-color:var(--ph3);color:var(--ink)}
+.filter-btn[data-f="4"].active{background:var(--ph4);border-color:var(--ph4);color:#fff}
+.filter-btn[data-f="5"].active{background:var(--ph5);border-color:var(--ph5);color:#fff}
+.filter-btn[data-f="6"].active{background:var(--ph6);border-color:var(--ph6);color:#fff}
+
+.lessons-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.lesson-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:18px;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;border-top:3px solid var(--lc2);
+}
+.lesson-card:hover{transform:translateY(-4px);border-color:var(--lc2);
+  box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.lc-phase{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--lc2);margin-bottom:4px}
+.lc-num{font-size:.72rem;color:#64748B;font-weight:600;margin-bottom:4px}
+.lc-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:.03em;
+  line-height:1.2;margin-bottom:8px}
+.lc-skill{font-size:.75rem;color:#94A3B8;line-height:1.4}
+.lc-xp{position:absolute;top:12px;right:12px;
+  background:rgba(245,200,66,.15);color:var(--gold);
+  font-size:.68rem;font-weight:800;padding:3px 8px;border-radius:100px}
+
+/* ── XP TRACKER ── */
+.xp-section{background:#0A0C14}
+.xp-board{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:32px;max-width:700px;margin:0 auto;
+}
+.players-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.player-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:20px;text-align:center}
+.player-avatar{font-size:3rem;display:block;margin-bottom:8px}
+.player-name{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:.03em;
+  margin-bottom:4px}
+.player-xp{font-size:2rem;font-weight:900;color:var(--gold);display:block}
+.player-level{font-size:.75rem;color:#64748B;text-transform:uppercase;letter-spacing:.08em}
+.xp-bar-bg{height:12px;background:rgba(255,255,255,.08);border-radius:100px;
+  overflow:hidden;margin:10px 0}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));
+  border-radius:100px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.next-reward{font-size:.75rem;color:#64748B;text-align:right}
+
+.xp-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.xp-btn{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:14px 10px;cursor:pointer;text-align:center;
+  transition:.2s;font-family:'Nunito',sans-serif;
+}
+.xp-btn:hover{background:rgba(255,255,255,.1);transform:scale(1.03)}
+.xp-btn-icon{font-size:1.5rem;display:block;margin-bottom:4px}
+.xp-btn-label{font-size:.72rem;font-weight:700;color:#94A3B8;display:block;margin-bottom:2px}
+.xp-btn-pts{font-size:.88rem;font-weight:900;color:var(--gold)}
+.xp-history{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto}
+.xp-entry{display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.03);border-radius:8px;padding:8px 12px;font-size:.82rem}
+.xp-entry-pts{color:var(--gold);font-weight:800}
+
+/* ── LEVEL SYSTEM ── */
+.levels-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:32px}
+.level-badge{
+  flex-shrink:0;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:14px 20px;text-align:center;min-width:130px;
+  transition:.2s;cursor:default;
+}
+.level-badge.unlocked{border-color:var(--gold);background:rgba(245,200,66,.08)}
+.level-badge.current{border-color:var(--gold);background:rgba(245,200,66,.15);
+  box-shadow:0 0 20px rgba(245,200,66,.25)}
+.lv-icon{font-size:1.8rem;display:block;margin-bottom:6px}
+.lv-num{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:#64748B;display:block;margin-bottom:2px}
+.lv-title{font-family:'Bangers',cursive;font-size:1rem;letter-spacing:.03em}
+.lv-pts{font-size:.72rem;color:#64748B}
+
+/* ── CHALLENGE CARDS (printable) ── */
+.cards-section{background:var(--ink)}
+.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.challenge-card{
+  border-radius:20px;padding:20px;min-height:200px;
+  display:flex;flex-direction:column;border:2px solid;
+  position:relative;overflow:hidden;cursor:pointer;transition:.2s;
+}
+.challenge-card:hover{transform:translateY(-4px) scale(1.02)}
+.cc-icon{font-size:2rem;margin-bottom:8px}
+.cc-type{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:6px;display:block}
+.cc-title{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:.03em;
+  margin-bottom:6px;line-height:1.2}
+.cc-desc{font-size:.78rem;line-height:1.55;flex:1;color:#94A3B8}
+.cc-xp{margin-top:10px;font-size:.75rem;font-weight:800;
+  display:inline-flex;align-items:center;gap:4px}
+
+@media print{
+  body{background:#fff;color:#000}
+  .challenge-card{break-inside:avoid;border-color:#ccc;background:#f9f9f9!important}
+  .cc-desc{color:#333}
+}
+
+/* ── NARRATIVE SECTION ── */
+.narrative-section{
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(26,111,232,.15) 0%,transparent 70%),var(--ink);
+}
+.narrative-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:40px;max-width:760px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+.narrative-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,200,66,.12),transparent 70%);
+}
+.narrative-chapter{font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px}
+.narrative-title{font-family:'Bangers',cursive;font-size:clamp(1.8rem,4vw,2.8rem);
+  line-height:1.15;margin-bottom:16px}
+.narrative-text{font-size:.95rem;color:#94A3B8;line-height:1.85;margin-bottom:16px}
+.narrative-text strong{color:var(--paper)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .phases-grid{grid-template-columns:repeat(2,1fr)}
+  .lessons-grid{grid-template-columns:repeat(2,1fr)}
+  .cards-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .phases-grid,.lessons-grid,.cards-grid{grid-template-columns:1fr}
+  .xp-actions{grid-template-columns:repeat(2,1fr)}
+  .players-row{grid-template-columns:1fr}
+  .lesson-body{padding:20px}
+}
+</style>
+
+<script>
+// ── EMBEDDED ASSETS ──
+const ASSETS = {
+  logo: "assets/logo.png",
+  xp1:  "assets/xp1.png",
+  xp5:  "assets/xp5.png",
+  xp10: "assets/xp10.png",
+  xp50: "assets/xp50.png",
+  xp100:"assets/xp100.png",
+  xp500:"assets/xp500.png",
+  boy_coin:   "assets/boy-coin.png",
+  medal_blank:"assets/medal-blank.png",
+  medal_teacher:"assets/medal-teacher.png",
+};
+</script>
+</head>
+<body>
+
+<!-- STAR FIELD -->
+<div class="star-field" id="stars"></div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="home">
+  <img id="hero-logo" src="" alt="Nuvem Veloz" style="width:220px;height:auto;margin-bottom:16px;filter:drop-shadow(0 8px 32px rgba(26,111,232,0.5));display:block">
+  <div class="hero-badge">🎮 Nuvem Veloz · Programa Exclusivo</div>
+  <h1 class="hero-logo">Academia dos<br><span>Jovens</span> Empreendedores</h1>
+  <p class="hero-sub">Uma aventura de 32 missões onde você vai criar, inventar, comunicar e vender — transformando ideias em negócios reais.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">32</span><span class="stat-l">Missões</span></div>
+    <div class="stat"><span class="stat-n">6</span><span class="stat-l">Fases</span></div>
+    <div class="stat"><span class="stat-n">⚡</span><span class="stat-l">XP & Níveis</span></div>
+    <div class="stat"><span class="stat-n">🏆</span><span class="stat-l">Certificado</span></div>
+  </div>
+  <div class="hero-btns">
+    <button class="btn btn-gold" onclick="document.getElementById('fases').scrollIntoView({behavior:'smooth'})">🗺️ Ver as Fases</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('xp-tracker').scrollIntoView({behavior:'smooth'})">⚡ Tracker de XP</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('desafios').scrollIntoView({behavior:'smooth'})">🃏 Cartas Desafio</button>
+  </div>
+</section>
+
+<!-- ══════ NARRATIVE ══════ -->
+<section class="narrative-section" id="historia">
+  <div class="section">
+    <p class="sec-sub" style="margin-bottom:16px">🌟 A HISTÓRIA — conte no primeiro dia</p>
+    <div class="narrative-card">
+      <div class="narrative-chapter">Capítulo 1 — O Recrutamento</div>
+      <h2 class="narrative-title">Bem-vindo à Nuvem Veloz</h2>
+      <p class="narrative-text">
+        Existe uma academia secreta escondida nas nuvens digitais. Ela não aparece no Google. Não tem endereço. Não aceita qualquer pessoa.<br><br>
+        Ela se chama <strong>Nuvem Veloz</strong> — e apenas os jovens com o potencial certo para criar, inventar e transformar o mundo são encontrados e convidados.<br><br>
+        <strong>Você foi escolhido.</strong><br><br>
+        Isso não é sorte. É porque existe algo dentro de você — uma faísca criativa, uma curiosidade diferente, um jeito único de ver o mundo — que os scanners da Academia detectaram.<br><br>
+        Mas entrar é apenas o começo. Cada aula aqui é uma <strong>missão de treinamento</strong>. Cada desafio completado te deixa mais perto de se tornar um <strong>Criador Digital de Verdade</strong>. E no final da jornada, apenas os que completaram todas as missões recebem o título mais cobiçado da academia:<br><br>
+        <strong>🎓 Mestre do Funil — Jovem Criador Digital.</strong>
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <span style="background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);color:var(--gold);font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:100px">🗓️ Março a Junho</span>
+        <span style="background:rgba(26,111,232,.12);border:1px solid rgba(26,111,232,.3);color:#60A5FA;font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:100px">⏰ 2h30 por missão</span>
+        <span style="background:rgba(29,201,122,.12);border:1px solid rgba(29,201,122,.3);color:var(--green);font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:100px">🎓 Certificado oficial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PHASES ══════ -->
+<section class="phases-section" id="fases">
+  <div class="section">
+    <h2 class="sec-title" style="color:var(--gold)">🗺️ As 6 Fases</h2>
+    <p class="sec-sub">Cada fase desbloqueia uma nova habilidade de Criador Digital</p>
+    <div class="phases-grid">
+      <div class="phase-card" style="--pc:var(--ph1);border-color:rgba(29,201,122,.4)" onclick="filterLessons(1)">
+        <span class="phase-num">1</span>
+        <span class="phase-icon">🌱</span>
+        <span class="phase-tag" style="color:var(--ph1)">Fase 1 · 4 aulas</span>
+        <div class="phase-title">Despertar Criativo</div>
+        <div class="phase-info">Caça aos problemas, invenção de ideias, primeiro produto e primeira empresa simulada.</div>
+        <span class="phase-aulas" style="color:var(--ph1)">Habilidade: Criatividade ✨</span>
+      </div>
+      <div class="phase-card" style="--pc:var(--ph2);border-color:rgba(26,111,232,.4)" onclick="filterLessons(2)">
+        <span class="phase-num">2</span>
+        <span class="phase-icon">🎨</span>
+        <span class="phase-tag" style="color:var(--ph2)">Fase 2 · 6 aulas</span>
+        <div class="phase-title">Criar Marca</div>
+        <div class="phase-info">Nome, logo, cores, slogan, identidade visual e pitch de 30 segundos no Canva.</div>
+        <span class="phase-aulas" style="color:var(--ph2)">Habilidade: Mestre da Marca 🎨</span>
+      </div>
+      <div class="phase-card" style="--pc:var(--ph3);border-color:rgba(245,200,66,.4)" onclick="filterLessons(3)">
+        <span class="phase-num">3</span>
+        <span class="phase-icon">📣</span>
+        <span class="phase-tag" style="color:var(--ph3)">Fase 3 · 6 aulas</span>
+        <div class="phase-title">Conteúdo</div>
+        <div class="phase-info">Posts, vídeos curtos, storytelling, copywriting e como contar histórias que vendem.</div>
+        <span class="phase-aulas" style="color:var(--ph3)">Habilidade: Comunicador 📣</span>
+      </div>
+      <div class="phase-card" style="--pc:var(--ph4);border-color:rgba(249,115,22,.4)" onclick="filterLessons(4)">
+        <span class="phase-num">4</span>
+        <span class="phase-icon">🎯</span>
+        <span class="phase-tag" style="color:var(--ph4)">Fase 4 · 6 aulas</span>
+        <div class="phase-title">Marketing</div>
+        <div class="phase-info">Cliente ideal, avatar, dores, desejos, proposta de valor e anúncio simples.</div>
+        <span class="phase-aulas" style="color:var(--ph4)">Habilidade: Estrategista 🎯</span>
+      </div>
+      <div class="phase-card" style="--pc:var(--ph5);border-color:rgba(232,65,58,.4)" onclick="filterLessons(5)">
+        <span class="phase-num">5</span>
+        <span class="phase-icon">🌀</span>
+        <span class="phase-tag" style="color:var(--ph5)">Fase 5 · 6 aulas</span>
+        <div class="phase-title">Funil de Vendas</div>
+        <div class="phase-info">Isca digital, lista de contatos, nutrição, oferta irresistível e primeiro fechamento.</div>
+        <span class="phase-aulas" style="color:var(--ph5)">Habilidade: Mestre do Funil 🌀</span>
+      </div>
+      <div class="phase-card" style="--pc:var(--ph6);border-color:rgba(124,58,237,.4)" onclick="filterLessons(6)">
+        <span class="phase-num">6</span>
+        <span class="phase-icon">💰</span>
+        <span class="phase-tag" style="color:var(--ph6)">Fase 6 · 4 aulas</span>
+        <div class="phase-title">Dinheiro</div>
+        <div class="phase-info">Educação financeira, precificação, lucro, reinvestimento e simulação de vendas reais.</div>
+        <span class="phase-aulas" style="color:var(--ph6)">Habilidade: Gestor Financeiro 💰</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ALL LESSONS ══════ -->
+<section class="lessons-section" id="aulas">
+  <div class="section">
+    <h2 class="sec-title">📚 Todas as 32 Missões</h2>
+    <p class="sec-sub">Clique em qualquer missão para ver o roteiro completo</p>
+    <div class="lessons-filter">
+      <button class="filter-btn active" data-f="0" onclick="filterLessons(0,this)">Todas</button>
+      <button class="filter-btn" data-f="1" onclick="filterLessons(1,this)">🌱 Fase 1</button>
+      <button class="filter-btn" data-f="2" onclick="filterLessons(2,this)">🎨 Fase 2</button>
+      <button class="filter-btn" data-f="3" onclick="filterLessons(3,this)">📣 Fase 3</button>
+      <button class="filter-btn" data-f="4" onclick="filterLessons(4,this)">🎯 Fase 4</button>
+      <button class="filter-btn" data-f="5" onclick="filterLessons(5,this)">🌀 Fase 5</button>
+      <button class="filter-btn" data-f="6" onclick="filterLessons(6,this)">💰 Fase 6</button>
+    </div>
+    <div class="lessons-grid" id="lessons-grid"></div>
+  </div>
+</section>
+
+<!-- ══════ XP TRACKER ══════ -->
+<section class="xp-section" id="xp-tracker">
+  <div class="section">
+    <h2 class="sec-title" style="color:var(--gold)">⚡ Tracker de XP</h2>
+    <p class="sec-sub">Registre os pontos dos alunos em tempo real</p>
+
+    <div class="levels-row" id="levels-row"></div>
+
+    <div class="xp-board">
+      <div class="players-row">
+        <div class="player-card" id="p1-card">
+          <span class="player-avatar">🚀</span>
+          <div class="player-name" id="p1-name" contenteditable="true" style="outline:none;cursor:text">Aluno 1</div>
+          <span class="player-xp" id="p1-xp">0 XP</span>
+          <span class="player-level" id="p1-level">Explorador de Ideias</span>
+          <div class="xp-bar-bg"><div class="xp-bar-fill" id="p1-bar" style="width:0%"></div></div>
+          <div class="next-reward" id="p1-reward">Próxima recompensa: 100 XP</div>
+        </div>
+        <div class="player-card" id="p2-card">
+          <span class="player-avatar">⚡</span>
+          <div class="player-name" id="p2-name" contenteditable="true" style="outline:none;cursor:text">Aluno 2</div>
+          <span class="player-xp" id="p2-xp">0 XP</span>
+          <span class="player-level" id="p2-level">Explorador de Ideias</span>
+          <div class="xp-bar-bg"><div class="xp-bar-fill" id="p2-bar" style="width:0%"></div></div>
+          <div class="next-reward" id="p2-reward">Próxima recompensa: 100 XP</div>
+        </div>
+      </div>
+
+      <p style="font-size:.78rem;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Dar XP para...</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+        <button class="btn btn-gold" style="justify-content:center;padding:10px" onclick="setActivePlayer(1)">🚀 Aluno 1</button>
+        <button class="btn btn-ghost" style="justify-content:center;padding:10px" onclick="setActivePlayer(2)">⚡ Aluno 2</button>
+      </div>
+      <div id="active-player-label" style="text-align:center;font-size:.78rem;color:var(--gold);font-weight:700;margin-bottom:14px">Selecionado: Aluno 1</div>
+
+      <div class="xp-actions">
+        <div class="xp-btn" onclick="addXP(1,'Participação')">
+          <img class="xp-coin-img" id="coin-img-1" src="" alt="1 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Participação</span>
+          <span class="xp-btn-pts">+1 XP</span>
+        </div>
+        <div class="xp-btn" onclick="addXP(5,'Tarefa rápida')">
+          <img class="xp-coin-img" id="coin-img-5" src="" alt="5 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Tarefa rápida</span>
+          <span class="xp-btn-pts">+5 XP</span>
+        </div>
+        <div class="xp-btn" onclick="addXP(10,'Ideia nova')">
+          <img class="xp-coin-img" id="coin-img-10" src="" alt="10 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Ideia nova</span>
+          <span class="xp-btn-pts">+10 XP</span>
+        </div>
+        <div class="xp-btn" onclick="addXP(50,'Criação no Canva')">
+          <img class="xp-coin-img" id="coin-img-50" src="" alt="50 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Canva / Missão</span>
+          <span class="xp-btn-pts">+50 XP</span>
+        </div>
+        <div class="xp-btn" onclick="addXP(100,'Apresentação / Missão concluída')">
+          <img class="xp-coin-img" id="coin-img-100" src="" alt="100 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Missão concluída</span>
+          <span class="xp-btn-pts">+100 XP</span>
+        </div>
+        <div class="xp-btn" onclick="addXP(500,'FASE COMPLETA! 🏆')">
+          <img class="xp-coin-img" id="coin-img-500" src="" alt="500 XP" style="width:52px;height:52px;object-fit:contain">
+          <span class="xp-btn-label">Fase completa</span>
+          <span class="xp-btn-pts">+500 XP</span>
+        </div>
+      </div>
+
+      <p style="font-size:.78rem;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Histórico</p>
+      <div class="xp-history" id="xp-history">
+        <div style="text-align:center;color:#64748B;font-size:.82rem;padding:16px">Nenhum XP registrado ainda</div>
+      </div>
+      <button onclick="resetXP()" style="margin-top:12px;background:none;border:1px solid rgba(255,255,255,.1);color:#64748B;font-family:'Nunito',sans-serif;font-size:.75rem;padding:6px 16px;border-radius:8px;cursor:pointer">↩ Zerar pontuação</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CHALLENGE CARDS ══════ -->
+<section class="cards-section" id="desafios">
+  <div class="section">
+    <h2 class="sec-title">🃏 Cartas de Desafio</h2>
+    <p class="sec-sub">20 cartas imprimíveis — clique para imprimir</p>
+    <div style="text-align:center;margin-bottom:28px">
+      <button class="btn btn-gold" onclick="printCards()">🖨️ Imprimir todas as cartas</button>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+</section>
+
+<!-- ══════ LESSON MODAL ══════ -->
+<div id="lesson-modal">
+  <div class="lesson-box" id="lesson-box"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   STAR FIELD
+══════════════════════════════════ */
+(function(){
+  const sf = document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');
+    const size=Math.random()*2.5+0.5;
+    s.className='star';
+    s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s`;
+    sf.appendChild(s);
+  }
+})();
+
+/* ══════════════════════════════════
+   LESSON DATA — 32 AULAS COMPLETAS
+══════════════════════════════════ */
+const PHASES = {
+  1:{name:'Despertar Criativo',color:'#1DC97A',icon:'🌱'},
+  2:{name:'Criar Marca',color:'#1A6FE8',icon:'🎨'},
+  3:{name:'Conteúdo',color:'#F5C842',icon:'📣'},
+  4:{name:'Marketing',color:'#F97316',icon:'🎯'},
+  5:{name:'Funil de Vendas',color:'#E8413A',icon:'🌀'},
+  6:{name:'Dinheiro',color:'#7C3AED',icon:'💰'},
+};
+
+const LEVELS = [
+  {num:1,title:'Explorador de Ideias',icon:'🌱',min:0,max:100,skill:'Criatividade'},
+  {num:2,title:'Inventor de Soluções',icon:'🔧',min:100,max:220,skill:'Resolver Problemas'},
+  {num:3,title:'Mestre da Marca',icon:'🎨',min:220,max:380,skill:'Criar Identidade'},
+  {num:4,title:'Comunicador',icon:'📣',min:380,max:580,skill:'Criar Conteúdo'},
+  {num:5,title:'Estrategista',icon:'🎯',min:580,max:820,skill:'Marketing'},
+  {num:6,title:'Mestre do Funil',icon:'🌀',min:820,max:1200,skill:'Vendas'},
+];
+
+const REWARDS = [
+  {xp:100,reward:'🏷️ Adesivo ou Selo Digital'},
+  {xp:200,reward:'🥇 Medalha de Nível'},
+  {xp:300,reward:'🗺️ Escolher tema da próxima missão'},
+  {xp:500,reward:'📜 Certificado Especial'},
+  {xp:820,reward:'🏆 Título: Mestre do Funil'},
+];
+
+const lessons = [
+// ── FASE 1 ──────────────────────────────────────────────
+{id:1,phase:1,num:'1.1',title:'Bem-vindo à Academia!',skill:'Criatividade',xp:50,
+ objetivo:'Apresentar a academia, o sistema de XP, a narrativa e criar vínculo emocional com o curso.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1DC97A',
+   script:[
+    {label:'Fala de abertura',text:'Agora você faz parte de algo que pouquíssimas pessoas sabem que existe. Você foi escolhido porque tem algo especial — e nós vamos descobrir juntos o que é. Isso aqui não é uma aula comum. Isso é um treinamento secreto.',tip:'Fique em pé. Tom misterioso. Pause após "escolhido".'},
+    {label:'Apresentar o mapa da jornada',text:'Você vai passar por 6 fases. Cada fase vai desbloquear uma habilidade nova. No final, você vai ter criado uma marca, aprendido a vender e ganho seu certificado.',tip:'Mostre o mapa das fases na tela ou impresso.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1DC97A',
+   script:[
+    {label:'O que é empreendedorismo?',text:'Empreendedor não é só quem tem uma loja. É qualquer pessoa que vê um problema e tenta resolver de um jeito criativo. O Minecraft começou na cabeça de uma pessoa. O Instagram era só uma ideia. O Uber era só uma pergunta: "e se eu pudesse pedir um carro pelo celular?"',tip:'Pergunte: "Qual app vocês usam todo dia? Quem teve essa ideia?"'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1DC97A',
+   steps:[
+    {n:'1',title:'Minha ficha de agente (20 min)',desc:'Cada aluno cria sua ficha de agente: nome de codinome, habilidade secreta (algo que faz bem), missão de vida (problema que quer resolver no mundo), e super poder criativo.'},
+    {n:'2',title:'Primeiras 10 ideias (25 min)',desc:'Escrever 10 ideias de negócio em 10 minutos. Pode ser absurdo! Valeria um hotel pra cachorro com piscina? Um serviço de entregas por drone de coxinha? Tudo vale.'},
+    {n:'3',title:'Escolha a favorita (15 min)',desc:'Cada um apresenta sua ideia favorita em 1 minuto. Por que escolheu? O que ela resolve? Para quem é?'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1DC97A',
+   game:'🎲 DESAFIO: "O Mercado Maluco"\nO instrutor coloca 5 objetos aleatórios na mesa (caneta, borracha, copo, clipe, elástico). Cada aluno tem 5 minutos para criar um "negócio" usando pelo menos 2 desses objetos. Apresenta em 2 minutos. Quem tiver a ideia mais criativa ganha +10 XP bônus.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1DC97A',
+   xpItems:['Completou a ficha de agente: +20 XP','Gerou 10+ ideias: +20 XP','Apresentou ideia no desafio: +10 XP'],
+   nextMission:'Na próxima missão você vai virar um Caçador de Problemas — e descobrir que todo problema esconde um negócio.'}
+ ],
+ challenge:'🔍 Missão Semanal: OBSERVADOR\nEsta semana, observe 3 situações onde as pessoas reclamam de algo ou têm dificuldade. Anote: o que aconteceu, quem estava, o que precisava ser resolvido. Traga anotado na próxima aula!'},
+
+{id:2,phase:1,num:'1.2',title:'Caça aos Problemas',skill:'Criatividade',xp:60,
+ objetivo:'Treinar o olhar empreendedor: enxergar problemas como oportunidades de negócio.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1DC97A',
+   script:[
+    {label:'Briefing',text:'Todo negócio do mundo começou com uma pessoa que ficou incomodada com alguma coisa. O fundador do Airbnb não conseguia pagar o aluguel. O criador do YouTube queria compartilhar um vídeo de festa mas não conseguia. O problema de vocês de hoje: encontrar os melhores problemas para resolver.',tip:'Escreva no quadro: "Problema + Criatividade = Negócio"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1DC97A',
+   script:[
+    {label:'O que é um problema de negócio?',text:'Não precisa ser um problema gigante. Pode ser: "É chato organizar as figurinhas" → app de colecionador. "É difícil lembrar de beber água" → app com alertas divertidos. "Não tem nada pra fazer no bairro no fim de semana" → serviço de eventos jovens.',tip:'Peça para os alunos listarem 3 coisas que os incomodam no dia a dia.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1DC97A',
+   steps:[
+    {n:'1',title:'Mapa de Problemas (25 min)',desc:'Cada aluno recebe um papel grande. Divide em 4 quadrantes: Escola, Casa, Lazer, Tecnologia. Em cada quadrante, escreve 3 problemas reais que vive ou que viu alguém vivendo.'},
+    {n:'2',title:'Convertendo em oportunidade (25 min)',desc:'Para cada problema, escreve: "E se existisse um produto/serviço que..."  Não precisa ser viável. Só precisa resolver o problema de algum jeito criativo.'},
+    {n:'3',title:'Votação (10 min)',desc:'Os dois alunos apresentam seus mapas e votam nos 3 melhores problemas (que acham que mais gente tem).'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1DC97A',
+   game:'🎲 DESAFIO: "Shark Tank Mirrim"\nCada aluno tem 3 minutos para apresentar o melhor problema que encontrou e a solução que criaria. O instrutor faz o papel de investidor: faz 3 perguntas difíceis. O aluno que responder melhor ganha +15 XP.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1DC97A',
+   xpItems:['Mapa com 12+ problemas: +25 XP','Converteu em oportunidades: +20 XP','Apresentou no Shark Tank: +15 XP'],
+   nextMission:'Próxima missão: vamos transformar esses problemas em invenções malucas!'}
+ ],
+ challenge:'💡 Missão Semanal: INVENTOR\nEscolha o melhor problema do seu mapa. Crie 3 ideias diferentes de produto/serviço para resolver esse mesmo problema. Podem ser simples, tecnológicas ou até impossíveis. O importante é criar!'},
+
+{id:3,phase:1,num:'1.3',title:'Inventor de Soluções',skill:'Criatividade',xp:70,
+ objetivo:'Desenvolver pensamento inventivo, prototipagem rápida e pitch de produto.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1DC97A',
+   script:[
+    {label:'Briefing épico',text:'Inventores não esperam ter tudo perfeito para começar. O primeiro protótipo do iPhone era uma tela de vidro com botões desenhados à mão. O segredo é: tire da cabeça e coloque no papel. Hoje vocês são inventores. Fábrica de soluções aberta!',tip:'Mostre imagens de protótipos famosos: iPhone v1, Dyson aspirador, Post-it.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1DC97A',
+   script:[
+    {label:'Como inventar: o método dos 3P',text:'P1 — Problema: qual dor você resolve? P2 — Pessoa: quem tem esse problema? P3 — Produto: o que você vai oferecer? Todo negócio pode ser descrito com esses 3 P. Apple: Música no bolso era difícil (P1) → jovens que amavam música (P2) → iPod (P3).',tip:'Exemplos com contexto dos alunos: app de jogos, serviço de delivery, loja de itens de colecionador.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1DC97A',
+   steps:[
+    {n:'1',title:'Desenhar o produto (20 min)',desc:'Cada aluno escolhe seu melhor problema e desenha a solução. Pode ser um app, um produto físico, um serviço. Precisa ter: nome provisório, o que faz, como funciona (3 passos simples), e para quem é.'},
+    {n:'2',title:'Protótipo em papel (25 min)',desc:'Criam um protótipo em papel/cartolina do produto. Se for um app, desenham as telas. Se for produto físico, constroem uma maquete simples. Criatividade livre!'},
+    {n:'3',title:'Pitch do produto (15 min)',desc:'Cada um apresenta em 3 minutos: mostra o protótipo, explica o problema, explica a solução e diz para quem é. Instrutor faz uma pergunta ao final.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1DC97A',
+   game:'🎲 DESAFIO: "Produto Impossível"\nO instrutor dá um problema absurdo: "Como resolver o problema de crianças que perdem meias na lavagem?" ou "Como fazer um livro mais divertido que TikTok?". Cada aluno tem 10 minutos para inventar a solução mais criativa possível e apresentar.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1DC97A',
+   xpItems:['Criou protótipo em papel: +30 XP','Fez pitch do produto: +25 XP','Resolveu o produto impossível: +15 XP'],
+   nextMission:'Última missão da Fase 1: você vai criar sua primeira empresa completa!'}
+ ],
+ challenge:'🛠️ Missão Semanal: CONSTRUTOR\nMelhore seu protótipo com base nas perguntas que te fizeram. Pode adicionar mais detalhes, mudar o nome ou refinar como funciona. Traga uma versão melhorada na próxima aula.'},
+
+{id:4,phase:1,num:'1.4',title:'Minha Primeira Empresa',skill:'Criatividade',xp:80,
+ objetivo:'Criar o conceito completo de um negócio: problema, produto, cliente, valor.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1DC97A',
+   script:[
+    {label:'Briefing — Nível desbloqueado!',text:'Esta é a última missão da Fase 1. Quando você terminar hoje, vai ter algo que pouquíssimas pessoas têm: uma ideia de empresa com problema definido, produto criado e cliente imaginado. Isso já é mais do que a maioria dos adultos fez. Vamos lá.',tip:'Clima de cerimônia. Fale com orgulho. Isso prepara o estado emocional para a criação.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1DC97A',
+   script:[
+    {label:'O que toda empresa precisa ter',text:'Toda empresa — grande ou pequena — tem 4 coisas: (1) Um problema que resolve. (2) Um produto ou serviço. (3) Um cliente específico. (4) Um motivo para esse cliente pagar. Hoje você vai montar esses 4 pilares da sua primeira empresa.',tip:'Dê exemplos com empresas que os alunos conhecem: Nubank, Netflix, Roblox.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1DC97A',
+   steps:[
+    {n:'1',title:'Canvas da Primeira Empresa (30 min)',desc:'Preencher o Canvas simplificado: Nome provisório, Problema que resolve, Produto/serviço, Quem vai comprar, Por que vai pagar, Como vai divulgar (1 ideia simples).'},
+    {n:'2',title:'Missão de nome (20 min)',desc:'Criar 5 opções de nome para a empresa. O nome precisa ser: fácil de lembrar, dizer o que é ou criar curiosidade, soar bem. Escolher o favorito e justificar.'},
+    {n:'3',title:'Apresentação de conclusão da Fase 1 (10 min)',desc:'Cada aluno apresenta sua empresa em 2 minutos. Nome, problema, produto, cliente. Isso é o embrião do Projeto Final!'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1DC97A',
+   game:'🎲 DESAFIO FINAL DA FASE 1: "Elevator Pitch"\nTempo: 60 segundos. Sem anotações. Apresentar a empresa para o instrutor (que faz papel de investidor milionário que só tem 1 minuto). Começar com: "Olá, meu nome é [nome] e minha empresa [nome] resolve o problema de..." Se o investidor pedir para saber mais = sucesso! +20 XP.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1DC97A',
+   xpItems:['Canvas completo: +30 XP','Criou o nome: +20 XP','Elevator Pitch completado: +20 XP','NÍVEL 2 DESBLOQUEADO: +10 XP bônus'],
+   nextMission:'PARABÉNS! Você completou a Fase 1. Na próxima fase, sua empresa vai ganhar uma cara: a Fase 2 começa com criação de marca!'}
+ ],
+ challenge:'🚀 Missão Especial de Transição\nPesquise 3 logos de marcas que você acha bonitas ou interessantes. Anote por que gostou de cada uma (cor, formato, nome). Traga impressa ou no celular para a primeira aula da Fase 2!'},
+
+// ── FASE 2 ──────────────────────────────────────────────
+{id:5,phase:2,num:'2.1',title:'O Poder de uma Marca',skill:'Identidade Visual',xp:60,
+ objetivo:'Entender o que é marca, por que importa e os elementos que a compõem.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Abertura',text:'Por que uma Nike vale mais que uma marca desconhecida mesmo sendo os dois tênis? Por que as pessoas pagam 5x mais por um Starbucks que um café igual em qualquer padaria? A resposta é: marca. Hoje vocês começam a construir isso.',tip:'Traga 2 produtos físicos: um de marca conhecida e um genérico. Deixe os alunos descobrirem.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'Os 5 elementos de uma marca',text:'Toda marca tem 5 partes: Nome (como chama), Logo (símbolo visual), Cores (emoções que transmite), Slogan (frase que fica na cabeça), Personalidade (se fosse uma pessoa, como seria?). A Apple é: confiante, minimalista, criativa. A Nubank é: jovem, rebelde, simples. Qual é a personalidade da sua?',tip:'Mostrar logos famosas e pedir para os alunos descreverem a "personalidade" da marca.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Moodboard da Marca (25 min)',desc:'Recortar ou desenhar imagens, cores e palavras que representam a personalidade da sua empresa. Montar em uma folha grande como um painel de inspiração.'},
+    {n:'2',title:'Definir personalidade (20 min)',desc:'Preencher: "Se minha marca fosse uma pessoa, ela seria [adjetivo 1], [adjetivo 2] e [adjetivo 3]. Ela se vestiria com [estilo]. Ela falaria de um jeito [formal/informal/divertido/sério]."'},
+    {n:'3',title:'Escolher paleta de cores (15 min)',desc:'Escolher 3 cores para a marca. Pesquisar ou usar o que sabe: vermelho = urgência/energia, azul = confiança, verde = natureza/saúde, amarelo = alegria, roxo = criatividade. Justificar as escolhas.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO: "Reconhece a Marca?"\nO instrutor mostra apenas as CORES de marcas famosas (sem nome/logo). Os alunos tentam identificar. Depois: cada aluno apresenta as cores da sua marca e explica o que elas comunicam. Classe troca feedback.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Moodboard criado: +25 XP','Personalidade definida: +20 XP','Paleta de cores com justificativa: +15 XP'],
+   nextMission:'Próxima missão: criar o logo no Canva!'}
+ ],
+ challenge:'🎨 Missão Semanal: OBSERVADOR DE MARCAS\nAnote 5 logos que viu essa semana (rua, TV, escola, celular). Para cada uma: a cor principal, o formato do símbolo e uma palavra que descreve o que sentiu ao ver.'},
+
+{id:6,phase:2,num:'2.2',title:'Criando o Logo no Canva',skill:'Design Básico',xp:80,
+ objetivo:'Criar o primeiro logo real da empresa usando o Canva, desenvolvendo noções de design.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Briefing',text:'Hoje é a aula mais visual do curso. Vocês vão sair daqui com um logo real, feito por vocês, que pode ser usado em qualquer lugar. É literalmente o dia que sua empresa ganha um rosto.',tip:'Se possível, mostre como o Canva funciona em 2 minutos antes de liberar para os alunos.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'Regras de ouro do logo',text:'Um bom logo tem 3 regras: (1) Funciona em preto e branco. (2) Fica bom pequeno (tamanho de avatar) e grande. (3) É reconhecível em 3 segundos. Logos complexos demais não ficam na memória. Logos simples vencem. Pense: Nike, Apple, McDonald\'s.',tip:'Abra o Canva no computador/tablet e já deixe o template de logo criado antes da aula.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Explorar templates (10 min)',desc:'Abrir o Canva, pesquisar "logo" no tipo de documento. Explorar 10 templates. Anotar quais elementos gostaram (fonte, símbolo, layout).'},
+    {n:'2',title:'Criar 3 versões (35 min)',desc:'Criar 3 versões diferentes do logo usando as cores e personalidade definidas na aula anterior. Versão 1: com símbolo + nome. Versão 2: só tipografia (nome estilizado). Versão 3: livre criatividade.'},
+    {n:'3',title:'Escolher e refinar (15 min)',desc:'Escolher a melhor versão e refinar: ajustar cores, tamanho das letras, espaçamento. Baixar em PNG transparente.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO: "Crítica Construtiva"\nCada aluno apresenta seu logo favorito. O outro aluno deve dar: 2 elogios específicos ("gostei da fonte porque...") e 1 sugestão de melhoria ("acho que ficaria ainda melhor se..."). Depois trocam. O instrutor media e acrescenta feedback profissional.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Criou 3 versões no Canva: +35 XP','Deu feedback construtivo: +15 XP','Logo finalizado e baixado: +30 XP'],
+   nextMission:'Na próxima aula: o slogan — a frase que vai fazer as pessoas lembrarem da sua marca para sempre!'}
+ ],
+ challenge:'🎨 Missão Semanal: CANVA LIVRE\nUse o Canva para criar um cartão de visitas simples com o logo que você criou. Use as cores e fontes da sua marca. Traga impresso ou na tela na próxima aula!'},
+
+{id:7,phase:2,num:'2.3',title:'Criando o Slogan',skill:'Copywriting Básico',xp:70,
+ objetivo:'Criar um slogan memorável que transmita a essência da marca em poucas palavras.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Briefing',text:'Qual frase vem na sua cabeça quando eu digo McDonald\'s? "Amo muito tudo isso." E Nike? "Just do it." E Red Bull? "Dá asas." Slogans ficam na cabeça por décadas. Hoje vocês vão criar o slogan que vai definir como as pessoas lembrarão da sua marca.',tip:'Faça o teste: fale uma marca sem o slogan, peça para o aluno completar. Quantos conseguem?'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'Fórmulas de slogan',text:'Existem 3 fórmulas que sempre funcionam: Fórmula 1 — Benefício direto: "Entregamos felicidade, não só comida." Fórmula 2 — Promessa + emoção: "Onde suas ideias ganham vida." Fórmula 3 — Provocação: "Para os que recusam o comum." Um bom slogan tem menos de 8 palavras, rima ou tem ritmo, e promete algo.',tip:'Exercício rápido: peça para cada aluno criar 1 slogan para a marca de chocolate favorita deles.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Tempestade de slogans (20 min)',desc:'Criar 10 opções de slogan para a própria marca. Usar as 3 fórmulas aprendidas. Quantidade primeiro — qualidade depois.'},
+    {n:'2',title:'Filtrar e refinar (25 min)',desc:'Eliminar os 7 piores. Refinar os 3 melhores. Testar em voz alta — soa bem? Fica na memória? Representa a marca? Escolher o vencedor.'},
+    {n:'3',title:'Aplicar na identidade (15 min)',desc:'Adicionar o slogan ao logo no Canva. Testar como fica na assinatura de email, no post, no cartão de visitas.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO: "Qual é a Marca?"\nCada aluno escreve o slogan da própria marca em um papel. O outro aluno precisa adivinhar o que a marca vende só pelo slogan. Se acertar em 10 segundos = slogan eficaz! +20 XP. Se não acertar = precisa de melhoria (boa descoberta!).'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Criou 10 opções de slogan: +20 XP','Slogan finalizado e testado: +25 XP','Aplicado no Canva: +25 XP'],
+   nextMission:'Próxima missão: construindo o manual de identidade da marca — como usar logo, cores e fonte sempre do jeito certo!'}
+ ],
+ challenge:'✍️ Missão Semanal: TESTE DE CAMPO\nMostre seu logo e slogan para 3 pessoas (familiar, amigo, etc.). Pergunte: "O que você acha que essa empresa vende?" e "O que sentiu ao ver?". Anote as respostas — elas são ouro!'},
+
+{id:8,phase:2,num:'2.4',title:'Manual da Marca',skill:'Identidade Visual',xp:70,
+ objetivo:'Criar o guia de identidade visual — documento que mantém a marca consistente.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Briefing',text:'Por que toda empresa grande tem um manual de marca? Porque sem ele, amanhã alguém usa o logo em verde em vez de azul. Ou a fonte errada. Ou o slogan diferente. Manual de marca é o documento que garante que sua identidade seja sempre reconhecível, não importa onde apareça.',tip:'Mostre um exemplo real (o manual do Google ou Nubank está disponível online).'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'O que entra no manual',text:'Um manual básico tem: Logo (versão principal, versão secundária, versão só ícone). Cores (código exato de cada cor). Fontes (qual usa em títulos, qual usa em texto). Tom de voz (como a marca fala: formal, divertida, séria). Slogan. O que NÃO fazer com a marca.',tip:'Adapte para o nível: o manual deles pode ser 1 página bonita no Canva.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Estruturar o manual (15 min)',desc:'Decidir o que vai entrar. Criar a estrutura das páginas no Canva: capa, logo, cores, fontes, slogan, tom de voz, erros a evitar.'},
+    {n:'2',title:'Criar página por página (35 min)',desc:'Preencher cada seção com as decisões já tomadas nas aulas anteriores. Adicionar exemplos visuais: "logo correto / logo errado".'},
+    {n:'3',title:'Revisão final (10 min)',desc:'Rever o manual completo. Está consistente? As cores batem? Os exemplos fazem sentido? Fazer ajustes finais.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO: "O Consultor de Marca"\nCada aluno faz o papel de consultor do outro. Analisa o manual do colega e dá 3 sugestões de melhoria. Depois os dois debatem: concordam ou discordam? Por quê? Instrutor media a conversa.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Manual completo criado: +40 XP','Feedback ao colega dado: +15 XP','Manual revisado e finalizado: +15 XP'],
+   nextMission:'Próxima missão: preparando o pitch de 30 segundos da sua marca!'}
+ ],
+ challenge:'📋 Missão Semanal: AUDITOR\nOlhe para as marcas do seu material escolar, dos produtos em casa, das roupas. Escolha uma marca e responda: ela tem um manual? Como você percebe isso na consistência dela? Traga sua análise.'},
+
+{id:9,phase:2,num:'2.5',title:'O Pitch de 30 Segundos',skill:'Comunicação',xp:75,
+ objetivo:'Criar e praticar o elevator pitch da marca — falar de forma clara, confiante e impactante.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Briefing dramático',text:'Você entra num elevador. Lá dentro está o investidor mais importante do Brasil. Você tem só 30 segundos até o elevador chegar ao andar dele. É agora ou nunca. O que você diz? Esse é o elevator pitch — e hoje você vai criar e praticar o seu.',tip:'Encenar o cenário físico: dois alunos entram em um espaço pequeno simulando um elevador. Contar 30 segundos no timer.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'A fórmula do pitch de 30 segundos',text:'Frase 1 (5 seg): "Minha empresa [nome] resolve o problema de [problema específico]." Frase 2 (10 seg): "A gente faz isso através de [como funciona em palavras simples]." Frase 3 (10 seg): "Nosso cliente é [quem] que sofre com [dor] e quer [desejo]." Frase 4 (5 seg): "E a nossa diferença é [por que somos únicos]."',tip:'Pratique você mesmo o pitch primeiro para mostrar o modelo.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Escrever o pitch (20 min)',desc:'Usar a fórmula para escrever o pitch de 30 segundos. Depois adaptar para soar natural — não como leitura, mas como conversa.'},
+    {n:'2',title:'Ensaiar (25 min)',desc:'Praticar em voz alta 5 vezes. Cronometrar. Gravar no celular (áudio ou vídeo). Ouvir e ajustar.'},
+    {n:'3',title:'Apresentação ao vivo (15 min)',desc:'Cada aluno apresenta o pitch ao outro e ao instrutor. Sem papel. De cor. Feedback imediato.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO: "Pitch Relâmpago"\n5 variações do pitch em 15 minutos:\n1. Pitch para uma criança de 7 anos\n2. Pitch para um avô/avó\n3. Pitch para um amigo\n4. Pitch cantado (vale criar uma rima!)\n5. Pitch em 10 segundos (versão ultra-curta). +10 XP para cada versão concluída.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Pitch escrito e memorizado: +30 XP','Apresentou sem papel: +25 XP','Completou variações do desafio: +20 XP'],
+   nextMission:'Na próxima missão (última da Fase 2): revisão e consolidação da marca completa!'}
+ ],
+ challenge:'🎤 Missão Semanal: PITCH NA VIDA REAL\nFaça o pitch da sua marca para alguém de fora (familiar, amigo). Observe as reações. Eles fizeram alguma pergunta? Ficaram curiosos? Tente melhorar o pitch com base nas reações.'},
+
+{id:10,phase:2,num:'2.6',title:'Marca Completa — Revisão e Celebração',skill:'Identidade Visual',xp:90,
+ objetivo:'Consolidar todos os elementos da marca, apresentar e celebrar a conclusão da Fase 2.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#1A6FE8',
+   script:[
+    {label:'Briefing de celebração',text:'Esta é a última missão da Fase 2. Quando vocês saírem hoje, vão ter algo que leva anos para maioria das empresas construir: uma identidade de marca completa. Logo, cores, slogan, manual, pitch. Hoje é o dia de mostrar tudo junto.',tip:'Crie um clima de evento: organize a sala como uma apresentação, mesmo que simples.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#1A6FE8',
+   script:[
+    {label:'O que uma marca forte faz por um negócio',text:'Uma marca forte aumenta o valor percebido, faz o cliente lembrar de você, cria confiança antes mesmo de comprar e permite cobrar mais pelo mesmo produto. A Starbucks vende café igual ao de qualquer padaria — mas a marca justifica o preço. A sua marca vai ser o motivo pelos quais as pessoas escolherão você.',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#1A6FE8',
+   steps:[
+    {n:'1',title:'Montagem do portfólio da marca (30 min)',desc:'Reunir todos os materiais criados: logo (3 versões), moodboard, paleta de cores, slogan, manual, cartão de visitas. Organizar em uma pasta digital ou física.'},
+    {n:'2',title:'Aplicar a marca em um post (20 min)',desc:'Criar um post simples no Canva com a marca completa — usando logo, cores, fonte e slogan. Primeira peça de comunicação real.'},
+    {n:'3',title:'Preparar apresentação final da fase (10 min)',desc:'Cada aluno prepara uma apresentação de 5 minutos da marca completa para a celebração.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#1A6FE8',
+   game:'🎲 DESAFIO FINAL FASE 2: "Brand Reveal"\nCada aluno faz sua apresentação de marca completa: Nome + logo, slogan, as cores e por que escolheu, pitch de 30 segundos, o post criado. O outro aluno e o instrutor avaliam com 3 estrelas cada categoria. Quem juntar mais estrelas ganha +25 XP bônus.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#1A6FE8',
+   xpItems:['Portfólio completo organizado: +30 XP','Post criado no Canva: +25 XP','Apresentação completa: +35 XP','NÍVEL 3 DESBLOQUEADO: +10 XP bônus'],
+   nextMission:'FASE 2 CONCLUÍDA! Na Fase 3 você vai aprender a criar conteúdo que chama atenção — posts, vídeos e histórias que vendem!'}
+ ],
+ challenge:'🌟 Missão de Transição\nPoste (ou simule postar) seu primeiro conteúdo com a marca: uma foto, um desenho, uma arte no Canva. Mostre a marca funcionando no mundo real!'},
+
+// ── FASE 3 ──────────────────────────────────────────────
+{id:11,phase:3,num:'3.1',title:'O Poder do Conteúdo',skill:'Comunicação',xp:60,
+ objetivo:'Entender o que é marketing de conteúdo e por que criar conteúdo é essencial para qualquer negócio.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Abertura com impacto',text:'O MrBeast começou no YouTube com zero seguidores em 2012. Hoje tem 200 milhões. Ele não tinha dinheiro. Não tinha equipe. Tinha só uma câmera, ideias e consistência. O conteúdo que você cria hoje é o ativo que trabalha por você enquanto você dorme.',tip:'Mostre crescimento de canais/perfis que os alunos conhecem.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'O que é conteúdo de negócio',text:'Conteúdo de negócio é qualquer coisa que você cria para atrair atenção para sua marca: posts, vídeos, stories, artigos, podcasts. A diferença de um post qualquer para um conteúdo de negócio é: conteúdo de negócio resolve um problema ou entrega um valor. Não é "olha eu aqui" — é "aqui está algo útil/divertido/interessante para você".',tip:'Mostrar exemplos de bons conteúdos de empreendedores jovens no Instagram/TikTok.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Mapa de conteúdo (25 min)',desc:'Para a marca criada, listar 20 ideias de conteúdo em 3 categorias: Ensinar algo (ex: "3 dicas para..."), Mostrar bastidores (ex: "como eu faço..."), Entreter (ex: "meme relacionado ao nicho"). Mínimo 6 ideias por categoria.'},
+    {n:'2',title:'Criar o primeiro post de valor (25 min)',desc:'Escolher 1 ideia da categoria "Ensinar algo" e criar o post no Canva. Texto + visual.'},
+    {n:'3',title:'Análise de posts (10 min)',desc:'Cada aluno mostra o post. Análise: o título chama atenção? O visual está com a cara da marca? Alguém pararia para ler isso no feed?'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO: "Scroll Stop"\nO instrutor faz scroll rápido em fotos genéricas. Os alunos gritam "STOP!" quando acharem que um post os faria parar de rolar. Eles explicam por quê. Depois aplicam o que aprenderam: refazem o próprio post para ser mais "Scroll Stop".'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['Mapa com 20 ideias de conteúdo: +20 XP','Post de valor criado: +25 XP','Post melhorado no desafio: +15 XP'],
+   nextMission:'Próxima missão: storytelling — como contar histórias que vendem!'}
+ ],
+ challenge:'📱 Missão Semanal: CRIADOR\nCrie 1 post por dia durante 3 dias para sua marca (não precisa postar de verdade, mas crie o visual). Nos 3 posts, use os 3 tipos: ensinar, bastidores, entreter.'},
+
+{id:12,phase:3,num:'3.2',title:'Storytelling que Vende',skill:'Narrativa',xp:70,
+ objetivo:'Aprender a contar histórias que conectam emocionalmente e criam desejo pelo produto.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Abertura',text:'Por que você chora em filmes quando personagens ficcionais morrem, mas não sente nada vendo um dado frio? Porque o cérebro humano é programado para histórias. Toda boa venda começa com uma boa história. Hoje vocês vão aprender a contar histórias que vendem.',tip:'Conte uma história curta e emocionante sobre um produto — não fale o que é o produto, só conte a história. Depois revele.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'A estrutura da história que vende',text:'Toda boa história de negócio tem: (1) Herói = seu cliente. (2) Problema = o que ele enfrenta. (3) Guia = sua marca aparece para ajudar. (4) Plano = como usar seu produto. (5) Transformação = como a vida dele melhora. O erro mais comum é colocar a MARCA como herói. O herói deve ser sempre o CLIENTE.',tip:'Usar o exemplo de uma propaganda da Nike: o herói é o atleta, não a Nike.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Escrever a história da marca (20 min)',desc:'Cada aluno escreve a história de um cliente fictício que usou o produto/serviço e teve a vida melhorada. Seguindo a estrutura dos 5 passos.'},
+    {n:'2',title:'Transformar em post/legenda (25 min)',desc:'Adaptar a história para um post de Instagram: começo que prende (gancho), meio que envolve, final com chamada para ação.'},
+    {n:'3',title:'Voz em vídeo (15 min)',desc:'Gravar um áudio ou vídeo de 30 segundos contando a história do cliente. Pode ser rústico — o conteúdo importa mais que a produção.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO: "Vendedor de Histórias"\nO instrutor dá um produto aleatório (ex: um lápis, uma meia, uma bolsa). Cada aluno tem 5 minutos para criar UMA história de 1 minuto que faça qualquer pessoa querer comprar esse produto. Não pode falar o preço nem as características técnicas — só contar a história.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['História do cliente criada: +25 XP','Post/legenda com storytelling: +25 XP','Vídeo ou áudio gravado: +20 XP'],
+   nextMission:'Próxima missão: criar um vídeo curto de verdade para a marca!'}
+ ],
+ challenge:'🎬 Missão Semanal: CONTADOR DE HISTÓRIAS\nEscolha um produto que você usa no dia a dia. Escreva a história de como sua vida seria diferente sem ele — usando a estrutura dos 5 passos. Traga escrita.'},
+
+{id:13,phase:3,num:'3.3',title:'Criando Vídeo Curto',skill:'Produção de Conteúdo',xp:80,
+ objetivo:'Criar um vídeo curto (Reels/TikTok style) para a marca, desenvolvendo confiança em frente à câmera.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Briefing',text:'Reels e TikTok mudaram tudo. Hoje uma criança de 11 anos com um celular pode ter mais alcance que uma empresa com 20 anos de mercado. O vídeo curto é a ferramenta de marketing mais poderosa que existe. E é gratuita. Hoje vocês vão criar o primeiro.',tip:'Mostrar exemplos de vídeos curtos de conteúdo empreendedor com milhões de views feitos por jovens.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'Anatomia do vídeo curto perfeito',text:'Segundos 0–3: Gancho — uma pergunta, fato chocante ou afirmação polêmica. Segundos 3–20: Desenvolvimento — entrega o conteúdo prometido. Segundos 20–30: CTA — "Salva esse vídeo", "Comenta", "Me segue". Regra de ouro: se a primeira frase não prende, ninguém vê o resto.',tip:'Analisar ao vivo um vídeo curto e identificar cada parte.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Roteiro (15 min)',desc:'Criar roteiro de um vídeo de 30 segundos sobre a marca. Incluir: gancho, 3 pontos de conteúdo, CTA. Escrever cada fala palavra por palavra.'},
+    {n:'2',title:'Gravar (30 min)',desc:'Gravar o vídeo no celular. Pode ser simples: só o rosto falando, ou com texto na tela. Gravar pelo menos 3 takes — escolher o melhor.'},
+    {n:'3',title:'Assistir e avaliar (15 min)',desc:'Assistir o próprio vídeo. O que gostou? O que mudaria? O gancho prendeu? A mensagem ficou clara?'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO: "Troca de Marcas"\nCada aluno cria um vídeo de 20 segundos MAS sobre a marca do COLEGA — sem combinar o roteiro. Isso força criatividade e mostra como outsiders enxergam a marca de um jeito diferente.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['Roteiro criado: +20 XP','Vídeo gravado: +35 XP','Assistiu e avaliou o próprio vídeo: +25 XP'],
+   nextMission:'Próxima missão: copywriting — como escrever textos que fazem as pessoas agirem!'}
+ ],
+ challenge:'🎬 Missão Semanal: DIRETOR\nGrave mais 2 vídeos curtos para a marca (diferentes do que fez em aula). Cada um com um gancho diferente. Mostre para alguém de fora e observe: eles assistiram até o final?'},
+
+{id:14,phase:3,num:'3.4',title:'Copywriting Básico',skill:'Escrita Persuasiva',xp:75,
+ objetivo:'Aprender a escrever textos que chamam atenção, criam desejo e levam à ação.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Abertura',text:'Copywriting é a arte de escrever para vender. Não é mentira — é persuasão. Todo anúncio que você viu e ficou com vontade de comprar alguma coisa: teve um bom copywriter por trás. Hoje vocês vão aprender essa habilidade que vale ouro no mundo digital.',tip:'Mostrar dois anúncios do mesmo produto: um fraco e um com copy bom. Perguntar qual convence mais.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'As 3 fórmulas de copy que sempre funcionam',text:'Fórmula PAS: Problema → Agitação → Solução. "Cansado de não conseguir aprender inglês? (P) Você estuda mas na hora de falar trava... (A) Conheça o método que te faz falar em 30 dias (S)." Fórmula AIDA: Atenção → Interesse → Desejo → Ação. Fórmula Antes/Depois: "Antes eu tinha [problema]. Agora eu [resultado]."',tip:'Praticar ao vivo: criar uma frase PAS para a marca de um dos alunos juntos.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Criar 3 headlines (20 min)',desc:'Headline = título que chama atenção. Criar 3 headlines para a própria marca usando: uma pergunta, uma promessa de resultado, um "segredo revelado". Testar qual é mais impactante.'},
+    {n:'2',title:'Copy completa de um post (25 min)',desc:'Escrever a legenda completa de um post usando a fórmula AIDA. Incluir: gancho (atenção), contexto (interesse), benefício emocional (desejo), instrução (ação).'},
+    {n:'3',title:'Reescrever o pitch (15 min)',desc:'Reescrever o pitch de 30 segundos usando técnicas de copywriting. Ficou melhor?'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO: "Copy Battle"\nO instrutor dá o mesmo produto para os dois alunos. Cada um escreve uma copy diferente. O instrutor lê as duas em voz alta (sem revelar quem escreveu). Votam em qual convenceria mais. Debatem o por quê.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['3 headlines criadas: +20 XP','Copy AIDA completa: +30 XP','Pitch melhorado com copy: +25 XP'],
+   nextMission:'Próxima missão: criando um calendário de conteúdo — como manter consistência!'}
+ ],
+ challenge:'✍️ Missão Semanal: COPYWRITER\nEscolha um produto que você usa. Escreva 3 legendas para posts sobre ele usando cada uma das 3 fórmulas (PAS, AIDA, Antes/Depois). Traga as 3 escritas.'},
+
+{id:15,phase:3,num:'3.5',title:'Calendário de Conteúdo',skill:'Planejamento',xp:65,
+ objetivo:'Criar um plano de conteúdo semanal, entendendo consistência como diferencial competitivo.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Briefing',text:'A diferença entre quem cresce nas redes e quem fica estagnado é uma só: consistência. Não é o melhor conteúdo. Não é o mais bonito. É quem aparece toda semana, sem falta. E a única forma de fazer isso sem enlouquecer é ter um plano. Hoje vocês montam o plano.',tip:'Mostrar calendário de algum criador de conteúdo (público) para ilustrar.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'Como montar um calendário de conteúdo',text:'Um calendário simples tem: Dia da semana, Formato (post, story, vídeo), Tema (ensinar, bastidores, entreter), Título provisório. Não precisa ser complexo. Uma tabela no papel já funciona. O segredo: criar o conteúdo da semana em um único dia — economiza tempo e mantém consistência.',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Calendário mensal (25 min)',desc:'Criar o calendário de 4 semanas para a marca. Decidir: quantos posts por semana (mínimo 3), quais dias, qual formato em cada dia, qual tema em cada dia.'},
+    {n:'2',title:'Criar conteúdo da semana 1 (30 min)',desc:'Criar os 3 primeiros posts do calendário no Canva. Já deixar prontos e agendados (ou salvos).'},
+    {n:'3',title:'Definir rotina de criação (5 min)',desc:'Decidir: qual dia da semana será o "dia de criação" — quando produzirá o conteúdo de toda a semana.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO: "Conteúdo Urgente"\nO instrutor anuncia: "Vocês têm 10 minutos para criar um post sobre [tema surpresa] para a marca de vocês." O tema é algo completamente fora do nicho (ex: Dia do Sorvete, Volta às Aulas). Como adaptar o tema para a sua marca? Isso treina criatividade sob pressão.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['Calendário mensal criado: +25 XP','3 posts da semana 1 prontos: +25 XP','Rotina de criação definida: +15 XP'],
+   nextMission:'Próxima missão (última da Fase 3): montando o portfólio de conteúdo completo!'}
+ ],
+ challenge:'📅 Missão Semanal: CONSISTÊNCIA\nSiga o calendário criado e crie os posts planejados para a semana. Traga na próxima aula para revisão.'},
+
+{id:16,phase:3,num:'3.6',title:'Portfólio de Conteúdo',skill:'Comunicação',xp:85,
+ objetivo:'Consolidar e apresentar todo o conteúdo criado na Fase 3, desenvolvendo narrativa de apresentação.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F5C842',
+   script:[
+    {label:'Briefing de celebração',text:'Essa é a última missão da Fase 3. Quando saírem hoje, vão ter criado mais conteúdo do que muitos donos de negócio criam em meses. Posts, vídeo, legendas, calendário. Tudo com a cara da sua marca. Hoje é o dia de mostrar esse trabalho.',tip:'Organize como um mini-evento de apresentação de portfólio.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F5C842',
+   script:[
+    {label:'Por que portfólio importa',text:'Portfólio é a prova de que você sabe fazer. No mundo digital, mostrar o trabalho é mais poderoso do que falar sobre ele. Um portfólio bem organizado abre portas: para clientes, parceiros, e no futuro, para empregos e investimentos.',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F5C842',
+   steps:[
+    {n:'1',title:'Montar o portfólio digital (30 min)',desc:'Organizar em uma pasta (Google Drive, Canva, físico) todos os conteúdos criados: posts, legendas, vídeo, calendário. Fazer uma capa com o logo e o título "Portfólio de Conteúdo — [Nome da Marca]".'},
+    {n:'2',title:'Ensaiar apresentação (15 min)',desc:'Preparar uma apresentação de 5 minutos do portfólio: o que criou, como criou, o que aprendeu, o que faria diferente.'},
+    {n:'3',title:'Apresentação ao vivo (15 min)',desc:'Apresentar o portfólio. Falar com confiança sobre as escolhas criativas.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F5C842',
+   game:'🎲 DESAFIO FINAL FASE 3: "Pitch de Conteúdo"\nCada aluno faz o papel de diretor de conteúdo e apresenta: qual foi o melhor conteúdo que criou e por quê? O que faria nos próximos 30 dias se a marca fosse real? Convence o instrutor (investidor) de que a estratégia de conteúdo é sólida.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F5C842',
+   xpItems:['Portfólio organizado: +30 XP','Apresentação completa: +35 XP','NÍVEL 4 DESBLOQUEADO: +20 XP bônus'],
+   nextMission:'FASE 3 CONCLUÍDA! Na Fase 4 você vai aprender marketing — como encontrar seu cliente e fazer ele te encontrar!'}
+ ],
+ challenge:'📁 Missão de Transição\nAdicione mais 1 conteúdo ao portfólio antes da próxima aula. Qualquer formato. Mostre que a consistência continua mesmo fora das aulas!'},
+
+// ── FASE 4 ──────────────────────────────────────────────
+{id:17,phase:4,num:'4.1',title:'Quem é seu Cliente?',skill:'Marketing',xp:65,
+ objetivo:'Entender profundamente o cliente ideal e criar um avatar de cliente detalhado.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Abertura',text:'A empresa mais bem-sucedida do mundo não vende para todo mundo. A Nike não vende para todo mundo. O Nubank não é para todo mundo. O segredo é: quanto mais específico for o cliente que você quer atingir, mais eficiente é o seu marketing. Hoje vocês vão criar o perfil detalhado do cliente ideal.',tip:'Pergunta provocadora: "Para quem exatamente você quer vender?"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'O que é um avatar de cliente',text:'Avatar de cliente é uma pessoa fictícia que representa seu cliente ideal. Tem nome, idade, rotina, sonhos, medos, onde passa o tempo online, o que assiste, o que compra. Quanto mais detalhado o avatar, mais certeiro seu marketing. Você não fala para "todo mundo" — você fala para essa pessoa específica.',tip:'Criar um exemplo ao vivo: "Vamos criar o avatar do cliente de uma marca de tênis para skatistas de 12 anos."'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'Criar o Avatar (35 min)',desc:'Dar vida ao cliente ideal: Nome, Idade, Cidade, O que faz nas horas livres, Redes sociais favoritas, 3 sonhos, 3 medos/frustrações, O que consome (YouTube, Instagram, TikTok?), Quanto gasta por mês, Por que compraria o produto.'},
+    {n:'2',title:'Desenhar o Avatar (15 min)',desc:'Fazer um desenho simples ou colagem do avatar. Dar rosto e estilo visual para a persona.'},
+    {n:'3',title:'Escrever uma carta para o Avatar (10 min)',desc:'Escrever uma carta de 5 linhas PARA o avatar. Como se falasse diretamente com ele. Isso calibra a linguagem do marketing.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO: "Entrevista com o Avatar"\nUm aluno faz o papel do Avatar do colega. O outro faz as perguntas como se fosse pesquisar para lançar um produto. 5 perguntas mínimo. Depois trocam. O exercício revela insights sobre o cliente que não estavam no papel.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['Avatar completo criado: +30 XP','Desenho do avatar: +15 XP','Carta para o avatar escrita: +20 XP'],
+   nextMission:'Próxima missão: descobrir as dores e desejos do cliente — a chave para criar ofertas irresistíveis!'}
+ ],
+ challenge:'🔍 Missão Semanal: DETETIVE\nConverse com alguém que se parece com seu avatar (amigo, familiar). Faça 5 perguntas sobre o problema que sua empresa resolve. Anote as respostas exatas — as palavras que eles usam são ouro para o marketing.'},
+
+{id:18,phase:4,num:'4.2',title:'Dores, Desejos e Gatilhos',skill:'Psicologia de Vendas',xp:75,
+ objetivo:'Entender a psicologia do cliente: o que causa dor, o que gera desejo e o que dispara a decisão de compra.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Abertura',text:'As pessoas compram por duas razões: fugir de uma dor ou buscar um prazer. Todo produto que você comprou na vida resolveu uma dor ou realizou um desejo. Entender isso é entender como funciona qualquer venda. Hoje vocês vão mergulhar na cabeça do cliente.',tip:'Exercício: "Pensa na última compra que você fez por impulso. O que motivou?"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'Dores, desejos e gatilhos mentais',text:'Dor: o que incomoda, frustra, preocupa o cliente. Desejo: o que ele sonha, quer alcançar, quer ser. Gatilho: o que dispara a decisão de comprar agora (escassez, urgência, prova social, autoridade, reciprocidade). Exemplos: Dor = "meu cabelo cai muito". Desejo = "quero cabelo grosso e bonito". Gatilho = "só 10 unidades" ou "9.843 clientes satisfeitos".',tip:'Aplicar em exemplos do dia a dia dos alunos.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'Mapa de Dores e Desejos do Avatar (25 min)',desc:'Para o avatar criado na aula anterior: listar 5 dores principais e 5 desejos principais. Ser específico — não "quero ser feliz", mas "quero que meus amigos me invejarem o setup do computador".'},
+    {n:'2',title:'Criar copy baseada em dor/desejo (20 min)',desc:'Criar 2 versões de copy para o produto: uma falando à DOR do cliente, outra falando ao DESEJO. Qual é mais impactante?'},
+    {n:'3',title:'Aplicar gatilhos mentais (15 min)',desc:'Adicionar um gatilho mental em cada copy: escassez, urgência, prova social ou autoridade. Reescrever com o gatilho incluído.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO: "Psicólogo do Consumidor"\nO instrutor mostra 5 produtos aleatórios. Para cada um, os alunos têm 1 minuto para identificar: qual é a dor que resolve, qual é o desejo que satisfaz, qual gatilho mental é mais provável de funcionar. Quem acertar mais leva +20 XP.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['Mapa de dores e desejos criado: +25 XP','2 copys criadas: +25 XP','Gatilhos aplicados: +25 XP'],
+   nextMission:'Próxima missão: proposta de valor — como comunicar o motivo pelo qual seu produto é a melhor escolha!'}
+ ],
+ challenge:'🧠 Missão Semanal: OBSERVADOR DE GATILHOS\nAo longo da semana, identifique 5 gatilhos mentais em propagandas, embalagens, sites. Foto + análise: qual gatilho é, como está sendo usado, e se funcionou em você.'},
+
+{id:19,phase:4,num:'4.3',title:'Proposta de Valor',skill:'Posicionamento',xp:70,
+ objetivo:'Criar a proposta de valor única que diferencia a marca da concorrência.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Abertura',text:'Por que alguém escolheria você e não o concorrente? Essa é a pergunta que separa negócios que crescem de negócios que ficam estagnados. A resposta é a proposta de valor: a razão clara, específica e única pela qual o seu cliente deve escolher você.',tip:'Exemplo: "Qual é a proposta de valor do Google? E da Apple? E do Nubank?"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'Como criar uma proposta de valor',text:'Fórmula: "Nós ajudamos [quem] a [fazer o quê / alcançar o quê] através de [como] sem [medo/frustração do cliente]." Exemplos: "Ajudamos jovens criativos a criar marcas profissionais em horas, não meses, sem precisar de designer." "Ajudamos crianças de 8–12 anos a aprender programação de forma divertida, sem tédio."',tip:'Praticar ao vivo: criar uma proposta de valor para uma marca fictícia.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'5 versões da proposta de valor (20 min)',desc:'Criar 5 versões diferentes da proposta de valor para a própria marca. Cada uma com foco diferente: resultado, velocidade, simplicidade, exclusividade, emoção.'},
+    {n:'2',title:'Escolher e refinar (20 min)',desc:'Selecionar a mais forte. Testar em voz alta. Está clara? Específica? Diferente? Refinar até ficar perfeita.'},
+    {n:'3',title:'Aplicar na identidade (20 min)',desc:'Adicionar a proposta de valor: no manual de marca, na bio da marca, no pitch. Tudo deve comunicar a mesma coisa.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO: "Diferenciação Extrema"\nO instrutor dá um produto ultra-commodity (ex: água, sal, papel). Cada aluno deve criar uma proposta de valor que justifique cobrar 10x mais por esse produto do que qualquer concorrente. Criatividade máxima!'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['5 versões criadas: +20 XP','Proposta de valor finalizada: +25 XP','Aplicada na identidade: +25 XP'],
+   nextMission:'Próxima missão: criando o anúncio da marca!'}
+ ],
+ challenge:'📝 Missão Semanal\nReescreva a proposta de valor depois de 3 dias. Mudou algo? Ficou mais clara? Traga as duas versões (original + revisada).'},
+
+{id:20,phase:4,num:'4.4',title:'Criando Anúncio',skill:'Marketing Pago',xp:75,
+ objetivo:'Entender como funciona publicidade digital e criar um anúncio simples para a marca.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Abertura',text:'Conteúdo orgânico cresce devagar. Anúncios amplificam. Com R$10 por dia no Instagram, uma empresa pequena pode atingir 5.000 pessoas novas. Com um bom anúncio, esse alcance se transforma em clientes. Hoje vocês vão criar o primeiro anúncio da marca.',tip:'Mostrar exemplos de anúncios que funcionaram bem — no feed do Instagram ou YouTube.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'Anatomia de um anúncio que converte',text:'Todo anúncio que funciona tem: (1) Visual chamativo — para a rolagem para nos primeiros 0.3 segundos. (2) Headline — título que fala diretamente à dor ou ao desejo. (3) Corpo — explica o que é e por que importa. (4) CTA — "Clique aqui", "Saiba mais", "Quero isso". Sem CTA, a pessoa admira mas não age.',tip:'Analisar um anúncio real ao vivo — identificar cada elemento.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'Criar 2 anúncios diferentes (35 min)',desc:'Criar 2 versões de anúncio no Canva: Versão A — focado em dor ("Cansado de...?"). Versão B — focado em desejo ("Imagine ter..."). Mesmo produto, abordagens diferentes. Isso é um teste A/B real!'},
+    {n:'2',title:'Simular segmentação (15 min)',desc:'Decidir: se fosse um anúncio real, para quem enviaria? Idade, interesses, localização. Escrever a "audiência" do anúncio.'},
+    {n:'3',title:'Apresentar e debater (10 min)',desc:'Cada aluno mostra os 2 anúncios. Qual o outro acha que funcionaria melhor? Por quê?'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO: "Qual Anúncio Clicaria?"\nO instrutor mostra 6 anúncios reais de diferentes produtos. Os alunos votam em qual clicariam e justificam. Depois analisam juntos: o que os bons tinham que os ruins não tinham?'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['2 anúncios criados (A/B): +35 XP','Segmentação definida: +15 XP','Apresentação e debate: +25 XP'],
+   nextMission:'Próxima missão: tráfego orgânico x pago — como crescer sem (ou com pouco) dinheiro!'}
+ ],
+ challenge:'📢 Missão Semanal: CAÇADOR DE ANÚNCIOS\nSalve 5 anúncios que apareceram para você esta semana (screenshot). Anote: o que chamou atenção, qual o CTA, você clicaria? Por quê?'},
+
+{id:21,phase:4,num:'4.5',title:'Tráfego Orgânico',skill:'Crescimento',xp:70,
+ objetivo:'Entender como crescer sem gastar em anúncios: SEO, hashtags, consistência e colaborações.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Abertura',text:'Você pode crescer sem gastar nada. Mas leva mais tempo e consistência. Essa é a escolha: pagar para crescer rápido (tráfego pago) ou investir tempo para crescer de forma orgânica. A maioria das marcas mais fortes começou orgânico. Hoje vamos aprender a estratégia gratuita.',tip:'Exemplo: como youtubers e tiktokers cresceram sem dinheiro — só com conteúdo e consistência.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'As 4 estratégias de tráfego orgânico',text:'(1) Hashtags estratégicas — não as mais populares, mas as de nicho (50k–500k posts). (2) Constância — aparecer toda semana sem falta. (3) Colaboração — fazer conteúdo com outra marca/pessoa do nicho. (4) SEO — usar palavras-chave no título e legendas para ser encontrado no Google/YouTube.',tip:'Demonstração prática: pesquisar hashtags no Instagram ao vivo.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'Pesquisa de hashtags (20 min)',desc:'Para a marca, pesquisar 30 hashtags divididas em 3 grupos: mega (1M+), grandes (100k–1M), nicho (10k–100k). Criar uma "biblioteca de hashtags" para usar nos posts.'},
+    {n:'2',title:'Estratégia de colaboração (20 min)',desc:'Identificar 3 marcas/criadores com os quais a sua marca poderia fazer collab. Como seria? Que conteúdo poderiam criar juntos?'},
+    {n:'3',title:'Plano de 30 dias orgânico (20 min)',desc:'Criar um plano de crescimento orgânico de 30 dias: frequência de posts, hashtags por categoria, 1 colaboração planejada.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO: "Crescimento Simulado"\nSimulação: cada aluno tem "100 seguidores virtuais" e 30 dias. A cada estratégia correta que apresentar (hashtag, frequência, collab), o instrutor adiciona seguidores virtuais. Quem terminar com mais "seguidores" ganha o desafio.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['Biblioteca de hashtags criada: +20 XP','Estratégia de collab: +20 XP','Plano de 30 dias: +30 XP'],
+   nextMission:'Próxima missão (última da Fase 4): Marketing completo — revisão e apresentação!'}
+ ],
+ challenge:'📱 Missão Semanal\nPesquise 3 hashtags de nicho para sua marca que você não tinha pensado antes. Teste criar 1 post usando essas hashtags e observe o alcance.'},
+
+{id:22,phase:4,num:'4.6',title:'Estratégia de Marketing Completa',skill:'Estratégia',xp:90,
+ objetivo:'Consolidar toda a fase de marketing em uma estratégia coesa e apresentável.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#F97316',
+   script:[
+    {label:'Briefing de celebração',text:'Última missão da Fase 4. Vocês passaram por avatar de cliente, dores e desejos, proposta de valor, anúncios e crescimento orgânico. Hoje juntam tudo em uma estratégia de marketing que qualquer investidor entenderia.',tip:''}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#F97316',
+   script:[
+    {label:'O que é uma estratégia de marketing',text:'Estratégia de marketing = decidir quem você quer atingir, como vai atingir, com qual mensagem e com qual orçamento. É o plano que conecta o produto ao cliente. Sem estratégia, você gasta tempo e dinheiro em ações aleatórias.',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#F97316',
+   steps:[
+    {n:'1',title:'Montar o dossiê de marketing (35 min)',desc:'Compilar em 1 documento: Avatar do cliente, Proposta de valor, Estratégia de conteúdo (calendário), 2 anúncios criados, Plano de crescimento orgânico.'},
+    {n:'2',title:'Criar apresentação visual (15 min)',desc:'Montar no Canva uma apresentação de 5 slides do plano de marketing completo.'},
+    {n:'3',title:'Preparar pitch de marketing (10 min)',desc:'5 minutos de apresentação: "Quem é nosso cliente, como vamos falar com ele e como vamos crescer."'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#F97316',
+   game:'🎲 DESAFIO FINAL FASE 4: "CMO por Um Dia"\nCada aluno apresenta sua estratégia de marketing completa como se fosse o CMO (Diretor de Marketing) da própria empresa. Apresentação de 5 min. Instrutor faz 3 perguntas difíceis. Nota-se: clareza, coerência e confiança.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#F97316',
+   xpItems:['Dossiê de marketing completo: +35 XP','Apresentação visual: +25 XP','NÍVEL 5 DESBLOQUEADO: +30 XP bônus'],
+   nextMission:'FASE 4 CONCLUÍDA! Na Fase 5, você vai montar o funil de vendas — o sistema que transforma estranhos em clientes!'}
+ ],
+ challenge:'🚀 Missão de Transição\nPesquise o que é um "funil de vendas". Traga uma explicação de 5 linhas com suas próprias palavras. Bônus: desenhe um funil e escreva o que acontece em cada etapa.'},
+
+// ── FASE 5 ──────────────────────────────────────────────
+{id:23,phase:5,num:'5.1',title:'O Funil de Vendas',skill:'Funil',xp:65,
+ objetivo:'Entender o conceito de funil de vendas e mapear a jornada completa do cliente.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Abertura',text:'Pensa num funil de cozinha. Você coloca um líquido no topo — muita coisa entra. No fundo sai só o que passou. No funil de vendas, no topo entram muitas pessoas curiosas. No fundo saem os clientes que compraram. Hoje vocês vão entender cada etapa desse funil.',tip:'Trazer um funil físico de cozinha para a aula. Demonstrar o conceito com água e areia.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'As 4 etapas do funil',text:'TOPO — Descoberta: a pessoa ainda não te conhece. Você aparece (post, vídeo, anúncio). MEIO — Interesse: ela começa a seguir, salva conteúdo, consome mais. FUNDO — Decisão: ela está quase comprando — só precisa do empurrão. COMPRA — Ação: ela compra! E depois: fidelização — ela compra de novo e indica.',tip:'Desenhar o funil no quadro em tempo real enquanto explica.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Mapear a jornada do cliente (25 min)',desc:'Para a própria marca, descrever o que acontece em cada etapa do funil: como a pessoa descobre, o que faz no meio, o que decide, como compra. Ser específico.'},
+    {n:'2',title:'Criar conteúdo para cada etapa (25 min)',desc:'Para cada etapa do funil, criar 1 exemplo de conteúdo/ação: topo (post de descoberta), meio (dica de valor), fundo (oferta especial), pós-compra (mensagem de obrigado).'},
+    {n:'3',title:'Visualizar o funil (10 min)',desc:'Desenhar o funil visualmente no Canva ou em papel, com os conteúdos de cada etapa.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO: "Em que etapa estou?"\nO instrutor descreve cenários de comportamento de cliente (ex: "Essa pessoa salvou 5 posts seus mas nunca comprou"). Os alunos identificam em qual etapa do funil está e o que fariam para levá-la para a próxima etapa.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['Jornada mapeada: +25 XP','Conteúdo por etapa criado: +25 XP','Funil visualizado: +15 XP'],
+   nextMission:'Próxima missão: criando a isca digital — o presente que atrai clientes para o funil!'}
+ ],
+ challenge:'🌀 Missão Semanal\nPense em 3 marcas que você segue. Em qual etapa do funil você está com cada uma? O que elas fizeram para te colocar nessa etapa?'},
+
+{id:24,phase:5,num:'5.2',title:'A Isca Digital',skill:'Captação',xp:75,
+ objetivo:'Criar uma isca digital que atrai o cliente ideal para dentro do funil de vendas.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Abertura',text:'Antes de vender, você precisa conseguir a atenção das pessoas. E antes disso, precisa ter um motivo para elas chegarem até você. A isca digital é o presente que você oferece de graça em troca do contato da pessoa — email, WhatsApp, seguir seu perfil. É o início do funil.',tip:'Exemplos de iscas que os alunos já receberam ou viram: e-books gratuitos, quizzes, checklists, vídeo-aula gratuita.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'Tipos de isca digital',text:'Checklist: "10 coisas pra fazer antes de...". Mini-guia: "Como fazer X em Y passos". Quiz: "Descubra qual é o seu...". Template: "Modelo pronto para...". Vídeo exclusivo: "Aula gratuita sobre...". A regra de ouro: a isca deve resolver um problema pequeno mas real do avatar. Deve parecer tão boa que a pessoa pense: "Isso, e é de graça?"',tip:'Criar um exemplo de isca ao vivo para uma marca fictícia.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Decidir o tipo de isca (10 min)',desc:'Qual formato funciona melhor para o avatar? Checklist, guia, quiz, template ou vídeo? Justificar a escolha.'},
+    {n:'2',title:'Criar a isca (40 min)',desc:'Criar a isca digital real no Canva: capa, conteúdo (mínimo 3 páginas ou itens), design na identidade da marca. A isca precisa parecer profissional.'},
+    {n:'3',title:'Criar a promessa da isca (10 min)',desc:'Escrever 1 frase que descreve a isca de forma irresistível: "Baixe grátis: [título da isca] e descubra como [benefício específico] em [tempo]."'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO: "Eu Baixaria?"\nCada aluno apresenta a isca digital para o colega. O colega decide: "Eu baixaria?" e justifica por quê sim ou por quê não. Feedback honesto para melhorar a isca.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['Isca digital criada: +35 XP','Promessa da isca escrita: +20 XP','Apresentou e recebeu feedback: +20 XP'],
+   nextMission:'Próxima missão: criando a lista de contatos — como capturar leads para o funil!'}
+ ],
+ challenge:'🎁 Missão Semanal\nMelhore a isca digital com base no feedback recebido. Traga a versão melhorada.'},
+
+{id:25,phase:5,num:'5.3',title:'Lista de Contatos e WhatsApp',skill:'Relacionamento',xp:70,
+ objetivo:'Entender como construir uma lista de contatos e usar o WhatsApp como ferramenta de vendas.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Abertura',text:'O maior ativo de qualquer negócio digital é a lista de contatos. Não os seguidores — esses pertencem à plataforma. A lista de contatos é sua. O Instagram pode fechar. O TikTok pode ser banido. Mas sua lista fica com você para sempre. Hoje vocês vão entender como construir isso.',tip:'Exemplo concreto: contar sobre empresas que perderam tudo quando plataformas fecharam ou bloquearam suas contas.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'WhatsApp como ferramenta de vendas',text:'WhatsApp tem 98% de taxa de abertura. Email tem 20%. Isso significa: de cada 100 mensagens enviadas no WhatsApp, 98 são abertas. Estratégia simples: (1) Isca digital → pessoa envia mensagem. (2) Você responde com a isca + se apresenta. (3) Começa a enviar conteúdo de valor semanalmente. (4) Faz a oferta quando o timing é certo.',tip:'Criar roteiro de abordagem no WhatsApp ao vivo.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Script de boas-vindas (20 min)',desc:'Criar o script de resposta quando alguém pede a isca digital no WhatsApp: apresentação, entrega da isca, pergunta que inicia conversa.'},
+    {n:'2',title:'Sequência de 3 mensagens (30 min)',desc:'Criar 3 mensagens para enviar ao longo de uma semana para quem baixou a isca: Dia 1 — entrega + boas-vindas. Dia 3 — dica de valor. Dia 7 — oferta suave.'},
+    {n:'3',title:'Criar lista de 10 contatos fictícios (10 min)',desc:'Simular a lista: criar 10 "perfis" de contatos que baixaram a isca, com nome e o que mais precisa.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO: "Atendente Campeão"\nRoleplay: um aluno faz o papel de cliente que baixou a isca e manda mensagem. O outro responde seguindo o script. Depois avalia: foi natural? Gerou interesse? Trocam os papéis. O instrutor dá feedback.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['Script de boas-vindas: +20 XP','Sequência de 3 mensagens: +30 XP','Roleplay completado: +20 XP'],
+   nextMission:'Próxima missão: a oferta irresistível — como apresentar o produto de um jeito que a pessoa sente que seria louca de não comprar!'}
+ ],
+ challenge:'💬 Missão Semanal\nPratica o script com alguém de fora (familiar, amigo). Peça para essa pessoa responder naturalmente como se fosse um cliente. Anote o que funcionou e o que precisa melhorar.'},
+
+{id:26,phase:5,num:'5.4',title:'A Oferta Irresistível',skill:'Vendas',xp:80,
+ objetivo:'Criar uma oferta de produto tão boa que parece absurdo não aceitar.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Abertura',text:'Uma oferta irresistível não é dar desconto. É empilhar tanto valor que a pessoa pensa: "Mas como isso custa tão pouco?" Alex Hormozi, um dos maiores especialistas em vendas do mundo, diz: "Torne sua oferta tão boa que as pessoas se sintam burras de não aceitar." Hoje vocês criam essa oferta.',tip:'Exemplo: mostrar uma oferta bem feita (pode ser de um curso online ou produto físico que empilha bônus).'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'Como montar uma oferta irresistível',text:'Uma oferta irresistível tem: (1) O produto principal — o que a pessoa quer. (2) Bônus complementares — coisas que amplificam o resultado. (3) Garantia — tira o risco da compra. (4) Escassez ou urgência — motivo para comprar agora. (5) Preço com âncora — mostrar o valor antes do preço. Fórmula: "Por apenas [preço], você leva [produto] + [bônus 1] + [bônus 2] + [garantia]. Isso vale [valor total], mas hoje é só [preço]."',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Montar a oferta (30 min)',desc:'Criar a oferta completa: produto principal, 2 bônus relevantes para o avatar, garantia de satisfação, elemento de escassez. Calcular o valor total vs. o preço cobrado.'},
+    {n:'2',title:'Criar a página de oferta (20 min)',desc:'No Canva, criar um visual simples da oferta: título chamativo, o que inclui, bônus, preço, chamada para ação.'},
+    {n:'3',title:'Script de apresentação da oferta (10 min)',desc:'Escrever como apresentaria a oferta no WhatsApp: 5 frases que empilham valor e terminam com CTA.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO: "Fechar a Venda"\nRoleplay completo: cliente expressa interesse. Vendedor apresenta a oferta. Cliente apresenta 3 objeções ("é caro", "preciso pensar", "já tenho um"). Vendedor rebate cada objeção. Trocam papéis. +15 XP para cada objeção rebatida com sucesso.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['Oferta completa criada: +35 XP','Página visual da oferta: +25 XP','Script de apresentação: +20 XP'],
+   nextMission:'Próxima missão: o fechamento — as técnicas para transformar interesse em venda confirmada!'}
+ ],
+ challenge:'💰 Missão Semanal: TESTE DE CAMPO\nApresente sua oferta para alguém de fora. Observe as reações: o que chamou atenção? Levantou alguma objeção? Como você respondeu? Traga o relato.'},
+
+{id:27,phase:5,num:'5.5',title:'Técnicas de Fechamento',skill:'Vendas',xp:85,
+ objetivo:'Aprender as principais técnicas de fechamento de vendas e superar objeções com confiança.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Abertura',text:'A venda não acontece quando você apresenta o produto. A venda acontece quando você faz a pergunta certa no momento certo. A maioria das pessoas apresenta e espera. Os melhores vendedores do mundo conduzem. Hoje vocês aprendem a conduzir.',tip:'Exercício de aquecimento: quem tem o maior número de nãos na vida é quem tem mais yeses. Objeção não é rejeição — é pedido de mais informação.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'5 técnicas de fechamento',text:'(1) Fechamento direto: "Você quer começar hoje ou prefere amanhã?" (2) Fechamento por escassez: "Só tenho 3 vagas. Você quer garantir a sua?" (3) Fechamento por resumo: "Você disse que precisa de X. O produto faz exatamente isso. Faz sentido avançar?" (4) Fechamento por pergunta: "O que impediria você de começar hoje?" (5) Fechamento por silêncio: fazer a oferta e ficar em silêncio — quem fala primeiro, perde.',tip:'Demonstrar cada técnica ao vivo com um aluno.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Respostas para as 5 objeções clássicas (25 min)',desc:'Criar uma resposta preparada para: "Tá caro", "Preciso pensar", "Não tenho dinheiro agora", "Já tenho algo parecido", "Vou falar com [alguém]". Escrever cada resposta.'},
+    {n:'2',title:'Script completo de venda (25 min)',desc:'Montar o script completo: abertura → apresentação → oferta → objeção → fechamento. Uma conversa de vendas do começo ao fim.'},
+    {n:'3',title:'Ensaio (10 min)',desc:'Praticar o script completo em voz alta duas vezes.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO: "Venda em 5 Minutos"\nO mais épico do curso até agora: cada aluno tem 5 minutos para tentar vender qualquer coisa para o instrutor. O instrutor vai apresentar objeções reais. O aluno precisa usar pelo menos 2 técnicas de fechamento. +30 XP se fechar a venda simulada!'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['5 objeções com respostas: +25 XP','Script completo: +30 XP','Venda simulada fechada: +30 XP'],
+   nextMission:'Última missão da Fase 5: simulação de venda completa do início ao fim!'}
+ ],
+ challenge:'🎯 Missão Semanal: VENDEDOR\nTente vender algo real para alguém (uma ideia, um produto, um favor). Pode ser convencer um familiar de algo. Use pelo menos 1 técnica de fechamento. Traga o relato.'},
+
+{id:28,phase:5,num:'5.6',title:'Simulação de Vendas — Fase Final',skill:'Vendas',xp:100,
+ objetivo:'Executar uma simulação de vendas completa do funil ao fechamento e celebrar a conclusão da Fase 5.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#E8413A',
+   script:[
+    {label:'Briefing épico',text:'Esta é a missão mais importante da Fase 5. Hoje vocês vão fazer tudo — do funil ao fechamento — em uma simulação completa. Cada etapa que aprenderam vai ser testada. Não existe teoria hoje: só prática.',tip:'Organize o espaço como um "escritório de vendas". Clima de evento.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#E8413A',
+   script:[
+    {label:'Revisão: O funil completo',text:'Topo → Isca digital. Meio → Sequência de WhatsApp. Fundo → Oferta irresistível. Fechamento → Técnicas. Pós-venda → Agradecimento + indicação. Hoje vocês executam esse caminho completo.',tip:''}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#E8413A',
+   steps:[
+    {n:'1',title:'Montar o funil no papel (20 min)',desc:'Fazer o mapa visual completo do funil da própria empresa: cada etapa, cada conteúdo, cada mensagem, cada gatilho.'},
+    {n:'2',title:'Preparar a simulação (20 min)',desc:'Preparar todos os materiais: isca digital, script de WhatsApp, oferta visual, respostas para objeções.'},
+    {n:'3',title:'Executar a simulação completa (20 min)',desc:'Um aluno é o vendedor, o outro é o cliente. Percorrer todo o funil: descoberta → interesse → oferta → objeção → fechamento. Gravar se possível.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#E8413A',
+   game:'🎲 DESAFIO FINAL FASE 5: "Pitch de Vendedor"\nCada aluno tem 7 minutos para apresentar: o funil completo da empresa + a oferta + fechar uma venda simulada com o instrutor. Será avaliado: clareza do funil, força da oferta, confiança no fechamento. O melhor pitch ganha o troféu de "Mestre do Funil" provisório. +50 XP.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#E8413A',
+   xpItems:['Funil mapeado: +30 XP','Simulação executada: +40 XP','NÍVEL 6 DESBLOQUEADO: +30 XP bônus'],
+   nextMission:'FASE 5 CONCLUÍDA! Última fase: aprender a cuidar do dinheiro que você vai ganhar!'}
+ ],
+ challenge:'💰 Missão de Transição\nAnote: se sua empresa fizesse 5 vendas por mês, quanto de dinheiro entraria? E quanto sobrava depois dos custos? Faça essa conta simples e traga calculada.'},
+
+// ── FASE 6 ──────────────────────────────────────────────
+{id:29,phase:6,num:'6.1',title:'Educação Financeira Básica',skill:'Finanças',xp:65,
+ objetivo:'Entender os conceitos básicos de finanças pessoais e empresariais.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#7C3AED',
+   script:[
+    {label:'Abertura',text:'De nada vale criar uma empresa incrível, vender muito e não saber o que fazer com o dinheiro. 9 em cada 10 empresas que fecham não fecham por falta de clientes — fecham por má gestão financeira. Hoje vocês aprendem o mais importante: o que fazer com o dinheiro que entra.',tip:'Pergunta real: "Se você recebesse R$1000 hoje da sua empresa, o que faria com esse dinheiro?"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#7C3AED',
+   script:[
+    {label:'Os 3 destinos do dinheiro da empresa',text:'(1) Reinvestimento — dinheiro que vai de volta para a empresa crescer (marketing, produto, ferramenta). (2) Reserva — dinheiro guardado para emergências (mínimo 3 meses de custo). (3) Lucro — o que sobra e vai para o dono. Regra básica: nunca misture dinheiro da empresa com dinheiro pessoal. Isso mata empresas.',tip:'Usar exemplos com números pequenos e reais para a realidade dos alunos.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#7C3AED',
+   steps:[
+    {n:'1',title:'Simular entradas e saídas (25 min)',desc:'Para a empresa simulada: definir o preço do produto, calcular quantas vendas por mês, subtrair os custos (mesmo que fictícios), calcular o lucro real. Fazer a conta no papel.'},
+    {n:'2',title:'Dividir o lucro nos 3 destinos (20 min)',desc:'Com o lucro calculado, decidir: quanto vai para reinvestimento, quanto para reserva, quanto é lucro líquido. Criar a proporção ideal (ex: 40/30/30).'},
+    {n:'3',title:'Planilha financeira simples (15 min)',desc:'Criar uma planilha simples em papel com colunas: Entradas, Saídas, Lucro, Reinvestimento, Reserva, Lucro pessoal.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#7C3AED',
+   game:'🎲 DESAFIO: "Gerente Financeiro"\nO instrutor apresenta 5 cenários de empresa (umas com problema financeiro, outras saudáveis). Os alunos diagnosticam o problema e receitam a solução financeira. Exemplo: "A empresa vende 100 por mês mas nunca tem dinheiro em caixa..." O que está errado?'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#7C3AED',
+   xpItems:['Simulação financeira feita: +25 XP','Distribuição do lucro definida: +20 XP','Planilha criada: +20 XP'],
+   nextMission:'Próxima missão: precificação — como definir o preço certo para o produto!'}
+ ],
+ challenge:'💰 Missão Semanal: GESTOR\nAnote todas as suas compras durante uma semana. Classifique em: necessidade ou desejo. Calcule quanto gastou em cada categoria. O que aprendeu sobre seu comportamento financeiro?'},
+
+{id:30,phase:6,num:'6.2',title:'Como Precificar o Produto',skill:'Precificação',xp:75,
+ objetivo:'Aprender a definir o preço correto do produto considerando custo, mercado e valor percebido.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#7C3AED',
+   script:[
+    {label:'Abertura',text:'Preço errado mata negócio. Cobrar muito barato = trabalhar de graça e não crescer. Cobrar muito caro sem justificar = cliente vai embora. O preço certo é uma estratégia, não um chute. Hoje vocês aprendem as 3 formas de precificar.',tip:'Exercício: pegar o produto que criaram e perguntar: "Quanto vocês cobrariam? Por quê?"'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#7C3AED',
+   script:[
+    {label:'3 métodos de precificação',text:'(1) Custo + margem: Custo de fazer × 3 = Preço de venda. (2) Precificação por valor: quanto o cliente acha que vale? Se resolve um problema grande, pode cobrar mais. (3) Precificação por mercado: o que os concorrentes cobram? Você quer ser mais barato, igual ou premium? Melhor método: Custo + margem como piso mínimo, valor percebido como teto máximo.',tip:'Fazer a conta ao vivo para um produto fictício.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#7C3AED',
+   steps:[
+    {n:'1',title:'Calcular o custo do produto (20 min)',desc:'Listar todos os custos para criar/entregar 1 unidade do produto/serviço. Calcular o custo total por unidade.'},
+    {n:'2',title:'Definir o preço nos 3 métodos (25 min)',desc:'Calcular o preço ideal usando cada método. O preço final deve ser: acima do custo mínimo, alinhado ao que o mercado paga, justificado pelo valor que entrega.'},
+    {n:'3',title:'Criar a tabela de preços (15 min)',desc:'Montar uma tabela visual com: produto, custo, preço de venda, margem de lucro. Adicionar planos se possível (básico/premium).'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#7C3AED',
+   game:'🎲 DESAFIO: "Negociador"\nO instrutor faz papel de cliente que acha caro. O aluno defende o preço sem abaixar — usando a técnica de empilhar valor (justificar cada elemento da oferta). Trocar os papéis. Quem defender o preço por mais tempo sem dar desconto ganha.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#7C3AED',
+   xpItems:['Custo calculado: +20 XP','Preço definido com justificativa: +30 XP','Tabela de preços criada: +25 XP'],
+   nextMission:'Próxima missão: simulação de venda real — vai acontecer de verdade!'}
+ ],
+ challenge:'🔢 Missão Semanal\nPesquise o preço de 3 concorrentes (ou produtos similares ao seu). Compare com o seu preço. Você está posicionado onde queria estar?'},
+
+{id:31,phase:6,num:'6.3',title:'Simulação de Vendas Real',skill:'Empreendedorismo',xp:100,
+ objetivo:'Executar uma venda real ou altamente simulada, vivenciando a emoção e aprendizado do processo completo.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#7C3AED',
+   script:[
+    {label:'Briefing histórico',text:'Chegou o dia. Tudo o que aprenderam — criatividade, marca, conteúdo, marketing, funil, vendas — vai ser testado agora. Não é simulação de verdade: é a coisa mais próxima de uma venda real que você já fez. Quem fechar a primeira venda hoje entra para a história da academia.',tip:'Criar um clima de batalha épica. Música de fundo, se possível.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#7C3AED',
+   script:[
+    {label:'Revisão total — a jornada completa',text:'Desde a Fase 1 você criou: uma empresa (problema + produto + cliente), uma marca (nome + logo + slogan + manual), conteúdo (posts + vídeo + copy), uma estratégia de marketing, um funil de vendas completo, uma oferta, e aprendeu a fechar. Hoje você usa tudo isso.',tip:'Listar rapidamente tudo que foi criado ao longo do curso.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#7C3AED',
+   steps:[
+    {n:'1',title:'Preparação final (15 min)',desc:'Organizar todos os materiais: logo, oferta, script de vendas, respostas para objeções. Última revisão antes do grande momento.'},
+    {n:'2',title:'A venda (30 min)',desc:'Opção A (ideal): apresentar o produto para alguém real (responsável, outro professor, funcionário). Opção B: simulação ultra-realista com instrutor fazendo o papel mais difícil de cliente possível.'},
+    {n:'3',title:'Debriefing (15 min)',desc:'O que foi bem? O que travou? O que faria diferente? Registrar aprendizados.'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#7C3AED',
+   game:'🎲 DESAFIO: PRIMEIRA VENDA\nSe conseguir fechar uma venda real (mesmo que simbólica — um familiar comprando por R$1): +100 XP e badge exclusivo "Primeira Venda". Se for simulação: apresentação de 10 minutos completa valendo +50 XP.'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#7C3AED',
+   xpItems:['Preparação completa: +25 XP','Venda executada: +50 XP','Primeira venda real: +100 XP especial'],
+   nextMission:'Última missão de todo o curso: o Projeto Final!'}
+ ],
+ challenge:'🚀 Missão Final\nPrepare sua apresentação do Projeto Final. Revise todos os materiais criados. O que você apresentaria se tivesse 10 minutos para convencer um investidor?'},
+
+{id:32,phase:6,num:'6.4',title:'🎓 Projeto Final — Demo Day',skill:'Empreendedorismo Completo',xp:150,
+ objetivo:'Apresentar o negócio completo em formato de pitch profissional — o culminar de toda a jornada.',
+ blocks:[
+  {icon:'🔥',title:'Missão do dia',time:'10 min',color:'#7C3AED',
+   script:[
+    {label:'Briefing histórico — O Grande Dia',text:'Este é o dia mais importante da Academia. Tudo que você criou desde a primeira missão vai ser apresentado hoje. Não é uma prova. É uma conquista. É a prova de que você é capaz de pegar uma ideia do zero e construir algo real. Estamos orgulhosos de você.',tip:'Se possível, convidar os responsáveis. Fazer um pequeno evento com o logo da academia impresso.'}
+   ]},
+  {icon:'📖',title:'Conteúdo rápido',time:'15 min',color:'#7C3AED',
+   script:[
+    {label:'Como apresentar um pitch profissional',text:'Estrutura do pitch final: (1) Problema — qual dor você resolve? (2) Solução — o que é o produto/serviço? (3) Marca — nome, logo, slogan. (4) Cliente — quem é o avatar? (5) Marketing — como vai divulgar? (6) Funil — como funciona o processo de venda? (7) Oferta — o que o cliente recebe e quanto paga? (8) Por que vai dar certo — sua convicção. (9) Sonho — onde imagina a empresa em 1 ano?',tip:'Mostrar o roteiro visualmente. Dar 15 min para a última revisão.'}
+   ]},
+  {icon:'🛠️',title:'Criação prática',time:'60 min',color:'#7C3AED',
+   steps:[
+    {n:'1',title:'Preparação final (20 min)',desc:'Última revisão dos materiais. Slides (se quiser). Logo impresso. Oferta visual. Tudo organizado.'},
+    {n:'2',title:'Ensaio do pitch (15 min)',desc:'Praticar a apresentação completa cronometrada (10 min). Falar em voz alta, como se fosse a apresentação real.'},
+    {n:'3',title:'APRESENTAÇÃO DO PROJETO FINAL (25 min)',desc:'Cada aluno apresenta o negócio completo em até 10 minutos. Após a apresentação: 5 minutos de perguntas do "painel de investidores" (instrutor + convidados).'}
+   ]},
+  {icon:'🎮',title:'Jogo/Desafio',time:'30 min',color:'#7C3AED',
+   game:'🎓 CERIMÔNIA DE FORMATURA\nApós as apresentações: entrega do Certificado de Conclusão de Jovem Criador Digital. Registro fotográfico. Badge de Mestre do Funil desbloqueado. XP final calculado. Ranking final revelado. PARABÉNS — você é oficialmente um Jovem Empreendedor Digital da Academia Nuvem Veloz!'},
+  {icon:'⚡',title:'XP & Evolução',time:'5 min',color:'#7C3AED',
+   xpItems:['Projeto Final apresentado: +100 XP','Respondeu todas as perguntas: +30 XP','MESTRE DO FUNIL DESBLOQUEADO: +20 XP','CURSO CONCLUÍDO — Certificado emitido: 🎓'],
+   nextMission:'Você completou a Academia dos Jovens Empreendedores. Continue criando. O mundo precisa das suas ideias. 🚀'}
+ ],
+ challenge:'🌟 Não é fim — é começo. Use o que aprendeu para continuar criando. Seu próximo negócio começa amanhã.'}
+];
+
+/* ══════════════════════════════════
+   CHALLENGE CARDS DATA
+══════════════════════════════════ */
+const challengeCards = [
+  {icon:'🔍',type:'Observador',title:'Caçador de Problemas',desc:'Observe 3 situações desta semana onde as pessoas reclamam ou têm dificuldade. Anote: o que aconteceu, quem estava, o que poderia resolver. Traga na próxima aula.',xp:20,color:'#1DC97A',border:'rgba(29,201,122,.4)',bg:'rgba(29,201,122,.08)'},
+  {icon:'💡',type:'Inventor',title:'Fábrica de Ideias',desc:'Crie 3 ideias de produto ou serviço para o mesmo problema. Podem ser simples, tecnológicas ou impossíveis. O importante é criar — quantidade antes de qualidade!',xp:20,color:'#1A6FE8',border:'rgba(26,111,232,.4)',bg:'rgba(26,111,232,.08)'},
+  {icon:'🎤',type:'Vendedor',title:'Pitch na Rua',desc:'Tente vender sua ideia para 2 pessoas fora da academia. Pode ser familiar ou amigo. Observe: ficaram curiosos? Perguntaram algo? Quais objeções levantaram?',xp:25,color:'#F97316',border:'rgba(249,115,22,.4)',bg:'rgba(249,115,22,.08)'},
+  {icon:'🎨',type:'Criador',title:'Post de Valor',desc:'Crie 1 post de valor para sua marca — algo que ensine, inspire ou entretenha seu cliente ideal. Não é propaganda: é conteúdo genuíno. Use o Canva!',xp:25,color:'#F5C842',border:'rgba(245,200,66,.4)',bg:'rgba(245,200,66,.08)',textColor:'#78350F'},
+  {icon:'🕵️',type:'Detetive',title:'Entrevista de Cliente',desc:'Converse com alguém que se parece com seu avatar. Faça 5 perguntas sobre o problema que você resolve. Anote as PALAVRAS EXATAS que a pessoa usa.',xp:30,color:'#7C3AED',border:'rgba(124,58,237,.4)',bg:'rgba(124,58,237,.08)'},
+  {icon:'📱',type:'Observador',title:'Caçador de Gatilhos',desc:'Ao longo da semana, encontre 5 exemplos de gatilhos mentais em propagandas (escassez, urgência, prova social). Foto + análise de cada um.',xp:20,color:'#E8413A',border:'rgba(232,65,58,.4)',bg:'rgba(232,65,58,.08)'},
+  {icon:'🏗️',type:'Construtor',title:'Protótipo Melhorado',desc:'Melhore o protótipo do produto com base nos feedbacks recebidos. Adicione detalhes, mude o que não funcionou. Traga uma versão melhor.',xp:25,color:'#1DC97A',border:'rgba(29,201,122,.4)',bg:'rgba(29,201,122,.08)'},
+  {icon:'📊',type:'Estrategista',title:'Análise de Concorrente',desc:'Pesquise 2 marcas que fazem algo parecido com a sua. O que fazem bem? O que fazem mal? Como você se diferenciaria? Traga a análise escrita.',xp:30,color:'#1A6FE8',border:'rgba(26,111,232,.4)',bg:'rgba(26,111,232,.08)'},
+  {icon:'✍️',type:'Escritor',title:'3 Slogans Novos',desc:'Crie 3 novas opções de slogan para sua marca usando as 3 fórmulas (benefício direto, promessa+emoção, provocação). Teste em voz alta.',xp:20,color:'#F5C842',border:'rgba(245,200,66,.4)',bg:'rgba(245,200,66,.08)',textColor:'#78350F'},
+  {icon:'🎬',type:'Diretor',title:'Dois Vídeos Curtos',desc:'Grave 2 vídeos de 20–30 segundos para sua marca. Cada um com um gancho diferente. Mostre para alguém: eles assistiram até o final?',xp:30,color:'#F97316',border:'rgba(249,115,22,.4)',bg:'rgba(249,115,22,.08)'},
+  {icon:'💬',type:'Comunicador',title:'Script de WhatsApp',desc:'Pratique o script de vendas com alguém de fora. Peça que a pessoa responda como se fosse cliente real. Anote o que funcionou e o que precisa melhorar.',xp:25,color:'#7C3AED',border:'rgba(124,58,237,.4)',bg:'rgba(124,58,237,.08)'},
+  {icon:'💰',type:'Financeiro',title:'Orçamento da Empresa',desc:'Simule: 10 vendas por mês. Quanto entra? Quanto vai para custo, reinvestimento, reserva e lucro? Faça a conta detalhada.',xp:25,color:'#E8413A',border:'rgba(232,65,58,.4)',bg:'rgba(232,65,58,.08)'},
+  {icon:'🌀',type:'Funil',title:'Mapeie seu Funil',desc:'Desenhe o funil completo da sua empresa. Para cada etapa, descreva: qual conteúdo usa, qual ação espera do cliente, como leva para próxima etapa.',xp:30,color:'#E8413A',border:'rgba(232,65,58,.4)',bg:'rgba(232,65,58,.08)'},
+  {icon:'🏷️',type:'Preço',title:'Pesquisa de Mercado',desc:'Pesquise o preço de 3 concorrentes (ou similares). Compare com o seu preço. Você está onde quer estar? Justifique a decisão de preço.',xp:20,color:'#7C3AED',border:'rgba(124,58,237,.4)',bg:'rgba(124,58,237,.08)'},
+  {icon:'🚀',type:'Desafio Final',title:'Pitch de 1 Minuto',desc:'Treine o pitch completo da empresa até conseguir fazer em 60 segundos — de cor, sem papel, com energia. Grave um vídeo de si mesmo.',xp:35,color:'#F5C842',border:'rgba(245,200,66,.4)',bg:'rgba(245,200,66,.08)',textColor:'#78350F'},
+  {icon:'📅',type:'Planejador',title:'Calendário de Conteúdo',desc:'Monte o calendário de posts da próxima semana: 3 posts, formato diferente em cada dia. Crie os 3 posts no Canva e deixe prontos.',xp:25,color:'#1DC97A',border:'rgba(29,201,122,.4)',bg:'rgba(29,201,122,.08)'},
+  {icon:'❤️',type:'Conexão',title:'Carta para o Avatar',desc:'Escreva uma carta de 10 linhas para seu cliente ideal. Fale como se o conhecesse pessoalmente. Use as dores e desejos que mapeou.',xp:20,color:'#1A6FE8',border:'rgba(26,111,232,.4)',bg:'rgba(26,111,232,.08)'},
+  {icon:'🎯',type:'Marketing',title:'Anúncio A/B',desc:'Crie 2 versões de anúncio para o mesmo produto: um focado em dor, outro em desejo. Mostre para alguém: qual convenceria mais? Por quê?',xp:25,color:'#F97316',border:'rgba(249,115,22,.4)',bg:'rgba(249,115,22,.08)'},
+  {icon:'🎁',type:'Isca',title:'Melhore a Isca Digital',desc:'Com base no feedback recebido, faça uma versão melhorada da isca digital. Adicione mais valor, melhore o visual, refine a promessa.',xp:20,color:'#E8413A',border:'rgba(232,65,58,.4)',bg:'rgba(232,65,58,.08)'},
+  {icon:'🏆',type:'Boss Battle',title:'Venda Real Desafio',desc:'MISSÃO ÉPICA: Tente vender algo real para alguém. Pode ser uma ideia, um produto simbólico ou um serviço. Use tudo que aprendeu. Relate o resultado com detalhes!',xp:50,color:'#F5C842',border:'rgba(245,200,66,.4)',bg:'rgba(245,200,66,.08)',textColor:'#78350F'},
+];
+
+/* ══════════════════════════════════
+   RENDER FUNCTIONS
+══════════════════════════════════ */
+function renderLessons(filter=0){
+  const grid=document.getElementById('lessons-grid');
+  const filtered=filter===0?lessons:lessons.filter(l=>l.phase===filter);
+  grid.innerHTML=filtered.map(l=>{
+    const ph=PHASES[l.phase];
+    return`<div class="lesson-card" style="--lc2:${ph.color}" onclick="openLesson(${l.id})">
+      <div class="lc-phase">${ph.icon} Fase ${l.phase}</div>
+      <div class="lc-num">Missão ${l.num}</div>
+      <div class="lc-title">${l.title}</div>
+      <div class="lc-skill">${l.skill}</div>
+      <div class="lc-xp">⚡${l.xp}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterLessons(f, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else{
+    const b=document.querySelector(`.filter-btn[data-f="${f}"]`);
+    if(b){b.classList.add('active');
+      document.querySelectorAll('.filter-btn[data-f="0"]').forEach(bb=>bb.classList.remove('active'));}
+  }
+  renderLessons(f);
+  document.getElementById('aulas').scrollIntoView({behavior:'smooth'});
+}
+
+function openLesson(id){
+  const l=lessons.find(x=>x.id===id);
+  if(!l)return;
+  const ph=PHASES[l.phase];
+  const modal=document.getElementById('lesson-modal');
+  const box=document.getElementById('lesson-box');
+
+  let html=`
+  <div class="lesson-header" style="background:linear-gradient(135deg,rgba(0,0,0,0.6),rgba(0,0,0,0.3));--lc:${ph.color}">
+    <button class="lesson-close" onclick="closeLesson()">✕</button>
+    <span class="lesson-phase-tag" style="color:${ph.color}">${ph.icon} FASE ${l.phase} — ${ph.name.toUpperCase()}</span>
+    <div class="lesson-num">Missão ${l.num} · ${l.xp} XP disponíveis</div>
+    <div class="lesson-title">${l.title}</div>
+    <div class="lesson-meta">
+      <span class="lesson-chip">⏰ 2h30</span>
+      <span class="lesson-chip">⚡ ${l.xp} XP</span>
+      <span class="lesson-chip">🎯 ${l.skill}</span>
+    </div>
+  </div>
+  <div class="lesson-body" style="--lc:${ph.color}">`;
+
+  if(l.objetivo){
+    html+=`<div class="lesson-block">
+      <div class="lb-header"><div class="lb-icon" style="background:rgba(255,255,255,.08)">🎯</div>
+        <span class="lb-title">Objetivo da Missão</span></div>
+      <p style="font-size:.9rem;color:#94A3B8;line-height:1.65">${l.objetivo}</p>
+    </div>`;
+  }
+
+  l.blocks.forEach(b=>{
+    html+=`<div class="lesson-block">
+      <div class="lb-header">
+        <div class="lb-icon" style="background:${b.color}22">${b.icon}</div>
+        <span class="lb-title">${b.title}</span>
+        ${b.time?`<span class="lb-time">⏱ ${b.time}</span>`:''}
+      </div>`;
+
+    if(b.script){
+      b.script.forEach(s=>{
+        html+=`<div class="script-box" style="border-color:${b.color}">
+          <div class="script-label">${s.label}</div>
+          <p>${s.text}</p>
+          ${s.tip?`<em>💡 ${s.tip}</em>`:''}
+        </div>`;
+      });
+    }
+    if(b.steps){
+      html+=`<div class="step-list">`;
+      b.steps.forEach(s=>{
+        html+=`<div class="step-item">
+          <div class="step-dot" style="background:${b.color}">${s.n}</div>
+          <div><h4>${s.title}</h4><p>${s.desc}</p></div>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+    if(b.game){
+      html+=`<div class="challenge-box"><h4>🎮 Jogo / Desafio</h4><p>${b.game.replace(/\n/g,'<br>')}</p></div>`;
+    }
+    if(b.xpItems){
+      html+=`<div class="xp-award"><span class="xp-icon">⚡</span>
+        <div><h4>XP desta missão</h4><p>${b.xpItems.join(' · ')}</p></div></div>`;
+    }
+    if(b.nextMission){
+      html+=`<p style="font-size:.82rem;color:#64748B;margin-top:12px;font-style:italic">➜ ${b.nextMission}</p>`;
+    }
+    html+=`</div>`;
+  });
+
+  if(l.challenge){
+    html+=`<div style="background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(26,111,232,.06));border:1px solid rgba(124,58,237,.25);border-radius:16px;padding:20px;margin-top:8px">
+      <h4 style="font-family:'Bangers',cursive;font-size:1.1rem;color:#A78BFA;letter-spacing:.03em;margin-bottom:8px">🏠 Desafio Semanal</h4>
+      <p style="font-size:.88rem;color:#94A3B8;line-height:1.65">${l.challenge.replace(/\n/g,'<br>')}</p>
+    </div>`;
+  }
+
+  html+=`<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+    <button onclick="closeLesson()" class="btn btn-ghost" style="flex:1;justify-content:center">← Voltar</button>
+    <button onclick="addXPFromLesson(${l.xp},'${l.title.replace(/'/g,'\\\'')}')" class="btn btn-gold" style="flex:1;justify-content:center">⚡ +${l.xp} XP para ativo</button>
+  </div>`;
+
+  html+=`</div>`;
+  box.innerHTML=html;
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeLesson(){
+  document.getElementById('lesson-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('lesson-modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('lesson-modal'))closeLesson();
+});
+
+/* ══════════════════════════════════
+   XP SYSTEM
+══════════════════════════════════ */
+let activePlayer=1;
+let xpData={
+  p1:{xp:0,history:[]},
+  p2:{xp:0,history:[]}
+};
+
+function setActivePlayer(p){
+  activePlayer=p;
+  document.getElementById('active-player-label').textContent=`Selecionado: ${document.getElementById(`p${p}-name`).textContent}`;
+  const btns=document.querySelectorAll('.xp-section .btn');
+  btns[0].className=p===1?'btn btn-gold':'btn btn-ghost';
+  btns[1].className=p===2?'btn btn-gold':'btn btn-ghost';
+}
+
+function addXP(pts,label){
+  const p=`p${activePlayer}`;
+  xpData[p].xp+=pts;
+  xpData[p].history.unshift({pts,label,total:xpData[p].xp});
+  updateXPUI();
+  // Save to localStorage
+  try{localStorage.setItem('academia_xp',JSON.stringify(xpData));}catch(e){}
+}
+
+function addXPFromLesson(pts,title){
+  addXP(pts,`Missão: ${title}`);
+  closeLesson();
+}
+
+function updateXPUI(){
+  ['p1','p2'].forEach(p=>{
+    const xp=xpData[p].xp;
+    document.getElementById(`${p}-xp`).textContent=`${xp} XP`;
+    // Level
+    const lv=LEVELS.slice().reverse().find(l=>xp>=l.min)||LEVELS[0];
+    document.getElementById(`${p}-level`).textContent=`${lv.icon} ${lv.title}`;
+    // Bar
+    const pct=Math.min(100,((xp-lv.min)/(lv.max-lv.min))*100);
+    document.getElementById(`${p}-bar`).style.width=pct+'%';
+    // Next reward
+    const nextR=REWARDS.find(r=>r.xp>xp);
+    document.getElementById(`${p}-reward`).textContent=nextR?`Próxima recompensa: ${nextR.xp} XP → ${nextR.reward}`:'🏆 Todas as recompensas desbloqueadas!';
+  });
+  // History
+  const hist=document.getElementById('xp-history');
+  const all=[...xpData.p1.history.map(h=>({...h,player:'p1'})),...xpData.p2.history.map(h=>({...h,player:'p2'}))];
+  if(!all.length){hist.innerHTML=`<div style="text-align:center;color:#64748B;font-size:.82rem;padding:16px">Nenhum XP registrado ainda</div>`;return;}
+  all.sort((a,b)=>b.total-a.total);
+  hist.innerHTML=all.slice(0,15).map(h=>{
+    const name=document.getElementById(`${h.player}-name`).textContent;
+    return`<div class="xp-entry"><span>${name} — ${h.label}</span><span class="xp-entry-pts">+${h.pts} XP</span></div>`;
+  }).join('');
+}
+
+function resetXP(){
+  if(!confirm('Zerar TODA a pontuação dos dois alunos? Esta ação não pode ser desfeita.'))return;
+  xpData={p1:{xp:0,history:[]},p2:{xp:0,history:[]}};
+  try{
+    localStorage.removeItem('academia_xp');
+    localStorage.setItem('academia_xp', JSON.stringify(xpData));
+  }catch(e){}
+  updateXPUI();
+  // Force visual reset
+  ['p1','p2'].forEach(p=>{
+    document.getElementById(p+'-xp').textContent='0 XP';
+    document.getElementById(p+'-bar').style.width='0%';
+  });
+  document.getElementById('xp-history').innerHTML='<div style="text-align:center;color:#64748B;font-size:.82rem;padding:16px">Nenhum XP registrado ainda</div>';
+  showToast('Pontuação zerada!', 0, '🔄');
+}
+function showToast(msg, pts, icon){
+  // mini toast for reset feedback
+  const existing = document.getElementById('reset-toast');
+  if(existing) existing.remove();
+  const t = document.createElement('div');
+  t.id = 'reset-toast';
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(30,42,64,.95);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 24px;color:#EEF0F8;font-size:.88rem;font-weight:700;z-index:999;backdrop-filter:blur(8px)';
+  t.textContent = icon + ' ' + msg + (pts > 0 ? ' +' + pts + ' XP' : '');
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2500);
+}
+
+function renderLevels(){
+  const row=document.getElementById('levels-row');
+  row.innerHTML=LEVELS.map(l=>`
+    <div class="level-badge">
+      <span class="lv-icon">${l.icon}</span>
+      <span class="lv-num">Nível ${l.num}</span>
+      <div class="lv-title">${l.title}</div>
+      <div class="lv-pts">${l.min}+ XP</div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════
+   CHALLENGE CARDS
+══════════════════════════════════ */
+function renderCards(){
+  const grid=document.getElementById('cards-grid');
+  grid.innerHTML=challengeCards.map((c,i)=>`
+    <div class="challenge-card" style="background:${c.bg};border-color:${c.border}">
+      <span class="cc-icon">${c.icon}</span>
+      <span class="cc-type" style="color:${c.color}">${c.type}</span>
+      <div class="cc-title" style="color:${c.textColor||'#EEF0F8'}">${c.title}</div>
+      <div class="cc-desc">${c.desc}</div>
+      <div class="cc-xp" style="color:${c.color}">⚡ +${c.xp} XP</div>
+    </div>`).join('');
+}
+
+function printCards(){
+  const cardsHTML = challengeCards.map(c=>`
+    <div class="card" style="border-color:${c.color};background:${c.bg||'#f5f8ff'}">
+      <div class="card-icon">${c.icon}</div>
+      <div class="card-type" style="color:${c.color}">${c.type}</div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-desc">${c.desc}</div>
+      <div class="card-xp" style="color:${c.color}">⚡ +${c.xp} XP · Nuvem Veloz</div>
+    </div>`).join('');
+
+  const fullHTML = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Cartas de Desafio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;padding:20px;background:#fff}
+h1{text-align:center;font-size:1.4rem;margin-bottom:4px;color:#1a1a2e}
+.sub{text-align:center;font-size:.75rem;color:#666;margin-bottom:16px}
+.no-print{display:block;margin:0 auto 16px;padding:10px 24px;background:#F5C842;border:none;border-radius:8px;font-weight:800;cursor:pointer;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{border:2px solid;border-radius:14px;padding:14px;min-height:160px;display:flex;flex-direction:column}
+.card-icon{font-size:1.6rem;margin-bottom:4px}
+.card-type{font-size:.55rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.card-title{font-size:.85rem;font-weight:700;margin-bottom:4px;color:#1a1a2e}
+.card-desc{font-size:.7rem;color:#444;line-height:1.5;flex:1}
+.card-xp{font-size:.65rem;font-weight:800;margin-top:8px}
+@media print{
+  .no-print{display:none!important}
+  body{padding:8px}
+  .grid{grid-template-columns:repeat(4,1fr);gap:8px}
+  .card{break-inside:avoid;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<h1>🃏 Cartas de Desafio — Academia dos Jovens Empreendedores</h1>
+<p class="sub">Imprima, recorte e entregue ao aluno no início da semana!</p>
+<button class="no-print" onclick="window.print()">🖨️ Imprimir Cartas</button>
+<div class="grid">${cardsHTML}</div>
+</body>
+</html>`;
+
+  try {
+    const blob = new Blob([fullHTML], {type: 'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if(!win){
+      alert('Por favor, permita pop-ups para este site e tente novamente.');
+      return;
+    }
+    setTimeout(()=>URL.revokeObjectURL(url), 60000);
+  } catch(err) {
+    console.error(err);
+    alert('Erro ao abrir impressão: ' + err.message);
+  }
+}
+
+/* ══════════════════════════════════
+   INIT
+══════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  // Set asset images
+  const heroLogo = document.getElementById('hero-logo');
+  if(heroLogo && ASSETS.logo) heroLogo.src = ASSETS.logo;
+
+  // Set XP coin images
+  const coinMap = {
+    'coin-img-1': ASSETS.xp1,
+    'coin-img-5': ASSETS.xp5,
+    'coin-img-10': ASSETS.xp10,
+    'coin-img-50': ASSETS.xp50,
+    'coin-img-100': ASSETS.xp100,
+    'coin-img-500': ASSETS.xp500,
+  };
+  Object.entries(coinMap).forEach(([id, src])=>{
+    const el = document.getElementById(id);
+    if(el && src) el.src = src;
+  });
+
+  // Set medal images on phase cards (append after phase-icon)
+  document.querySelectorAll('.phase-card').forEach((card, idx)=>{
+    const medalImg = document.createElement('img');
+    medalImg.src = ASSETS.medal_blank;
+    medalImg.alt = 'Medalha';
+    medalImg.style.cssText='position:absolute;bottom:8px;right:8px;width:52px;height:auto;opacity:.55;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));pointer-events:none;z-index:2';
+    card.style.position = 'relative';
+    card.appendChild(medalImg);
+  });
+
+  // Set player avatar medal
+  const p1card = document.getElementById('p1-card');
+  const p2card = document.getElementById('p2-card');
+  if(p1card){
+    const m1 = document.createElement('img');
+    m1.src = ASSETS.medal_teacher;
+    m1.alt=''; m1.style.cssText='width:36px;height:auto;display:block;margin:6px auto 0;opacity:.7';
+    p1card.appendChild(m1);
+  }
+
+  renderLessons();
+  renderLevels();
+  renderCards();
+
+  // Load saved XP
+  try{
+    const saved=localStorage.getItem('academia_xp');
+    if(saved) xpData=JSON.parse(saved);
+    updateXPUI();
+  }catch(e){}
+});
+</script>
+</body>
+</html>

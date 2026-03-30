@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado — Academia dos Jovens Empreendedores</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Nunito:wght@400;600;700;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{
+  font-family:'Nunito',sans-serif;
+  background:#1A1E30;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;padding:32px 20px;
+}
+
+.controls{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:24px;
+}
+.ctrl-input{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:white;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;
+  padding:10px 16px;border-radius:10px;outline:none;width:220px;
+  transition:.2s;
+}
+.ctrl-input:focus{border-color:rgba(255,214,10,.5);background:rgba(255,255,255,.12)}
+.ctrl-input::placeholder{color:rgba(255,255,255,.4)}
+.ctrl-btn{
+  background:linear-gradient(135deg,#FFD60A,#C78000);color:#1a1000;
+  font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;
+  padding:10px 22px;border-radius:10px;border:none;cursor:pointer;transition:.2s;
+  display:flex;align-items:center;gap:7px;
+}
+.ctrl-btn:hover{transform:scale(1.04)}
+
+/* ── CERTIFICATE ── */
+.cert-wrap{
+  width:794px;min-height:560px;
+  background:linear-gradient(160deg,#FDFBF4 0%,#FAF6E8 50%,#FDF9EE 100%);
+  border-radius:4px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  position:relative;overflow:hidden;
+  padding:0;
+}
+
+/* Gold border ornament */
+.cert-wrap::before{
+  content:'';position:absolute;inset:12px;
+  border:2px solid;
+  border-image:linear-gradient(135deg,#C78000,#FFD60A,#C78000,#FFD60A,#C78000) 1;
+  pointer-events:none;z-index:2;
+}
+.cert-wrap::after{
+  content:'';position:absolute;inset:18px;
+  border:0.5px solid rgba(199,128,0,.3);
+  pointer-events:none;z-index:2;
+}
+
+/* Background texture */
+.cert-bg{
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(199,128,0,.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(199,128,0,.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255,214,10,.03) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+/* Corner ornaments */
+.corner{
+  position:absolute;width:80px;height:80px;
+  background:radial-gradient(circle,rgba(199,128,0,.15),transparent 70%);
+  pointer-events:none;
+}
+.corner.tl{top:8px;left:8px}
+.corner.tr{top:8px;right:8px}
+.corner.bl{bottom:8px;left:8px}
+.corner.br{bottom:8px;right:8px}
+
+.cert-inner{
+  position:relative;z-index:3;
+  padding:36px 56px 32px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+
+.cert-header{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;margin-bottom:20px;
+}
+.cert-logo{width:90px;height:auto;filter:drop-shadow(0 3px 10px rgba(26,111,232,.4))}
+.cert-medal{width:72px;height:auto;filter:drop-shadow(0 3px 10px rgba(0,0,0,.2))}
+
+.cert-academy{
+  font-family:'Cinzel',serif;font-size:.75rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:#8B6914;margin-bottom:6px;
+}
+.cert-nuvem{
+  font-family:'Cinzel',serif;font-size:.7rem;font-weight:400;
+  letter-spacing:.15em;color:#B08020;
+}
+
+.cert-divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,#C78000,#FFD60A,#C78000,transparent);
+  margin:14px 0;
+}
+
+.cert-presents{
+  font-family:'Cinzel',serif;font-size:.82rem;font-weight:400;
+  letter-spacing:.14em;text-transform:uppercase;color:#8B6914;margin-bottom:10px;
+}
+.cert-title{
+  font-family:'Cinzel',serif;font-size:1.65rem;font-weight:900;
+  color:#3D2800;letter-spacing:.06em;
+  text-shadow:0 1px 0 rgba(255,255,255,.8);
+  margin-bottom:6px;line-height:1.2;
+}
+.cert-subtitle{
+  font-family:'Cinzel',serif;font-size:.78rem;font-weight:400;
+  letter-spacing:.1em;color:#8B6914;margin-bottom:14px;
+}
+
+.cert-name-area{
+  background:linear-gradient(135deg,rgba(199,128,0,.08),rgba(255,214,10,.05));
+  border:1.5px solid rgba(199,128,0,.25);
+  border-radius:8px;padding:10px 32px;margin-bottom:12px;
+  min-width:320px;
+}
+.cert-name{
+  font-family:'Dancing Script',cursive;font-size:2.2rem;
+  color:#1A1000;font-weight:700;line-height:1.2;
+  min-height:44px;display:block;
+}
+.cert-name-label{font-size:.6rem;color:#8B6914;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+
+.cert-body{
+  font-size:.78rem;color:#5A4010;line-height:1.8;max-width:480px;margin-bottom:14px;
+}
+.cert-body strong{color:#3D2800;font-weight:800}
+
+.cert-skills{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;
+}
+.cs{
+  display:flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,rgba(199,128,0,.12),rgba(255,214,10,.08));
+  border:1px solid rgba(199,128,0,.3);
+  border-radius:100px;padding:4px 12px;
+  font-size:.66rem;font-weight:800;color:#7A5000;letter-spacing:.04em;
+}
+
+.cert-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;margin-top:8px;
+}
+.cert-sign{text-align:center;flex:1}
+.cert-sign-line{
+  border-bottom:1.5px solid rgba(199,128,0,.4);
+  width:160px;margin:0 auto 4px;
+}
+.cert-sign-name{font-size:.66rem;font-weight:800;color:#8B6914;letter-spacing:.08em;text-transform:uppercase}
+.cert-sign-role{font-size:.58rem;color:#B08020;letter-spacing:.06em}
+
+.cert-date-box{
+  font-family:'Cinzel',serif;font-size:.68rem;color:#8B6914;
+  border:1px solid rgba(199,128,0,.25);border-radius:8px;
+  padding:6px 16px;text-align:center;
+}
+.cert-date-val{font-size:.82rem;font-weight:700;color:#3D2800;display:block;margin-top:2px}
+
+.cert-xp-badge{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.cert-xp-img{width:48px;height:auto}
+.cert-xp-label{font-size:.6rem;font-weight:800;color:#8B6914;letter-spacing:.06em}
+
+/* ── PRINT ── */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html,body{background:white!important;padding:0!important;margin:0!important}
+  .controls,.second-label{display:none!important}
+  .cert-wrap{
+    box-shadow:none!important;width:100%!important;
+    page-break-inside:avoid;break-inside:avoid;
+    margin:0!important;border-radius:0!important;
+  }
+  #cert2{page-break-before:always;break-before:page}
+  .cert-bg,.cert-wrap::before,.cert-wrap::after{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<div style="text-align:center;margin-bottom:16px;color:rgba(255,255,255,.6);font-family:Nunito,sans-serif;font-size:.8rem;line-height:1.7">
+  <strong style="color:rgba(255,214,10,.8)">Como imprimir:</strong>
+  Preencha o nome e data → clique "Imprimir / Salvar PDF" → na janela de impressão, escolha <strong style="color:white">Salvar como PDF</strong> ou sua impressora.<br>
+  Ou use <strong style="color:white">Ctrl+P</strong> (Windows) / <strong style="color:white">Cmd+P</strong> (Mac) diretamente.
+</div>
+<div class="controls">
+  <input class="ctrl-input" type="text" id="inp-name" placeholder="Nome do aluno..." oninput="updateName(this.value)">
+  <input class="ctrl-input" type="text" id="inp-date" placeholder="Data: dd/mm/aaaa" oninput="updateDate(this.value)">
+  <button class="ctrl-btn" onclick="printCert()" id="print-btn">🖨️ Imprimir / Salvar PDF</button>
+  <button class="ctrl-btn" onclick="downloadHTML()" style="background:linear-gradient(135deg,#00C85A,#007A38)">⬇️ Baixar HTML</button>
+</div>
+
+<div class="cert-wrap" id="cert">
+  <div class="cert-bg"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="cert-inner">
+    <!-- Header -->
+    <div class="cert-header">
+      <img class="cert-logo" src="assets/logo.png" alt="Nuvem Veloz">
+      <div style="flex:1;text-align:center">
+        <div class="cert-academy">Academia dos Jovens Empreendedores</div>
+        <div class="cert-nuvem">Nuvem Veloz · Programa de Empreendedorismo Digital</div>
+      </div>
+      <img class="cert-medal" src="assets/medal-teacher.png" alt="Medalha">
+    </div>
+
+    <div class="cert-divider"></div>
+
+    <div class="cert-presents">Certifica com orgulho que</div>
+    <h1 class="cert-title">Certificado de Conclusão</h1>
+    <div class="cert-subtitle">Jovem Criador Digital — Mestre do Funil</div>
+
+    <div class="cert-name-area">
+      <span class="cert-name" id="cert-name">Nome do Aluno</span>
+      <div class="cert-name-label">Jovem Empreendedor Digital</div>
+    </div>
+
+    <p class="cert-body">
+      concluiu com êxito o programa completo da <strong>Academia dos Jovens Empreendedores</strong>,
+      desenvolvendo ao longo de <strong>32 missões e 6 fases</strong> as habilidades essenciais para
+      criar, comunicar e vender no mundo digital.
+    </p>
+
+    <div class="cert-skills">
+      <span class="cs">🎨 Criatividade</span>
+      <span class="cs">🏷️ Identidade de Marca</span>
+      <span class="cs">📣 Comunicação Digital</span>
+      <span class="cs">🎯 Marketing Estratégico</span>
+      <span class="cs">🌀 Funil de Vendas</span>
+      <span class="cs">💰 Educação Financeira</span>
+      <span class="cs">🤝 Pensamento Empreendedor</span>
+    </div>
+
+    <div class="cert-divider"></div>
+
+    <div class="cert-footer">
+      <div class="cert-sign">
+        <div class="cert-sign-line"></div>
+        <div class="cert-sign-name">Nuvem Veloz</div>
+        <div class="cert-sign-role">Academia dos Jovens Empreendedores</div>
+      </div>
+
+      <div class="cert-xp-badge">
+        <img class="cert-xp-img" src="assets/xp500.png" alt="500 XP">
+        <span class="cert-xp-label">⚡ Mestre do Funil</span>
+      </div>
+
+      <div class="cert-date-box">
+        <span>Data de conclusão</span>
+        <span class="cert-date-val" id="cert-date">___/___/_____</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Second certificate variant (landscape) -->
+<div style="margin-top:32px;width:794px;text-align:center">
+  <p style="color:rgba(255,255,255,.4);font-size:.75rem;margin-bottom:16px;font-family:'Nunito',sans-serif">
+    ✦ Versão alternativa — para imprimir em papel A4 paisagem
+  </p>
+</div>
+
+<div class="cert-wrap" id="cert2" style="width:794px;min-height:480px;background:linear-gradient(160deg,#0C1225 0%,#141B38 50%,#0E1530 100%)">
+  <div class="cert-bg" style="background-image:radial-gradient(circle at 15% 15%,rgba(0,216,255,.08) 0%,transparent 40%),radial-gradient(circle at 85% 85%,rgba(192,96,255,.08) 0%,transparent 40%)"></div>
+  <div class="corner tl" style="background:radial-gradient(circle,rgba(0,216,255,.12),transparent 70%)"></div>
+  <div class="corner tr" style="background:radial-gradient(circle,rgba(192,96,255,.12),transparent 70%)"></div>
+  <div class="corner bl" style="background:radial-gradient(circle,rgba(255,214,10,.1),transparent 70%)"></div>
+  <div class="corner br" style="background:radial-gradient(circle,rgba(0,255,127,.08),transparent 70%)"></div>
+
+  <div class="cert-inner" style="padding:28px 48px 24px">
+    <div class="cert-header">
+      <img class="cert-logo" src="assets/logo.png" alt="Nuvem Veloz">
+      <div style="flex:1;text-align:center">
+        <div class="cert-academy" style="color:rgba(255,214,10,.8)">Academia dos Jovens Empreendedores</div>
+        <div class="cert-nuvem" style="color:rgba(255,214,10,.5)">Nuvem Veloz · Programa Digital</div>
+      </div>
+      <img class="cert-medal" src="assets/medal-blank.png" alt="Medalha">
+    </div>
+
+    <div class="cert-divider" style="background:linear-gradient(90deg,transparent,#00D8FF,#C060FF,#FFD60A,transparent)"></div>
+
+    <div class="cert-presents" style="color:rgba(0,216,255,.7)">Certifica com orgulho que</div>
+    <h1 class="cert-title" style="color:#FFD60A;text-shadow:0 0 20px rgba(255,214,10,.3)">Certificado de Conclusão</h1>
+    <div class="cert-subtitle" style="color:rgba(0,216,255,.6)">Jovem Criador Digital — Mestre do Funil</div>
+
+    <div class="cert-name-area" style="background:linear-gradient(135deg,rgba(0,216,255,.08),rgba(192,96,255,.05));border-color:rgba(0,216,255,.2)">
+      <span class="cert-name" id="cert-name2" style="color:#FFD60A">Nome do Aluno</span>
+      <div class="cert-name-label" style="color:rgba(0,216,255,.6)">Jovem Empreendedor Digital</div>
+    </div>
+
+    <p class="cert-body" style="color:rgba(255,255,255,.6)">
+      concluiu com êxito o programa completo da <strong style="color:#FFD60A">Academia dos Jovens Empreendedores</strong>,
+      desenvolvendo ao longo de <strong style="color:#00D8FF">32 missões e 6 fases</strong> as habilidades para
+      criar, comunicar e vender no mundo digital.
+    </p>
+
+    <div class="cert-skills">
+      <span class="cs" style="background:rgba(0,216,255,.1);border-color:rgba(0,216,255,.25);color:#00D8FF">🎨 Criatividade</span>
+      <span class="cs" style="background:rgba(192,96,255,.1);border-color:rgba(192,96,255,.25);color:#C060FF">🏷️ Identidade de Marca</span>
+      <span class="cs" style="background:rgba(255,214,10,.1);border-color:rgba(255,214,10,.25);color:#FFD60A">📣 Comunicação Digital</span>
+      <span class="cs" style="background:rgba(255,144,32,.1);border-color:rgba(255,144,32,.25);color:#FF9020">🎯 Marketing</span>
+      <span class="cs" style="background:rgba(255,68,85,.1);border-color:rgba(255,68,85,.25);color:#FF4455">🌀 Funil de Vendas</span>
+      <span class="cs" style="background:rgba(0,255,127,.1);border-color:rgba(0,255,127,.25);color:#00FF7F">💰 Finanças</span>
+    </div>
+
+    <div class="cert-divider" style="background:linear-gradient(90deg,transparent,#00D8FF,#C060FF,transparent)"></div>
+
+    <div class="cert-footer">
+      <div class="cert-sign">
+        <div class="cert-sign-line" style="border-color:rgba(0,216,255,.3)"></div>
+        <div class="cert-sign-name" style="color:rgba(0,216,255,.7)">Nuvem Veloz</div>
+        <div class="cert-sign-role" style="color:rgba(255,255,255,.4)">Academia dos Jovens Empreendedores</div>
+      </div>
+
+      <div class="cert-xp-badge">
+        <img class="cert-xp-img" src="assets/xp500.png" alt="500 XP">
+        <span class="cert-xp-label" style="color:#FFD60A">⚡ Mestre do Funil</span>
+      </div>
+
+      <div class="cert-date-box" style="border-color:rgba(0,216,255,.2);background:rgba(0,216,255,.05)">
+        <span style="color:rgba(0,216,255,.6);font-size:.62rem">Data de conclusão</span>
+        <span class="cert-date-val" id="cert-date2" style="color:#FFD60A">___/___/_____</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateName(val){
+  const name = val.trim() || 'Nome do Aluno';
+  document.getElementById('cert-name').textContent = name;
+  document.getElementById('cert-name2').textContent = name;
+}
+function updateDate(val){
+  document.getElementById('cert-date').textContent = val || '___/___/_____';
+  document.getElementById('cert-date2').textContent = val || '___/___/_____';
+}
+
+function printCert(){
+  // Method 1: Standard print dialog (works when hosted online)
+  try {
+    window.focus();
+    window.print();
+    return;
+  } catch(e) {}
+  // Method 2: Open in new window and print from there
+  const html = document.documentElement.outerHTML;
+  const win = window.open('', '_blank');
+  if (win) {
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    setTimeout(() => {
+      try { win.print(); } catch(e) {
+        alert('Use Ctrl+P (Windows/Linux) ou Cmd+P (Mac) para imprimir esta página.');
+      }
+    }, 800);
+  } else {
+    alert('Por favor:\n1. Permita pop-ups para este site\n2. Ou use Ctrl+P / Cmd+P para imprimir diretamente');
+  }
+}
+
+function downloadHTML(){
+  // Offer the page as a self-contained download — user opens it and prints locally
+  const name = document.getElementById('cert-name')?.textContent?.trim() || 'aluno';
+  const date = document.getElementById('cert-date')?.textContent || '';
+  const clone = document.documentElement.cloneNode(true);
+  // Pre-fill the inputs in the clone
+  clone.querySelector('#inp-name').value = name;
+  clone.querySelector('#inp-date').value = date;
+  const blob = new Blob(['<!DOCTYPE html>' + clone.outerHTML], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'certificado-' + name.toLowerCase().replace(/\s+/g,'-') + '.html';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+// Keyboard shortcut hint
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+    // Let browser handle it naturally — print CSS will apply
+  }
+});
+
+// Auto-focus name input on load
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('inp-name')?.focus();
+});
+</script>
+</body>
+</html>
