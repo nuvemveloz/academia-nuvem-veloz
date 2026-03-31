@@ -1756,7 +1756,8 @@ let G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},
 };
 
 function loadG(){try{const s=localStorage.getItem('nexus_g');if(s)G=JSON.parse(s);}catch(e){}}
-function saveG(){try{localStorage.setItem('nexus_g',JSON.stringify(G));}cat/* ════ MUSIC ENGINE ════ */
+function saveG(){try{localStorage.setItem('nexus_g',JSON.stringify(G));}catch(e){}}
+/* ════ MUSIC ENGINE ════ */
 let bgMusicPlaying=false,bgMusicCtx=null,bgMusicNodes=[],musicMuted=false;
 function startBgMusic(){if(bgMusicPlaying||musicMuted)return;try{bgMusicCtx=new(window.AudioContext||window.webkitAudioContext)();bgMusicPlaying=true;playEpicTheme(bgMusicCtx);}catch(e){}}
 function stopBgMusic(){bgMusicPlaying=false;bgMusicNodes.forEach(n=>{try{n.stop();}catch(e){}});bgMusicNodes=[];if(bgMusicCtx){try{bgMusicCtx.close();}catch(e){}bgMusicCtx=null;}}
@@ -2205,7 +2206,6 @@ function completeMission(id){
   checkDailyStreak(); // Track daily activity
 
   // Update lives (reset on mission complete)
-  G.lives=Math.min(3,G.lives+1);
   saveG();
 
   // Sound & particles
@@ -2495,7 +2495,7 @@ function resetGame(){
   // Clear localStorage completely
   try{ localStorage.removeItem('nexus_g'); }catch(e){}
   // Reset state
-  G={name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},lives:3};
+  G={name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},weekDays:0,lastActiveDate:'',weekBonus:false};
   saveG();
   // Go back to intro screen
   goIntro();
