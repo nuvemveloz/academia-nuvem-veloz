@@ -19,7 +19,7 @@
   --bg:#03050F;    /* deep space    */
   --s1:#080E20;    --s2:#0D1530;   --s3:#121B38;
   --border:rgba(0,212,255,.15);
-  --text:#E8F4FF;  --muted:#3A5070;
+  --text:#E8F4FF;  --muted:#7A98B8;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -346,7 +346,7 @@ body::after{
   font-weight:700;line-height:1.2;margin-bottom:12px;
   background:linear-gradient(90deg,var(--nb),var(--ep));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.narr-text{font-size:.88rem;color:#6080A0;line-height:1.85;margin-bottom:14px}
+.narr-text{font-size:.88rem;color:#A8C0D8;line-height:1.85;margin-bottom:14px}
 .narr-text strong{color:var(--text)}
 .nchip{
   display:inline-flex;align-items:center;gap:5px;
@@ -382,7 +382,7 @@ body::after{
 .mc-check{font-size:.78rem;color:var(--cg);font-weight:800}
 .mc-title{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;
   margin-bottom:4px;line-height:1.3;color:var(--text)}
-.mc-desc{font-size:.74rem;color:var(--muted);line-height:1.5}
+.mc-desc{font-size:.74rem;color:#90AACC;line-height:1.5}
 .mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
 .mc-xp-row{display:flex;align-items:center;gap:5px}
 .mc-coin{width:20px;height:auto}
@@ -430,7 +430,7 @@ body::after{
 }
 .sl-label{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;color:var(--lc,var(--nb));margin-bottom:5px}
-.sl-text{font-size:.84rem;color:#6080A0;line-height:1.75}
+.sl-text{font-size:.84rem;color:#A8C0D8;line-height:1.75}
 .sl-text strong{color:var(--text)}
 .sl-tip{display:block;font-size:.74rem;font-style:italic;color:var(--muted);
   margin-top:6px;padding-top:6px;border-top:1px solid rgba(0,212,255,.08)}
@@ -450,7 +450,7 @@ body::after{
   font-family:'Orbitron',monospace;
 }
 .step-li h5{font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:2px}
-.step-li p{font-size:.74rem;color:var(--muted);line-height:1.5}
+.step-li p{font-size:.74rem;color:#A0BAD0;line-height:1.5}
 
 /* Game challenge box */
 .game-box{
@@ -460,7 +460,7 @@ body::after{
 }
 .gb-title{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;
   color:var(--ep);margin-bottom:7px}
-.gb-text{font-size:.8rem;color:#6080A0;line-height:1.65}
+.gb-text{font-size:.8rem;color:#A8C0D8;line-height:1.65}
 
 /* XP award box */
 .xp-award-box{
@@ -478,7 +478,7 @@ body::after{
   border-radius:12px;padding:14px;margin-top:12px;
 }
 .wc-title{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--orange);margin-bottom:7px}
-.wc-text{font-size:.8rem;color:#6080A0;line-height:1.65}
+.wc-text{font-size:.8rem;color:#A8C0D8;line-height:1.65}
 
 /* Task checklist */
 .task-item{
@@ -655,6 +655,9 @@ body::after{
   pointer-events:none;z-index:0;
 }
 
+@keyframes orbit{to{transform:rotate(360deg)}}
+#orbit-ring{animation:spin 8s linear infinite}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .game-wrap{grid-template-columns:1fr}
@@ -686,16 +689,24 @@ body::after{
     <button class="tb-nb" onclick="showSection('ranking',this)">🏆 Ranking</button>
   </div>
   <div class="tb-right">
-    <div class="lives-display" id="lives-display">
-      <span class="life">❤️</span><span class="life">❤️</span><span class="life">❤️</span>
-    </div>
+    <div id="weekly-streak-tb" style="
+    display:flex;align-items:center;gap:5px;
+    background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);
+    border-radius:100px;padding:4px 10px;font-size:.7rem;font-weight:800;color:var(--cg);"
+    title="Dias ativos esta semana">
+    📅 <span id="week-days-val">0</span>/5 dias
+  </div>
     <div class="tb-streak" id="tb-streak">🔥 <span id="tb-streak-val">0</span></div>
     <div class="tb-xp-pill">
       <video class="tb-xp-video" id="tb-coin-video" autoplay loop muted playsinline></video>
       <span class="tb-xp-val" id="tb-xp">0</span>
     </div>
     <div class="tb-lvl" id="tb-lvl">Nível 1<br>Explorador</div>
-    <button class="btn btn-ghost" style="padding:5px 12px;font-size:.68rem" onclick="goIntro()">↩</button>
+    <button id="music-btn" onclick="toggleMusic()" style="
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px;font-size:.9rem;cursor:pointer;
+  transition:.2s;" title="Música">🎵</button>
+<button class="btn btn-ghost" style="padding:5px 12px;font-size:.68rem" onclick="goIntro()">↩</button>
   </div>
 </nav>
 
@@ -717,6 +728,12 @@ body::after{
 
   <h1 class="nexus-title">NEXUS<br>ACADEMY</h1>
   <div class="nexus-sub">Desperte o Gênio Que Existe em Você!</div>
+  <button onclick="toggleMusic()" id="music-btn-intro" style="
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    border-radius:100px;padding:6px 16px;color:rgba(255,255,255,.5);
+    font-size:.75rem;font-weight:700;cursor:pointer;margin-bottom:16px;
+    font-family:Nunito,sans-serif;transition:.2s;" 
+    title="Ligar/desligar música">🎵 Música épica · clique para mutar</button>
 
   <!-- Animated coin showcase — all 6 coins + video -->
   <div class="intro-coins-showcase" id="intro-coins-showcase" style="
@@ -876,6 +893,115 @@ body::after{
     <div class="phase-ov-skill" id="phase-ov-skill">⚡ PRÓXIMA FASE DESBLOQUEADA</div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px" id="phase-ov-coins"></div>
     <button class="btn btn-cyber" onclick="closePhaseOverlay()" style="margin-top:24px">PRÓXIMA FASE ⚡</button>
+  </div>
+</div>
+
+<!-- ═══ EPIC COMPLETION SCREEN ═══ -->
+<div id="completion-screen" style="
+  display:none;position:fixed;inset:0;z-index:950;
+  background:var(--bg);overflow-y:auto;
+  animation:fadeUp .5s ease;
+">
+  <!-- Starfield -->
+  <canvas id="completion-stars" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+
+  <div style="position:relative;z-index:1;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:40px 24px;">
+
+    <!-- Medal video big -->
+    <div style="position:relative;margin-bottom:24px">
+      <div style="
+        width:220px;height:220px;border-radius:50%;overflow:hidden;
+        border:4px solid var(--gold);margin:0 auto;
+        box-shadow:0 0 80px rgba(255,214,10,.6),0 0 160px rgba(255,214,10,.2);
+        animation:medalFloat 3s ease-in-out infinite;
+      ">
+        <video id="completion-medal-vid" autoplay loop muted playsinline
+          style="width:100%;height:100%;object-fit:cover"></video>
+      </div>
+      <!-- Orbiting particles -->
+      <div id="orbit-ring" style="position:absolute;inset:-30px;border-radius:50%;
+        border:2px dashed rgba(255,214,10,.2);animation:spin 8s linear infinite;
+        pointer-events:none"></div>
+    </div>
+
+    <!-- Title -->
+    <div style="font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--cg);margin-bottom:8px">
+      ✦ PROTOCOLO CONCLUÍDO ✦
+    </div>
+    <h1 style="font-family:'Orbitron',monospace;
+      font-size:clamp(2rem,8vw,4.5rem);font-weight:900;line-height:1;
+      margin-bottom:8px;
+      background:linear-gradient(135deg,var(--gold) 0%,var(--nb) 50%,var(--ep) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      filter:drop-shadow(0 0 30px rgba(255,214,10,.4));">
+      MISSÃO<br>CUMPRIDA
+    </h1>
+    <div style="font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;
+      color:rgba(255,255,255,.5);letter-spacing:.08em;margin-bottom:24px">
+      NEXUS ACADEMY — NÍVEL MÁXIMO ATINGIDO
+    </div>
+
+    <!-- Agent name -->
+    <div style="
+      background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(176,96,255,.08));
+      border:1px solid rgba(0,212,255,.3);border-radius:16px;
+      padding:16px 40px;margin-bottom:24px;
+    ">
+      <div style="font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Agente</div>
+      <div id="completion-name" style="font-family:'Orbitron',monospace;font-size:1.8rem;
+        font-weight:900;color:var(--gold)">NOME</div>
+      <div style="font-size:.72rem;color:var(--cg);margin-top:4px;letter-spacing:.08em">
+        🌀 MESTRE DO FUNIL · JOVEM CRIADOR DIGITAL
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+      max-width:480px;width:100%;margin-bottom:24px" id="completion-stats">
+      <div style="background:rgba(255,214,10,.08);border:1px solid rgba(255,214,10,.2);
+        border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;
+          color:var(--gold)" id="stat-xp">0</div>
+        <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;
+          letter-spacing:.08em">XP Total</div>
+      </div>
+      <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);
+        border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;
+          color:var(--nb)">32</div>
+        <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;
+          letter-spacing:.08em">Missões</div>
+      </div>
+      <div style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);
+        border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;
+          color:var(--cg)" id="stat-streak">0</div>
+        <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;
+          letter-spacing:.08em">Sequência</div>
+      </div>
+    </div>
+
+    <!-- Phase badges earned -->
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+      margin-bottom:28px" id="completion-badges"></div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button class="btn btn-cyber" onclick="window.open('certificado-academia.html','_blank')">
+        🎓 Emitir Certificado
+      </button>
+      <button class="btn btn-ghost" onclick="closeCompletion()">
+        ← Voltar ao Jogo
+      </button>
+    </div>
+
+    <p style="font-size:.72rem;color:var(--muted);margin-top:20px;max-width:400px;line-height:1.6">
+      "O mundo está esperando pelo que você vai criar."<br>
+      <span style="color:var(--nb)">— NEXUS ACADEMY by Nuvem Veloz</span>
+    </p>
   </div>
 </div>
 
@@ -1623,10 +1749,42 @@ challenge:'🌟 Isso não é o fim. É o começo. Seu próximo negócio começa 
 /* ════════════════════════════════════
    STATE
 ════════════════════════════════════ */
-let G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},lives:3};
+let G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},
+  weekDays:0,          // days active this week (0-5)
+  lastActiveDate:'',   // ISO date string of last activity
+  weekBonus:false,     // received this week's bonus already
+};
 
 function loadG(){try{const s=localStorage.getItem('nexus_g');if(s)G=JSON.parse(s);}catch(e){}}
-function saveG(){try{localStorage.setItem('nexus_g',JSON.stringify(G));}catch(e){}}
+function saveG(){try{localStorage.setItem('nexus_g',JSON.stringify(G));}cat/* ════ MUSIC ENGINE ════ */
+let bgMusicPlaying=false,bgMusicCtx=null,bgMusicNodes=[],musicMuted=false;
+function startBgMusic(){if(bgMusicPlaying||musicMuted)return;try{bgMusicCtx=new(window.AudioContext||window.webkitAudioContext)();bgMusicPlaying=true;playEpicTheme(bgMusicCtx);}catch(e){}}
+function stopBgMusic(){bgMusicPlaying=false;bgMusicNodes.forEach(n=>{try{n.stop();}catch(e){}});bgMusicNodes=[];if(bgMusicCtx){try{bgMusicCtx.close();}catch(e){}bgMusicCtx=null;}}
+function toggleMusic(){musicMuted=!musicMuted;['music-btn','music-btn-intro'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=musicMuted?'🔇':'🎵';});if(musicMuted)stopBgMusic();else startBgMusic();}
+function playEpicTheme(ctx){
+  const mg=ctx.createGain();mg.gain.value=0.06;mg.connect(ctx.destination);bgMusicNodes.push(mg);
+  const dl=ctx.createDelay(0.5);const fb=ctx.createGain();dl.delayTime.value=0.28;fb.gain.value=0.2;dl.connect(fb);fb.connect(dl);dl.connect(mg);
+  const N=[{f:130.81,d:1.5,t:0},{f:164.81,d:1.0,t:1.5},{f:196,d:1.0,t:2.5},{f:261.63,d:2.0,t:3.5},{f:220,d:1.0,t:5.5},{f:196,d:1.0,t:6.5},{f:164.81,d:2.5,t:7.5},{f:130.81,d:2.5,t:10.0}];
+  const LD=13;
+  function loop(s){
+    if(!bgMusicPlaying)return;
+    N.forEach(n=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.value=n.f;
+      g.gain.setValueAtTime(0,s+n.t);g.gain.linearRampToValueAtTime(0.3,s+n.t+0.15);g.gain.linearRampToValueAtTime(0,s+n.t+n.d);
+      o.connect(g);g.connect(dl);o.start(s+n.t);o.stop(s+n.t+n.d+0.1);bgMusicNodes.push(o);
+      const o2=ctx.createOscillator(),g2=ctx.createGain();o2.type='triangle';o2.frequency.value=n.f*1.5;
+      g2.gain.setValueAtTime(0,s+n.t);g2.gain.linearRampToValueAtTime(0.1,s+n.t+0.2);g2.gain.linearRampToValueAtTime(0,s+n.t+n.d);
+      o2.connect(g2);g2.connect(mg);o2.start(s+n.t);o2.stop(s+n.t+n.d+0.1);bgMusicNodes.push(o2);
+    });
+    for(let b=0;b<LD;b+=2){const d=ctx.createOscillator(),dg=ctx.createGain();d.type='sine';d.frequency.setValueAtTime(110,s+b);d.frequency.exponentialRampToValueAtTime(40,s+b+0.25);dg.gain.setValueAtTime(0.35,s+b);dg.gain.exponentialRampToValueAtTime(0.001,s+b+0.35);d.connect(dg);dg.connect(mg);d.start(s+b);d.stop(s+b+0.4);bgMusicNodes.push(d);}
+    if(bgMusicPlaying)setTimeout(()=>loop(ctx.currentTime+0.05),(LD-0.2)*1000);
+  }
+  loop(ctx.currentTime+0.1);
+}
+function playVictoryFanfare(){try{const ctx=getAudio();[[523,0],[659,.12],[784,.24],[1047,.36],[784,.6],[1047,.72],[1175,.84],[1568,.96]].forEach(([f,t])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=t>.9?'sawtooth':'triangle';o.frequency.value=f;const st=ctx.currentTime+t;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(0.18,st+0.05);g.gain.exponentialRampToValueAtTime(0.001,st+(t>.9?.8:.25));o.connect(g);g.connect(ctx.destination);o.start(st);o.stop(st+.95);});}catch(e){}}
+function playEpicFinale(){try{const ctx=getAudio();const mg=ctx.createGain();mg.gain.value=0.12;mg.connect(ctx.destination);[[261,0],[329,.06],[392,.12],[523,.18],[659,.24]].forEach(([f,t])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.value=f;const st=ctx.currentTime+t;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(0.45,st+0.1);g.gain.exponentialRampToValueAtTime(0.001,st+3.5);o.connect(g);g.connect(mg);o.start(st);o.stop(st+3.6);});for(let i=0;i<10;i++){const d=ctx.createOscillator(),dg=ctx.createGain();d.type='sine';d.frequency.value=65+(i%2)*20;const dt=ctx.currentTime+i*.06;dg.gain.setValueAtTime(0.6,dt);dg.gain.exponentialRampToValueAtTime(0.001,dt+.15);d.connect(dg);dg.connect(mg);d.start(dt);d.stop(dt+.2);}}catch(e){}}
+
+ch(e){}}
 
 /* ════════════════════════════════════
    PARTICLES ENGINE
@@ -1810,6 +1968,8 @@ function startGame(){
   switchScreen('s-game');
   document.getElementById('topbar').style.display='flex';
   renderGame();
+  // Start epic background music
+  setTimeout(startBgMusic, 500);
   // Spawn welcome particles
   setTimeout(()=>spawnBurstAt(window.innerWidth/2, window.innerHeight/2),300);
 }
@@ -1868,6 +2028,8 @@ function renderLeft(){
       ${locked?'<span style="font-size:.75rem">🔒</span>':''}
     </button>`;
   }).join('');
+
+  updateWeekUI();
 
   // Rewards
   document.getElementById('rewards-list').innerHTML=REWARDS.map(r=>`
@@ -1945,7 +2107,7 @@ function openMission(id){
   <div class="det-body" style="--lc:${ph.color}">
     <div style="border-left:2px solid ${ph.color};border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:14px;background:rgba(0,212,255,.03)">
       <div style="font-family:Orbitron,monospace;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${ph.color};margin-bottom:5px">// NARRATIVA</div>
-      <p style="font-size:.84rem;color:#6080A0;line-height:1.75">${m.story.replace(/\n/g,'<br>')}</p>
+      <p style="font-size:.84rem;color:#A8C0D8;line-height:1.75">${m.story.replace(/\n/g,'<br>')}</p>
     </div>
     <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px">
       <div style="font-family:Orbitron,monospace;font-size:.52rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">// OBJETIVO</div>
@@ -2040,13 +2202,14 @@ function completeMission(id){
   G.xp+=m.xp;
   G.streak++;
   G.hist.unshift({label:`Missão ${m.num}: ${m.title}`,pts:m.xp,ck:coinKey(m.xp)});
+  checkDailyStreak(); // Track daily activity
 
   // Update lives (reset on mission complete)
   G.lives=Math.min(3,G.lives+1);
   saveG();
 
   // Sound & particles
-  playSound('complete');
+  playVictoryFanfare();
   const btn=event?.target;
   if(btn){
     const r=btn.getBoundingClientRect();
@@ -2066,14 +2229,24 @@ function completeMission(id){
   const phDone=MISSIONS.filter(mx=>mx.phase===m.phase&&G.completed.includes(mx.id)).length;
   const phComplete = phDone >= ph.total;
 
+  // Check full game completion
+  const allDone = G.completed.length >= 32;
+
   setTimeout(()=>{
-    if(phComplete && m.phase < 6){
+    if(allDone){
+      // ALL 32 MISSIONS COMPLETE — Epic finale!
+      playEpicFinale();
+      setTimeout(() => {
+        launchConfetti();
+        showCompletionScreen();
+      }, 800);
+    } else if(phComplete && m.phase < 6){
       // Phase complete! Show phase overlay THEN level-up if needed
       playSound('complete');
       launchConfetti();
       showPhaseComplete(ph, newLv > prevLv ? getLevel() : null);
     } else if(newLv>prevLv){
-      playSound('levelup');
+      playVictoryFanfare();
       launchConfetti();
       showLvlUp(getLevel());
     } else {
@@ -2081,6 +2254,56 @@ function completeMission(id){
       openMission(id);
     }
   }, 1800);
+}
+
+function checkDailyStreak(){
+  const today = new Date().toISOString().slice(0,10);
+  if(G.lastActiveDate === today) return; // already counted today
+
+  const lastDate = G.lastActiveDate ? new Date(G.lastActiveDate) : null;
+  const todayDate = new Date(today);
+  const dayOfWeek = todayDate.getDay(); // 0=Sun, 1=Mon...5=Fri, 6=Sat
+
+  // Reset week on Monday
+  if(dayOfWeek === 1 && G.lastActiveDate) {
+    const lastDay = lastDate.getDay();
+    if(lastDay !== 1 || (todayDate - lastDate) > 86400000) {
+      G.weekDays = 0;
+      G.weekBonus = false;
+    }
+  }
+
+  G.lastActiveDate = today;
+  G.weekDays = Math.min(5, (G.weekDays || 0) + 1);
+  saveG();
+
+  // Check 5-day weekly bonus
+  if(G.weekDays === 5 && !G.weekBonus) {
+    G.weekBonus = true;
+    G.xp += 100;
+    G.hist.unshift({label:'⭐ Semana completa! Bônus', pts:100, ck:'xp100'});
+    saveG();
+    setTimeout(() => {
+      showToast('Semana completa! Bônus desbloqueado!', 100, 'xp100');
+      launchConfetti();
+    }, 2000);
+  }
+
+  updateWeekUI();
+}
+
+function updateWeekUI(){
+  const el = document.getElementById('week-days-val');
+  if(el) el.textContent = G.weekDays || 0;
+
+  // Show stars for days completed
+  const days = G.weekDays || 0;
+  const stEl = document.getElementById('pc-streak');
+  if(stEl) {
+    const stars = '⭐'.repeat(days) + '☆'.repeat(Math.max(0, 5-days));
+    stEl.textContent = `📅 ${stars} ${days}/5 dias`;
+    stEl.style.color = days >= 5 ? 'var(--gold)' : days >= 3 ? 'var(--cg)' : 'var(--orange)';
+  }
 }
 
 function showToast(label,pts,ck){
@@ -2151,6 +2374,78 @@ function showLvlUp(lv){
   if(VID.medal&&mv.src!==VID.medal){mv.src=VID.medal;mv.load();}
   mv.play().catch(()=>{});
 }
+function showCompletionScreen(){
+  playEpicFinale();
+  launchConfetti();
+  setTimeout(launchConfetti, 1500);
+  setTimeout(launchConfetti, 3000);
+
+  // Setup screen
+  document.getElementById('completion-name').textContent = G.name.toUpperCase();
+  document.getElementById('stat-xp').textContent = G.xp.toLocaleString();
+  document.getElementById('stat-streak').textContent = G.streak;
+
+  // Phase badges
+  const badgesEl = document.getElementById('completion-badges');
+  badgesEl.innerHTML = PHASES.map((ph,i) => `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+      <img src="${IMG['medal_ph'+(i+1)]||''}" style="width:52px;height:auto;
+        filter:drop-shadow(0 0 8px ${ph.color});
+        animation:medalFloat ${2+i*0.3}s ease-in-out infinite">
+      <span style="font-size:.58rem;color:${ph.color};font-weight:800;
+        font-family:Orbitron,monospace;letter-spacing:.06em">${ph.icon}</span>
+    </div>`).join('');
+
+  // Medal video
+  const mv = document.getElementById('completion-medal-vid');
+  if(VID.medal){mv.src=VID.medal;mv.load();mv.play().catch(()=>{});}
+
+  // Starfield
+  initCompletionStars();
+
+  document.getElementById('completion-screen').style.display = 'block';
+  document.getElementById('completion-screen').scrollTo(0,0);
+}
+
+function closeCompletion(){
+  document.getElementById('completion-screen').style.display = 'none';
+}
+
+function initCompletionStars(){
+  const canvas = document.getElementById('completion-stars');
+  if(!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const stars = Array.from({length:150}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2,
+    alpha: Math.random(),
+    speed: 0.003 + Math.random() * 0.008,
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.alpha += s.speed;
+      if(s.alpha > 1) s.speed = -s.speed;
+      if(s.alpha < 0) s.speed = -s.speed;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, s.alpha));
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+    if(document.getElementById('completion-screen').style.display !== 'none'){
+      requestAnimationFrame(draw);
+    }
+  }
+  draw();
+}
+
 function closeLvl(){
   document.getElementById('lvl-ov').classList.remove('on');
   renderGame();
@@ -2161,11 +2456,6 @@ function renderRight(){
   const done=G.completed.length;
   document.getElementById('pr-missions').textContent=`${done}/32`;
   document.getElementById('pr-bar').style.width=`${(done/32)*100}%`;
-
-  // Lives
-  document.querySelectorAll('.life').forEach((el,i)=>{
-    el.classList.toggle('lost',i>=G.lives);
-  });
 
   const hl=document.getElementById('hist-list');
   if(!G.hist.length){
@@ -2250,6 +2540,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     const el = document.getElementById(id);
     if(el && IMG[key]) el.src = IMG[key];
   });
+
+  // Start ambient music on intro (quiet)
+  setTimeout(() => {
+    if(!musicMuted) startBgMusic();
+  }, 1000);
 
   loadG();
   if(G.name){
