@@ -885,7 +885,7 @@ body::after{
   <div class="phase-ov-content">
     <!-- Medal video -->
     <div class="phase-medal-wrap">
-      <video class="phase-medal-vid" id="phase-medal-vid" autoplay loop playsinline></video>
+      <video class="phase-medal-vid" id="phase-medal-vid" autoplay playsinline></video>
       <div class="phase-medal-glow"></div>
     </div>
     <div class="phase-ov-badge" id="phase-ov-badge">FASE 1</div>
@@ -918,7 +918,7 @@ body::after{
         box-shadow:0 0 80px rgba(255,214,10,.6),0 0 160px rgba(255,214,10,.2);
         animation:medalFloat 3s ease-in-out infinite;
       ">
-        <video id="completion-medal-vid" autoplay loop playsinline
+        <video id="completion-medal-vid" autoplay playsinline
           style="width:100%;height:100%;object-fit:cover"></video>
       </div>
       <!-- Orbiting particles -->
@@ -999,10 +999,25 @@ body::after{
       </button>
     </div>
 
-    <p style="font-size:.72rem;color:var(--muted);margin-top:20px;max-width:400px;line-height:1.6">
-      "O mundo está esperando pelo que você vai criar."<br>
-      <span style="color:var(--nb)">— NEXUS ACADEMY by Nuvem Veloz</span>
-    </p>
+    <div style="
+      background:linear-gradient(135deg,rgba(255,214,10,.08),rgba(176,96,255,.06));
+      border:1px solid rgba(255,214,10,.2);border-radius:16px;
+      padding:18px 24px;margin-top:20px;max-width:440px;
+    ">
+      <p style="font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;
+        color:var(--gold);letter-spacing:.06em;margin-bottom:8px">
+        ✦ AGENTE GRADUADO ✦
+      </p>
+      <p style="font-size:.85rem;color:#C8DDEF;line-height:1.75;font-style:italic">
+        "Você transformou conhecimento em <strong style="color:var(--nb)">PODER</strong>,
+        desafios em <strong style="color:var(--cg)">VITÓRIAS</strong>
+        e potencial em <strong style="color:var(--gold)">REALIDADE</strong>.<br>
+        O sucesso espera por você!"
+      </p>
+      <p style="font-size:.62rem;color:var(--muted);margin-top:8px;letter-spacing:.08em">
+        — NEXUS ACADEMY by Nuvem Veloz
+      </p>
+    </div>
   </div>
 </div>
 
@@ -1016,7 +1031,7 @@ body::after{
 <!-- LEVEL UP -->
 <div class="lvl-overlay" id="lvl-ov">
   <div class="lvl-medal-wrap">
-    <video class="lvl-medal-video" id="lvl-medal-video" autoplay loop playsinline></video>
+    <video class="lvl-medal-video" id="lvl-medal-video" autoplay playsinline></video>
   </div>
   <div class="lvl-h" id="lvl-h">NÍVEL UP!</div>
   <div class="lvl-sub" id="lvl-sub">Nova habilidade desbloqueada</div>
@@ -1045,8 +1060,9 @@ const IMG = {
   medal_ph6:     'medal-ph6.png',
 };
 const VID = {
-  coin:  'coin-video.mp4',
-  medal: 'medal-video.mp4',
+  coin:      'coin-video.mp4',
+  medal:     'medal-video.mp4',
+  graduation:'agente-graduado.mp4',
 };
 
 // ══ MUSIC ENGINE ══
@@ -2473,11 +2489,19 @@ function showPhaseComplete(ph, nextLv) {
   ov.classList.add('on');
 }
 
+function stopMedalVideos() {
+  ['phase-medal-vid','lvl-medal-video','completion-medal-vid'].forEach(id => {
+    const v = document.getElementById(id);
+    if (v) { v.pause(); v.currentTime = 0; v.src = ''; }
+  });
+}
+
 function closePhaseOverlay() {
   const ov = document.getElementById('phase-overlay');
   const nextLv = ov._nextLv;
   ov.classList.remove('on');
   ov._nextLv = null;
+  stopMedalVideos();
   if (nextLv) { setTimeout(() => { soundFanfare(); launchConfetti(); showLvlUp(nextLv); }, 400); }
   else renderGame();
 }
@@ -2493,6 +2517,7 @@ function showLvlUp(lv) {
   ov.classList.add('on');
 }
 function closeLvl() {
+  stopMedalVideos();
   document.getElementById('lvl-ov').classList.remove('on');
   renderGame();
 }
@@ -2512,12 +2537,13 @@ function showCompletionScreen() {
       <span style="font-size:.58rem;color:${ph.color};font-weight:800;font-family:Orbitron,monospace">${ph.icon}</span>
     </div>`).join('');
   const mv = document.getElementById('completion-medal-vid');
-  if (mv) { mv.src = VID.medal; mv.load(); mv.play().catch(()=>{}); }
+  if (mv) { mv.src = VID.graduation; mv.load(); mv.play().catch(()=>{}); }
   initCompletionStars();
   document.getElementById('completion-screen').style.display = 'block';
 }
 
 function closeCompletion() {
+  stopMedalVideos();
   document.getElementById('completion-screen').style.display = 'none';
 }
 
