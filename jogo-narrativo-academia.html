@@ -885,7 +885,7 @@ body::after{
   <div class="phase-ov-content">
     <!-- Medal video -->
     <div class="phase-medal-wrap">
-      <video class="phase-medal-vid" id="phase-medal-vid" autoplay loop muted playsinline></video>
+      <video class="phase-medal-vid" id="phase-medal-vid" autoplay loop playsinline></video>
       <div class="phase-medal-glow"></div>
     </div>
     <div class="phase-ov-badge" id="phase-ov-badge">FASE 1</div>
@@ -918,7 +918,7 @@ body::after{
         box-shadow:0 0 80px rgba(255,214,10,.6),0 0 160px rgba(255,214,10,.2);
         animation:medalFloat 3s ease-in-out infinite;
       ">
-        <video id="completion-medal-vid" autoplay loop muted playsinline
+        <video id="completion-medal-vid" autoplay loop playsinline
           style="width:100%;height:100%;object-fit:cover"></video>
       </div>
       <!-- Orbiting particles -->
@@ -1016,7 +1016,7 @@ body::after{
 <!-- LEVEL UP -->
 <div class="lvl-overlay" id="lvl-ov">
   <div class="lvl-medal-wrap">
-    <video class="lvl-medal-video" id="lvl-medal-video" autoplay loop muted playsinline></video>
+    <video class="lvl-medal-video" id="lvl-medal-video" autoplay loop playsinline></video>
   </div>
   <div class="lvl-h" id="lvl-h">NÍVEL UP!</div>
   <div class="lvl-sub" id="lvl-sub">Nova habilidade desbloqueada</div>
@@ -1077,53 +1077,93 @@ function musicToggle() {
 }
 
 function _playTheme(ctx) {
-  const mg = ctx.createGain();
-  mg.gain.value = 0.05;
-  mg.connect(ctx.destination);
-  _musicNodes.push(mg);
+  // Piano calmo — melodia suave em Dó maior
+  // Simula piano: sine + triangle com envelope ADSR natural
+  const masterGain = ctx.createGain();
+  masterGain.gain.value = 0.07;
 
-  const notes = [
-    {f:130.81,d:1.5,t:0},{f:164.81,d:1.0,t:1.5},{f:196,d:1.0,t:2.5},
-    {f:261.63,d:2.0,t:3.5},{f:220,d:1.0,t:5.5},{f:196,d:1.0,t:6.5},
-    {f:164.81,d:2.5,t:7.5},{f:130.81,d:2.5,t:10.0},
+  // Reverb suave via convolution simulada com delay
+  const delay = ctx.createDelay(2.0);
+  const delayGain = ctx.createGain();
+  delay.delayTime.value = 0.55;
+  delayGain.gain.value = 0.18;
+  delay.connect(delayGain);
+  delayGain.connect(masterGain);
+  masterGain.connect(ctx.destination);
+  _musicNodes.push(masterGain);
+
+  // Melodia de piano — Dó maior, ritmo lento e suave
+  // Cada nota: [frequência, duração(s), tempo_início(s)]
+  const melody = [
+    // Frase 1: C4 E4 G4 E4
+    [261.63, 1.8, 0.0],
+    [329.63, 1.4, 1.8],
+    [392.00, 1.4, 3.2],
+    [329.63, 1.2, 4.6],
+    // Frase 2: A3 C4 E4 D4
+    [220.00, 1.8, 6.0],
+    [261.63, 1.4, 7.8],
+    [329.63, 1.4, 9.2],
+    [293.66, 2.0, 10.6],
+    // Frase 3: G3 B3 D4 C4
+    [196.00, 1.8, 13.0],
+    [246.94, 1.4, 14.8],
+    [293.66, 1.4, 16.2],
+    [261.63, 2.5, 17.6],
   ];
-  const LD = 13;
+  const loopDur = 21;
+
+  // Baixo suave — pedal harmonioso
+  const bass = [
+    [65.41, 4.0, 0.0],   // C2
+    [55.00, 4.0, 4.0],   // A2
+    [49.00, 4.0, 8.0],   // G2
+    [65.41, 5.0, 12.0],  // C2
+    [73.42, 4.0, 17.0],  // D2
+  ];
+
+  function playPianoNote(freq, dur, startTime) {
+    // Piano = sine (fundamental) + triangle (harmônico suave) + envelope natural
+    const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+    const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o1.type = 'sine';     o1.frequency.value = freq;
+    o2.type = 'triangle'; o2.frequency.value = freq * 2.01; // leve detuning para calor
+
+    // ADSR natural de piano: ataque rápido, decay médio, sustain suave, release longo
+    const peak = 0.55;
+    g1.gain.setValueAtTime(0, startTime);
+    g1.gain.linearRampToValueAtTime(peak, startTime + 0.04);      // attack
+    g1.gain.exponentialRampToValueAtTime(peak * 0.6, startTime + 0.3);  // decay
+    g1.gain.setValueAtTime(peak * 0.6, startTime + dur - 0.4);   // sustain
+    g1.gain.exponentialRampToValueAtTime(0.001, startTime + dur + 0.8); // release longo
+
+    g2.gain.setValueAtTime(0, startTime);
+    g2.gain.linearRampToValueAtTime(peak * 0.25, startTime + 0.04);
+    g2.gain.exponentialRampToValueAtTime(0.001, startTime + dur * 0.7);
+
+    o1.connect(g1); g1.connect(delay);
+    o2.connect(g2); g2.connect(masterGain);
+    o1.start(startTime); o1.stop(startTime + dur + 1.0);
+    o2.start(startTime); o2.stop(startTime + dur * 0.7);
+    _musicNodes.push(o1, o2);
+  }
 
   function loop(s) {
     if (!_musicPlaying) return;
-    notes.forEach(n => {
+    melody.forEach(([f, d, t]) => playPianoNote(f, d, s + t));
+    bass.forEach(([f, d, t]) => {
       const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = 'sawtooth'; o.frequency.value = n.f;
-      g.gain.setValueAtTime(0, s+n.t);
-      g.gain.linearRampToValueAtTime(0.28, s+n.t+0.2);
-      g.gain.linearRampToValueAtTime(0, s+n.t+n.d);
-      o.connect(g); g.connect(mg);
-      o.start(s+n.t); o.stop(s+n.t+n.d+0.1);
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0, s+t);
+      g.gain.linearRampToValueAtTime(0.18, s+t+0.08);
+      g.gain.exponentialRampToValueAtTime(0.001, s+t+d);
+      o.connect(g); g.connect(masterGain);
+      o.start(s+t); o.stop(s+t+d+0.1);
       _musicNodes.push(o);
-
-      const o2 = ctx.createOscillator(), g2 = ctx.createGain();
-      o2.type = 'triangle'; o2.frequency.value = n.f * 1.5;
-      g2.gain.setValueAtTime(0, s+n.t);
-      g2.gain.linearRampToValueAtTime(0.09, s+n.t+0.2);
-      g2.gain.linearRampToValueAtTime(0, s+n.t+n.d);
-      o2.connect(g2); g2.connect(mg);
-      o2.start(s+n.t); o2.stop(s+n.t+n.d+0.1);
-      _musicNodes.push(o2);
     });
-    for (let b = 0; b < LD; b += 2) {
-      const d = ctx.createOscillator(), dg = ctx.createGain();
-      d.type = 'sine';
-      d.frequency.setValueAtTime(110, s+b);
-      d.frequency.exponentialRampToValueAtTime(40, s+b+0.25);
-      dg.gain.setValueAtTime(0.3, s+b);
-      dg.gain.exponentialRampToValueAtTime(0.001, s+b+0.35);
-      d.connect(dg); dg.connect(mg);
-      d.start(s+b); d.stop(s+b+0.4);
-      _musicNodes.push(d);
-    }
-    if (_musicPlaying) setTimeout(() => loop(ctx.currentTime + 0.05), (LD - 0.2) * 1000);
+    if (_musicPlaying) setTimeout(() => loop(ctx.currentTime + 0.05), (loopDur - 0.2) * 1000);
   }
-  loop(ctx.currentTime + 0.1);
+  loop(ctx.currentTime + 0.3);
 }
 
 function soundFanfare() {
@@ -2252,9 +2292,110 @@ function toggleTask(key, el) {
 }
 
 // ══ MISSION COMPLETE ══
+function soundAlert() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    // Som de erro: duas notas descendentes
+    [[220, 0], [185, 0.18]].forEach(([f, t]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'square'; o.frequency.value = f;
+      const st = ctx.currentTime + t;
+      g.gain.setValueAtTime(0.15, st);
+      g.gain.exponentialRampToValueAtTime(0.001, st + 0.22);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(st); o.stop(st + 0.25);
+    });
+  } catch(e) {}
+}
+
+function showMissionAlert(id) {
+  // Remove qualquer alerta anterior
+  const existing = document.getElementById('mission-alert-popup');
+  if (existing) existing.remove();
+
+  const m = MISSIONS.find(x => x.id===id);
+  const tasksDone = Object.keys(G.tasks).filter(k => k.startsWith('t_'+id+'_') && G.tasks[k]).length;
+  const tasksTotal = m.blocks.filter(b=>b.steps).reduce((s,b)=>s+b.steps.length,0);
+
+  const popup = document.createElement('div');
+  popup.id = 'mission-alert-popup';
+  popup.style.cssText = `
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:1000;
+    background:#080E20;border:2px solid #FF3355;border-radius:20px;
+    padding:28px 32px;text-align:center;max-width:360px;width:90%;
+    box-shadow:0 0 40px rgba(255,51,85,.3);
+    animation:fadeUp .3s ease;
+  `;
+  popup.innerHTML = `
+    <div style="font-size:2.5rem;margin-bottom:12px">⚠️</div>
+    <div style="font-family:Orbitron,monospace;font-size:.85rem;font-weight:700;
+      color:#FF3355;letter-spacing:.06em;margin-bottom:10px">
+      MISSÃO INCOMPLETA
+    </div>
+    <p style="font-size:.85rem;color:#A8C0D8;line-height:1.7;margin-bottom:18px">
+      Agente, conclua as tarefas da missão antes de prosseguir.<br>
+      <span style="color:#7A98B8;font-size:.75rem">
+        ${tasksDone}/${tasksTotal} tarefas marcadas
+      </span>
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="document.getElementById('mission-alert-popup').remove()"
+        style="background:rgba(255,51,85,.15);border:1px solid rgba(255,51,85,.3);
+          color:#FF3355;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;
+          padding:9px 20px;border-radius:10px;cursor:pointer">
+        Voltar às tarefas
+      </button>
+      <button onclick="forceCompleteMission(${id});document.getElementById('mission-alert-popup').remove()"
+        style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+          color:#7A98B8;font-family:Nunito,sans-serif;font-weight:800;font-size:.72rem;
+          padding:9px 16px;border-radius:10px;cursor:pointer">
+        Concluir mesmo assim
+      </button>
+    </div>
+  `;
+  document.body.appendChild(popup);
+
+  // Auto-fechar ao clicar fora
+  setTimeout(() => {
+    document.addEventListener('click', function handler(e) {
+      if (!popup.contains(e.target)) {
+        popup.remove();
+        document.removeEventListener('click', handler);
+      }
+    });
+  }, 100);
+}
+
+// Força conclusão mesmo sem tarefas (botão secundário do popup)
+function forceCompleteMission(id) {
+  // Marca todas as tarefas como feitas antes de concluir
+  const m = MISSIONS.find(x => x.id===id);
+  m.blocks.filter(b=>b.steps).forEach((b,bi) => {
+    b.steps.forEach((s,si) => { G.tasks['t_'+id+'_'+si] = true; });
+  });
+  saveG();
+  completeMission(id);
+}
+
 function completeMission(id) {
   if (G.completed.includes(id)) return;
   const m = MISSIONS.find(x => x.id===id);
+
+  // Verificar se pelo menos 1 tarefa foi marcada
+  const taskKeys = [];
+  m.blocks.filter(b => b.steps).forEach(b => {
+    b.steps.forEach((s, si) => taskKeys.push('t_'+id+'_'+si));
+  });
+  const completedTasks = taskKeys.filter(k => G.tasks[k]).length;
+
+  if (taskKeys.length > 0 && completedTasks === 0) {
+    // Nenhuma tarefa marcada — mostrar alerta e som de erro
+    soundAlert();
+    showMissionAlert(id);
+    return;
+  }
+
   const prevLv = getLevel().n;
   G.completed.push(id);
   G.xp += m.xp;
