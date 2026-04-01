@@ -707,6 +707,9 @@ body::after{
   background:rgba(255,255,255,.06);border:1px solid var(--border);
   border-radius:8px;padding:5px 10px;font-size:.9rem;cursor:pointer;
   transition:.2s;" title="Música">🎵</button>
+<button id="btn-completion" class="btn btn-ghost" 
+    style="padding:5px 12px;font-size:.68rem;display:none;color:var(--gold);border-color:rgba(255,214,10,.3)"
+    onclick="showCompletionScreen()">🏆</button>
 <button class="btn btn-ghost" style="padding:5px 12px;font-size:.68rem" onclick="goIntro()">↩</button>
   </div>
 </nav>
@@ -2545,6 +2548,7 @@ function showCompletionScreen() {
 function closeCompletion() {
   stopMedalVideos();
   document.getElementById('completion-screen').style.display = 'none';
+  renderGame();
 }
 
 function initCompletionStars() {
@@ -2602,6 +2606,9 @@ function updateTopbar() {
   if (stEl) stEl.classList.toggle('hot', G.streak >= 5);
   const wdEl = document.getElementById('week-days-val');
   if (wdEl) wdEl.textContent = G.weekDays || 0;
+  // Show trophy button if all missions complete
+  const btnCompletion = document.getElementById('btn-completion');
+  if (btnCompletion) btnCompletion.style.display = G.completed.length >= 32 ? 'flex' : 'none';
 }
 
 // ══ MISC ══
