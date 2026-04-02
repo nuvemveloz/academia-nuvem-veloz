@@ -91,10 +91,7 @@ body { font-family: 'Nunito', sans-serif; background: #0D1530; }
 .badge { background:rgba(0,50,180,.06); border:.5px solid rgba(0,212,255,.4);
   border-radius:999px; padding:4px 18px; font-family:'Orbitron',monospace;
   font-size:9px; font-weight:700; color:#0D1B4B; letter-spacing:.08em; width:100%; }
-.title { font-family:'Orbitron',monospace; font-size:34px; font-weight:900; line-height:1;
-  background:linear-gradient(135deg,#0D1B4B,#5500BB,#B8860B);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text; margin:10px 0; }
+.title { font-family:'Orbitron',monospace; font-size:34px; font-weight:900; line-height:1; color:#3D0099; margin:4px 0; }
 .sub { font-size:11px; color:#555; letter-spacing:.1em; text-transform:uppercase;
   font-weight:700; margin-bottom:8px; }
 .presents { font-size:13px; color:#555; font-style:italic; margin-bottom:6px; }
@@ -132,33 +129,52 @@ body { font-family: 'Nunito', sans-serif; background: #0D1530; }
 /* Print */
 @media print {
   *, *::before, *::after {
-    -webkit-print-color-adjust:exact!important;
-    print-color-adjust:exact!important;
-    color-adjust:exact!important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
-  html,body { background:white!important; padding:0!important; margin:0!important; }
-  .no-print,.hint { display:none!important; }
-  .wrap { padding:0!important; display:block!important; }
-  .cert { width:247mm!important; height:160mm!important;
-    margin:25mm auto!important; box-shadow:none!important; border-radius:4px!important; }
-  .cl { width:44mm!important; padding:6mm 4mm!important; }
-  .cr { width:40mm!important; padding:6mm 4mm!important; }
-  .cc { padding:6mm 7mm 5mm!important; }
-  .title { font-size:21pt!important; }
-  .sub { font-size:7pt!important; }
-  .presents { font-size:6.5pt!important; }
-  .bt { font-size:6pt!important; }
-  .name { font-size:20pt!important; }
-  .badge { font-size:6pt!important; }
-  .chip { font-size:5.5pt!important; padding:2px 5px!important; }
-  .cr-lv { font-size:6pt!important; }
-  .cr-st { font-size:4.5pt!important; padding:3mm!important; }
-  .cr-st span { font-size:9pt!important; }
-  .sn { font-size:6pt!important; }
-  .dv { font-size:7pt!important; }
-  .ws { width:12mm!important; }
-  .wx { width:11mm!important; }
-  .fs-sig,.fs-dt { width:35mm!important; }
+  html, body { background: white !important; padding: 0 !important; margin: 0 !important; }
+  .no-print, .hint { display: none !important; }
+  .wrap { padding: 0 !important; display: block !important; }
+  .cert {
+    width: 247mm !important; height: 160mm !important;
+    margin: 25mm auto !important; box-shadow: none !important; border-radius: 4px !important;
+  }
+  .cl  { width: 44mm !important; padding: 6mm 4mm !important; }
+  .cr  { width: 40mm !important; padding: 6mm 4mm !important; }
+  .cc  { padding: 6mm 7mm 5mm !important; }
+
+  /* Títulos */
+  .title    { font-size: 21pt !important; color: #3D0099 !important; }
+  .name     { font-size: 20pt !important; }
+
+  /* Textos do centro — aumentados para bater com a tela */
+  .badge    { font-size: 7pt !important; }
+  .sub      { font-size: 8.5pt !important; }
+  .presents { font-size: 10pt !important; }
+  .name-sub { font-size: 6pt !important; }
+  .bt       { font-size: 9pt !important; }
+  .chip     { font-size: 8pt !important; padding: 3px 7px !important; }
+
+  /* Textos colunas laterais */
+  .cl-brand { font-size: 7pt !important; }
+  .cl-ct    { font-size: 6pt !important; }
+  .cl-sep   { font-size: 6pt !important; }
+  .cr-lv    { font-size: 7pt !important; }
+  .cr-st    { font-size: 7pt !important; padding: 3mm !important; }
+  .cr-st span { font-size: 13pt !important; }
+
+  /* Footer */
+  .sn { font-size: 6.5pt !important; }
+  .sr { font-size: 5.5pt !important; }
+  .xl { font-size: 6pt !important; }
+  .dl { font-size: 6.5pt !important; }
+  .dv { font-size: 10pt !important; }
+
+  /* Tamanhos imagens impressão */
+  .ws { width: 12mm !important; }
+  .wx { width: 11mm !important; }
+  .fs-sig, .fs-dt { width: 35mm !important; }
 }
 @page { size:297mm 210mm; margin:0; }
 </style>
