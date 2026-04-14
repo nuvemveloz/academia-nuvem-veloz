@@ -663,8 +663,98 @@ body::after{
 @media(max-width:900px){
   .game-wrap{grid-template-columns:1fr}
   .left-panel,.right-panel{display:none}
-  .center{max-height:none}
+  .center{max-height:none;padding:16px}
 }
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:600;
+  background:rgba(3,5,15,.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+.mobile-nav-inner{
+  display:flex;align-items:center;justify-content:space-around;
+  max-width:520px;margin:0 auto;
+}
+.mob-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:none;border:none;cursor:pointer;
+  color:var(--muted);font-family:'Nunito',sans-serif;
+  font-size:.52rem;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;padding:6px 8px;border-radius:10px;
+  transition:.15s;min-width:52px;
+}
+.mob-btn .mob-icon{font-size:1.25rem;line-height:1;margin-bottom:1px}
+.mob-btn:hover,.mob-btn.on{color:var(--nb)}
+.mob-btn.on .mob-icon{filter:drop-shadow(0 0 6px var(--nb))}
+.mob-btn.danger{color:var(--red)}
+.mob-btn.danger:hover{color:#ff6680}
+
+/* Mobile top info bar */
+.mobile-info-bar{
+  display:none;
+  background:rgba(3,5,15,.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:8px 14px;
+  gap:10px;align-items:center;flex-wrap:wrap;
+  position:sticky;top:52px;z-index:400;
+}
+.mob-xp-pill{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,214,10,.08);border:1px solid rgba(255,214,10,.2);
+  border-radius:100px;padding:3px 10px;
+  font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--gold);
+}
+.mob-lvl-pill{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.15);
+  border-radius:100px;padding:3px 10px;
+  font-size:.7rem;font-weight:800;color:var(--nb);
+}
+.mob-streak-pill{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.2);
+  border-radius:100px;padding:3px 9px;
+  font-size:.7rem;font-weight:800;color:var(--orange);
+}
+.mob-days-pill{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.18);
+  border-radius:100px;padding:3px 9px;
+  font-size:.7rem;font-weight:800;color:var(--cg);
+}
+
+@media(max-width:900px){
+  .mobile-nav{display:block}
+  .mobile-info-bar{display:flex}
+  #s-game{padding-bottom:80px}
+  /* Hide desktop topbar right items on mobile, keep logo+nav */
+  .tb-right{display:none}
+  .tb-nav{display:none}
+}
+
+/* ════ HISTÓRIA SCREEN ════ */
+#s-story{
+  padding:70px 0 40px;
+  background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(0,212,255,.05) 0%,transparent 70%),var(--bg);
+}
+.story-wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.story-chapter{
+  background:var(--s1);border:1px solid var(--border);border-radius:20px;
+  padding:28px;margin-bottom:20px;position:relative;overflow:hidden;
+}
+.story-chapter::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--nb),var(--ep),var(--gold));
+}
+.story-ep{font-family:'Orbitron',monospace;font-size:.52rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--nb);margin-bottom:8px}
+.story-title{font-family:'Orbitron',monospace;font-size:clamp(1.1rem,3vw,1.6rem);
+  font-weight:900;line-height:1.2;margin-bottom:16px;
+  background:linear-gradient(90deg,var(--text),rgba(255,255,255,.7));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.story-text{font-size:.9rem;color:#A8C0D8;line-height:2;white-space:pre-line}
+.story-text strong{color:var(--text)}
 
 </style>
 </head>
@@ -883,7 +973,189 @@ body::after{
   </div>
 </div>
 
-<!-- PHASE COMPLETE OVERLAY -->
+<!-- ════ SCREEN: HISTÓRIA ════ -->
+<div class="screen" id="s-story">
+  <div class="story-wrap">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;
+        letter-spacing:.18em;text-transform:uppercase;color:var(--nb);margin-bottom:8px">
+        ✦ ARQUIVO NEXUS — ORIGEM ✦
+      </div>
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.4rem,5vw,2.6rem);
+        font-weight:900;line-height:1;
+        background:linear-gradient(135deg,var(--nb),var(--ep),var(--gold));
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+        A ORIGEM DO CHAMADO
+      </h2>
+      <p style="font-size:.85rem;color:var(--muted);margin-top:8px">A história que deu origem à NEXUS ACADEMY</p>
+    </div>
+
+    <div class="story-chapter">
+      <div class="story-ep">// CAPÍTULO 01 — O SINAL</div>
+      <h3 class="story-title">O Dia em que Tudo Mudou</h3>
+      <div class="story-text">Era uma quinta-feira comum quando o sinal apareceu.
+
+Não era uma mensagem de texto. Não era uma notificação. Era algo diferente — uma sequência de dados criptografados que só aparecia nas telas de quem tinha o perfil certo.
+
+<strong>O perfil de um futuro criador.</strong>
+
+O sistema da NEXUS ACADEMY vasculhou bilhões de jovens ao redor do planeta. Analisou padrões de curiosidade, faíscas de criatividade, momentos em que os olhos brilharam diante de um problema ainda sem solução.
+
+E encontrou você.
+
+Não foi por acaso. O NEXUS não comete erros. Cada agente recrutado foi identificado com precisão cirúrgica — porque o mundo não precisa de mais um seguidor. O mundo precisa de <strong>criadores</strong>.
+
+A mensagem era simples:
+
+<strong>"Agente identificado. Protocolo de ativação iniciado. Você tem 24 horas para aceitar o chamado."</strong>
+
+A contagem regressiva começou.</div>
+    </div>
+
+    <div class="story-chapter">
+      <div class="story-ep">// CAPÍTULO 02 — O PROTOCOLO</div>
+      <h3 class="story-title">O Que é a NEXUS ACADEMY</h3>
+      <div class="story-text">A NEXUS ACADEMY não é uma escola comum.
+
+Não tem provas. Não tem notas vermelhas. Não tem aquela sensação de sentar numa cadeira por horas ouvindo algo que você vai esquecer amanhã.
+
+A NEXUS é um <strong>sistema de missões</strong>.
+
+Cada missão foi projetada para despertar uma habilidade real — a mesma que os maiores empreendedores do mundo usaram para construir impérios a partir do zero.
+
+<strong>32 missões. 6 fases. 1 objetivo:</strong>
+
+Transformar você em alguém capaz de enxergar problemas onde outros veem obstáculos, criar marcas onde outros veem apenas produtos, e construir sistemas de vendas onde outros veem apenas sorte.
+
+O caminho não é fácil. Mas nenhum caminho que vale a pena é.
+
+A pergunta não é se você vai conseguir.
+
+A pergunta é: <strong>você está pronto para começar?</strong></div>
+    </div>
+
+    <div class="story-chapter">
+      <div class="story-ep">// CAPÍTULO 03 — AS 6 FASES</div>
+      <h3 class="story-title">O Mapa da Jornada</h3>
+      <div class="story-text">Seis fases. Seis habilidades. Uma transformação completa.
+
+<strong>🌱 FASE 1 — DESPERTAR CRIATIVO</strong>
+Você vai aprender a enxergar o que a maioria ignora: oportunidades escondidas em problemas do dia a dia. Seu "óculos de empreendedor" será ativado.
+
+<strong>🎨 FASE 2 — CRIAR MARCA</strong>
+Uma ideia sem identidade é invisível. Você vai construir o rosto da sua empresa: nome, logo, cores, slogan, personalidade. Sua marca vai falar por você mesmo quando você estiver dormindo.
+
+<strong>📣 FASE 3 — CONTEÚDO DIGITAL</strong>
+O mundo precisa ouvir você. Você vai aprender a criar posts que param o scroll, histórias que geram desejo e textos que fazem as pessoas agirem.
+
+<strong>🎯 FASE 4 — MARKETING DIGITAL</strong>
+Marketing de precisão. Você vai aprender a falar com a pessoa certa, com a mensagem certa, no momento certo. Sem desperdício. Sem ruído.
+
+<strong>🌀 FASE 5 — FUNIL DE VENDAS</strong>
+A máquina que vende 24 horas por dia, 7 dias por semana, mesmo enquanto você dorme. Isca digital, sequência de mensagens, oferta irresistível.
+
+<strong>💰 FASE 6 — DINHEIRO &amp; FINANÇAS</strong>
+Ganhar dinheiro é uma habilidade. Guardar dinheiro é outra. Você vai aprender as duas — e ainda vai apresentar sua empresa no grande <strong>DEMO DAY</strong> final.</div>
+    </div>
+
+    <div style="text-align:center;margin-top:8px;margin-bottom:16px">
+      <button class="btn btn-cyber" onclick="showSection('missions', document.querySelector('.tb-nb'))">
+        ⚡ IR PARA AS MISSÕES
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOBILE NAV BAR ════ -->
+<nav class="mobile-nav" id="mobile-nav" style="display:none">
+  <div class="mobile-nav-inner">
+    <button class="mob-btn on" id="mob-missions-btn" onclick="mobileNav('missions',this)">
+      <span class="mob-icon">⚡</span>Missões
+    </button>
+    <button class="mob-btn" id="mob-story-btn" onclick="mobileNav('story',this)">
+      <span class="mob-icon">📡</span>História
+    </button>
+    <button class="mob-btn" id="mob-fases-btn" onclick="mobileNav('fases',this)">
+      <span class="mob-icon">🗺️</span>Fases
+    </button>
+    <button class="mob-btn" id="mob-ranking-btn" onclick="mobileNav('ranking',this)">
+      <span class="mob-icon">🏆</span>Ranking
+    </button>
+    <button class="mob-btn" onclick="musicToggle()">
+      <span class="mob-icon music-btn" id="mob-music-icon">🎵</span>Música
+    </button>
+    <button class="mob-btn" id="mob-trophy-btn" onclick="showCompletionScreen()" style="display:none">
+      <span class="mob-icon">🏆</span>Troféu
+    </button>
+    <button class="mob-btn danger" onclick="resetGame()">
+      <span class="mob-icon">↩</span>Zerar
+    </button>
+  </div>
+</nav>
+
+<!-- ════ MOBILE INFO BAR ════ -->
+<div class="mobile-info-bar" id="mobile-info-bar" style="display:none">
+  <div class="mob-xp-pill">⚡ <span id="mob-xp-val">0 XP</span></div>
+  <div class="mob-lvl-pill" id="mob-lvl-pill">🌱 Nível 1</div>
+  <div class="mob-streak-pill">🔥 <span id="mob-streak-val">0</span></div>
+  <div class="mob-days-pill">📅 <span id="mob-days-val">0</span>/5 dias</div>
+</div>
+
+<!-- ════ MODAL: FASES (mobile) ════ -->
+<div id="modal-fases" style="
+  display:none;position:fixed;inset:0;z-index:700;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(16px);
+  overflow-y:auto;padding:70px 20px 100px;
+  animation:fadeUp .3s ease;
+">
+  <div style="max-width:480px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;color:var(--nb)">🗺️ FASES</div>
+      <button onclick="document.getElementById('modal-fases').style.display='none'"
+        style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);
+          border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.9rem">✕</button>
+    </div>
+    <div id="modal-fases-list"></div>
+    <div style="margin-top:20px">
+      <div style="font-family:'Orbitron',monospace;font-size:.6rem;color:var(--muted);
+        text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">🏅 Recompensas</div>
+      <div id="modal-rewards-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: RANKING (mobile) ════ -->
+<div id="modal-ranking" style="
+  display:none;position:fixed;inset:0;z-index:700;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(16px);
+  overflow-y:auto;padding:70px 20px 100px;
+  animation:fadeUp .3s ease;
+">
+  <div style="max-width:480px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;color:var(--nb)">🏆 PROGRESSO</div>
+      <button onclick="document.getElementById('modal-ranking').style.display='none'"
+        style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);
+          border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.9rem">✕</button>
+    </div>
+    <div class="streak-box" style="margin-bottom:14px">
+      <span class="streak-n" id="mob-streak-big">0</span>
+      <span class="streak-l">Missões seguidas</span>
+    </div>
+    <div class="prog-row" style="margin-bottom:16px">
+      <div class="pr-top">
+        <span style="color:var(--muted);font-size:.68rem">Missões</span>
+        <span class="pr-val" id="mob-pr-missions">0/32</span>
+      </div>
+      <div class="pr-bar"><div class="pr-fill" id="mob-pr-bar" style="width:0%"></div></div>
+    </div>
+    <div style="font-family:'Orbitron',monospace;font-size:.6rem;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">⚡ Histórico</div>
+    <div id="mob-hist-list"></div>
+  </div>
+</div>
+
+
 <div class="phase-overlay" id="phase-overlay">
   <div class="phase-ov-content">
     <!-- Medal video -->
@@ -2070,10 +2342,15 @@ function startGame() {
   const n = document.getElementById('inp-name').value.trim();
   if (!n) { document.getElementById('inp-name').style.borderColor='#FF3355'; return; }
   G.name = n; saveG();
-  // Start music on user gesture (required by browsers)
   musicStart();
   switchScreen('s-game');
   document.getElementById('topbar').style.display = 'flex';
+  // Mostrar elementos mobile
+  const isMobile = window.innerWidth <= 900;
+  if (isMobile) {
+    document.getElementById('mobile-nav').style.display = 'block';
+    document.getElementById('mobile-info-bar').style.display = 'flex';
+  }
   setImages();
   renderGame();
   spawnParticles(window.innerWidth/2, window.innerHeight/2, null);
@@ -2083,6 +2360,10 @@ function goIntro() {
   musicStop();
   switchScreen('s-intro');
   document.getElementById('topbar').style.display = 'none';
+  document.getElementById('mobile-nav').style.display = 'none';
+  document.getElementById('mobile-info-bar').style.display = 'none';
+  document.getElementById('modal-fases').style.display = 'none';
+  document.getElementById('modal-ranking').style.display = 'none';
   document.getElementById('inp-name').value = G.name;
 }
 
@@ -2353,7 +2634,7 @@ function showMissionAlert(id) {
       MISSÃO INCOMPLETA
     </div>
     <p style="font-size:.85rem;color:#A8C0D8;line-height:1.7;margin-bottom:18px">
-      Agente, conclua as tarefas da missão antes de prosseguir.<br>
+      Agente, complete <strong>todas</strong> as tarefas antes de avançar.<br>
       <span style="color:#7A98B8;font-size:.75rem">
         ${tasksDone}/${tasksTotal} tarefas marcadas
       </span>
@@ -2408,8 +2689,8 @@ function completeMission(id) {
   });
   const completedTasks = taskKeys.filter(k => G.tasks[k]).length;
 
-  if (taskKeys.length > 0 && completedTasks === 0) {
-    // Nenhuma tarefa marcada — mostrar alerta e som de erro
+  if (taskKeys.length > 0 && completedTasks < taskKeys.length) {
+    // Nem todas as tarefas marcadas — mostrar alerta e som de erro
     soundAlert();
     showMissionAlert(id);
     return;
@@ -2439,6 +2720,11 @@ function completeMission(id) {
   const allDone = G.completed.length >= 32;
   const newLv = getLevel().n;
 
+  // Determina a próxima missão (mesma fase ou próxima fase)
+  const allMissions = MISSIONS;
+  const currentIdx = allMissions.findIndex(mx => mx.id === id);
+  const nextMission = allMissions.slice(currentIdx + 1).find(mx => !G.completed.includes(mx.id));
+
   setTimeout(() => {
     if (allDone) {
       soundFinale();
@@ -2450,10 +2736,11 @@ function completeMission(id) {
     } else if (newLv > prevLv) {
       soundFanfare();
       launchConfetti();
-      showLvlUp(getLevel());
+      showLvlUp(getLevel(), nextMission ? nextMission.id : null);
     } else {
       renderGame();
-      openMission(id);
+      if (nextMission) openMission(nextMission.id);
+      else renderCenter();
     }
   }, 1800);
 }
@@ -2489,6 +2776,7 @@ function showPhaseComplete(ph, nextLv) {
   const mv = document.getElementById('phase-medal-vid');
   if (mv) { mv.src = VID.medal; mv.load(); mv.play().catch(()=>{}); }
   ov._nextLv = nextLv;
+  ov._phId = ph.id;
   ov.classList.add('on');
 }
 
@@ -2502,27 +2790,39 @@ function stopMedalVideos() {
 function closePhaseOverlay() {
   const ov = document.getElementById('phase-overlay');
   const nextLv = ov._nextLv;
+  const phId = ov._phId || G.phase;
   ov.classList.remove('on');
   ov._nextLv = null;
+  ov._phId = null;
   stopMedalVideos();
-  if (nextLv) { setTimeout(() => { soundFanfare(); launchConfetti(); showLvlUp(nextLv); }, 400); }
-  else renderGame();
+  // Avança para a próxima fase
+  if (phId < 6) { G.phase = phId + 1; saveG(); }
+  if (nextLv) { setTimeout(() => { soundFanfare(); launchConfetti(); showLvlUp(nextLv, null); }, 400); }
+  else { renderGame(); }
 }
 
 // ══ LEVEL UP ══
-function showLvlUp(lv) {
+function showLvlUp(lv, nextMissionId) {
   const ov = document.getElementById('lvl-ov');
   document.getElementById('lvl-h').textContent = 'NÍVEL ' + lv.n + '!';
   document.getElementById('lvl-sub').textContent = lv.title;
   document.getElementById('lvl-skill').textContent = '⚡ NOVA HABILIDADE: ' + lv.skill.toUpperCase();
   const mv = document.getElementById('lvl-medal-video');
   if (mv) { mv.src = VID.medal; mv.load(); mv.play().catch(()=>{}); }
+  ov._nextMissionId = nextMissionId || null;
   ov.classList.add('on');
 }
 function closeLvl() {
+  const ov = document.getElementById('lvl-ov');
+  const nextMissionId = ov._nextMissionId;
+  ov._nextMissionId = null;
   stopMedalVideos();
-  document.getElementById('lvl-ov').classList.remove('on');
+  ov.classList.remove('on');
   renderGame();
+  if (nextMissionId) {
+    const nm = MISSIONS.find(x => x.id === nextMissionId);
+    if (nm) { G.phase = nm.phase; saveG(); renderGame(); openMission(nextMissionId); }
+  }
 }
 
 // ══ COMPLETION SCREEN ══
@@ -2609,14 +2909,103 @@ function updateTopbar() {
   // Show trophy button if all missions complete
   const btnCompletion = document.getElementById('btn-completion');
   if (btnCompletion) btnCompletion.style.display = G.completed.length >= 32 ? 'flex' : 'none';
+  const mobTrophy = document.getElementById('mob-trophy-btn');
+  if (mobTrophy) mobTrophy.style.display = G.completed.length >= 32 ? 'flex' : 'none';
+  // Update mobile info bar
+  const mobXp = document.getElementById('mob-xp-val');
+  const mobLvl = document.getElementById('mob-lvl-pill');
+  const mobStreak = document.getElementById('mob-streak-val');
+  const mobDays = document.getElementById('mob-days-val');
+  if (mobXp) mobXp.textContent = G.xp + ' XP';
+  if (mobLvl) mobLvl.textContent = lv.icon + ' Nível ' + lv.n;
+  if (mobStreak) mobStreak.textContent = G.streak;
+  if (mobDays) mobDays.textContent = G.weekDays || 0;
 }
 
 // ══ MISC ══
 function setPhase(p) { G.phase = p; saveG(); renderGame(); }
 function showSection(s, btn) {
+  // Update desktop topbar nav
   document.querySelectorAll('.tb-nb').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  if (s === 'missions') renderCenter();
+  if (btn) btn.classList.add('on');
+  // Switch screens
+  if (s === 'missions') {
+    switchScreen('s-game');
+    renderCenter();
+  } else if (s === 'story') {
+    switchScreen('s-story');
+  } else if (s === 'ranking') {
+    renderRight();
+  }
+}
+
+function mobileNav(s, btn) {
+  // Update mobile nav buttons
+  document.querySelectorAll('.mob-btn').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+
+  if (s === 'missions') {
+    document.getElementById('modal-fases').style.display = 'none';
+    document.getElementById('modal-ranking').style.display = 'none';
+    switchScreen('s-game');
+    renderCenter();
+  } else if (s === 'story') {
+    document.getElementById('modal-fases').style.display = 'none';
+    document.getElementById('modal-ranking').style.display = 'none';
+    switchScreen('s-story');
+  } else if (s === 'fases') {
+    document.getElementById('modal-ranking').style.display = 'none';
+    switchScreen('s-game');
+    renderCenter();
+    // Populate fases modal
+    const ul = unlockedPhase();
+    document.getElementById('modal-fases-list').innerHTML = PHASES.map(ph => {
+      const done = MISSIONS.filter(m => m.phase===ph.id && G.completed.includes(m.id)).length;
+      const locked = ph.id > ul;
+      const active = G.phase === ph.id;
+      return `<button class="phase-btn${active?' on':''}${locked?' locked':''}"
+        style="width:100%;margin-bottom:6px"
+        onclick="${locked ? '' : 'setPhase('+ph.id+');document.getElementById(\'modal-fases\').style.display=\'none\';document.querySelectorAll(\'.mob-btn\').forEach(b=>b.classList.remove(\'on\'));document.getElementById(\'mob-missions-btn\').classList.add(\'on\')'}">
+        <span class="pi">${ph.icon}</span>
+        <span class="pd"><span class="pn">Fase ${ph.id} · ${done}/${ph.total}</span>
+        <span class="pp">${ph.name}</span></span>
+        ${locked ? '<span style="font-size:.75rem">🔒</span>' : ''}
+      </button>`;
+    }).join('');
+    document.getElementById('modal-rewards-list').innerHTML = REWARDS.map(r => `
+      <div class="reward-row${G.xp>=r.xp?' earned':''}">
+        <img class="rr-coin" src="${IMG[r.coin]}" alt="" onerror="this.style.display='none'">
+        <div class="rr-info">
+          <div class="rr-xp">${r.xp} XP</div>
+          <div class="rr-label">${r.label}</div>
+        </div>
+        ${G.xp>=r.xp ? '<span class="rr-done">✓</span>' : ''}
+      </div>`).join('');
+    document.getElementById('modal-fases').style.display = 'block';
+  } else if (s === 'ranking') {
+    document.getElementById('modal-fases').style.display = 'none';
+    switchScreen('s-game');
+    renderCenter();
+    // Populate ranking modal
+    document.getElementById('mob-streak-big').textContent = G.streak;
+    const done = G.completed.length;
+    document.getElementById('mob-pr-missions').textContent = done + '/32';
+    document.getElementById('mob-pr-bar').style.width = ((done/32)*100) + '%';
+    const hl = document.getElementById('mob-hist-list');
+    if (!G.hist.length) {
+      hl.innerHTML = '<div style="font-size:.68rem;color:var(--muted);text-align:center;padding:10px">Nenhuma ação ainda</div>';
+    } else {
+      hl.innerHTML = G.hist.slice(0,12).map(h =>
+        `<div class="hist-item">
+          <span class="hi-left">${h.label}</span>
+          <div class="hi-pts">
+            <img class="hi-coin" src="${IMG[h.ck]}" alt="" onerror="this.style.display='none'">
+            <span class="hi-val">+${h.pts}</span>
+          </div>
+        </div>`).join('');
+    }
+    document.getElementById('modal-ranking').style.display = 'block';
+  }
 }
 function resetGame() {
   if (!confirm('Tem certeza? Todo progresso será perdido.')) return;
@@ -2644,6 +3033,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Mostrar/esconder mobile nav ao redimensionar
+window.addEventListener('resize', () => {
+  const inGame = document.getElementById('s-game').classList.contains('on') ||
+                 document.getElementById('s-story').classList.contains('on');
+  if (!inGame || !G.name) return;
+  const isMobile = window.innerWidth <= 900;
+  document.getElementById('mobile-nav').style.display = isMobile ? 'block' : 'none';
+  document.getElementById('mobile-info-bar').style.display = isMobile ? 'flex' : 'none';
+});
 </script>
 </body>
 </html>
