@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS ACADEMY — Painel do Professor</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#03050F; --s1:#080E20; --s2:#0D1530; --s3:#121B38;
+  --border:rgba(0,212,255,.12); --text:#E8F4FF; --muted:#7A98B8;
+  --nb:#00D4FF; --ep:#B060FF; --cg:#00FF88; --gold:#FFD60A;
+  --red:#FF3355; --orange:#FF8C00;
+  --ph1:#00FF88; --ph2:#00D4FF; --ph3:#FFD60A; --ph4:#FF8C00; --ph5:#FF3355; --ph6:#B060FF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);
+  background-size:52px 52px;pointer-events:none;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;height:52px;
+  background:rgba(3,5,15,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:14px;
+}
+.tb-logo{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;color:var(--nb);letter-spacing:.1em}
+.tb-logo span{color:var(--muted);font-size:.52rem;display:block}
+.tb-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.tb-badge{
+  font-family:'Orbitron',monospace;font-size:.56rem;font-weight:700;
+  color:var(--gold);letter-spacing:.1em;
+  background:rgba(255,214,10,.07);border:1px solid rgba(255,214,10,.2);
+  border-radius:100px;padding:3px 12px;
+}
+.tb-stats{margin-left:auto;display:flex;align-items:center;gap:16px}
+.tb-stat{font-size:.7rem;font-weight:800;color:var(--muted);display:flex;align-items:center;gap:5px}
+.tb-stat strong{color:var(--text);font-family:'Orbitron',monospace;font-size:.72rem}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px);position:relative;z-index:1}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--s1);border-right:1px solid var(--border);padding:16px;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.nav-label{font-family:'Orbitron',monospace;font-size:.48rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:8px 8px 4px;margin-top:8px}
+.nav-btn{
+  display:flex;align-items:center;gap:9px;width:100%;
+  background:none;border:1px solid transparent;border-radius:9px;
+  padding:9px 10px;cursor:pointer;font-family:'Nunito',sans-serif;
+  color:var(--muted);font-size:.78rem;font-weight:700;text-align:left;transition:.15s;
+}
+.nav-btn:hover,.nav-btn.on{background:var(--s2);border-color:var(--border);color:var(--text)}
+.nav-btn.on{border-color:rgba(0,212,255,.2);box-shadow:0 0 8px rgba(0,212,255,.05)}
+.nav-icon{font-size:.95rem;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
+
+/* ── MAIN ── */
+.main{padding:24px;overflow-y:auto}
+.page{display:none}
+.page.on{display:block;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.page-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--nb);margin-bottom:4px}
+.page-sub{font-size:.78rem;color:var(--muted);margin-bottom:20px}
+
+/* ── CARDS ── */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
+.card-title{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── STAT GRID ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-card{
+  background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:16px;
+  border-left:3px solid var(--sc,var(--nb));
+}
+.stat-val{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--sc,var(--nb));line-height:1}
+.stat-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+/* ── FORMS ── */
+.form-row{display:grid;gap:10px;margin-bottom:10px}
+.form-row.cols2{grid-template-columns:1fr 1fr}
+.form-row.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-row.cols4{grid-template-columns:1fr 1fr 1fr 1fr}
+.fl{font-family:'Orbitron',monospace;font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block}
+.fi,.fs{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:9px;
+  color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:.88rem;font-weight:700;padding:9px 12px;
+  outline:none;transition:.2s;
+}
+.fi:focus,.fs:focus{border-color:var(--nb);box-shadow:0 0 0 3px rgba(0,212,255,.08)}
+.fi::placeholder{color:var(--muted)}
+.fs option{background:var(--s2);color:var(--text)}
+
+/* ── BTN ── */
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;border-radius:10px;transition:.2s;padding:9px 18px;font-size:.84rem}
+.btn-cyber{background:linear-gradient(135deg,var(--nb),#0099BB);color:#001520;box-shadow:0 0 18px rgba(0,212,255,.25)}
+.btn-cyber:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(0,212,255,.4)}
+.btn-green{background:linear-gradient(135deg,var(--cg),#00CC6A);color:#001a0a}
+.btn-green:hover{transform:translateY(-1px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#C78000);color:#1a0e00}
+.btn-ghost{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{color:var(--text);border-color:rgba(0,212,255,.3)}
+.btn-red{background:rgba(255,51,85,.1);border:1px solid rgba(255,51,85,.3);color:var(--red)}
+.btn-sm{padding:6px 12px;font-size:.74rem;border-radius:8px}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.76rem}
+thead th{
+  background:var(--s2);color:var(--muted);font-weight:800;
+  padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);
+  font-family:'Orbitron',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;
+  white-space:nowrap;
+}
+tbody td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(0,212,255,.03)}
+.td-mono{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 8px;font-size:.65rem;font-weight:800;white-space:nowrap}
+.badge-ph1{background:rgba(0,255,136,.1);color:var(--ph1);border:1px solid rgba(0,255,136,.2)}
+.badge-ph2{background:rgba(0,212,255,.1);color:var(--ph2);border:1px solid rgba(0,212,255,.2)}
+.badge-ph3{background:rgba(255,214,10,.1);color:var(--ph3);border:1px solid rgba(255,214,10,.2)}
+.badge-ph4{background:rgba(255,140,0,.1); color:var(--ph4);border:1px solid rgba(255,140,0,.2)}
+.badge-ph5{background:rgba(255,51,85,.1); color:var(--ph5);border:1px solid rgba(255,51,85,.2)}
+.badge-ph6{background:rgba(176,96,255,.1);color:var(--ph6);border:1px solid rgba(176,96,255,.2)}
+.badge-ok{background:rgba(0,255,136,.1);color:var(--cg);border:1px solid rgba(0,255,136,.2)}
+.badge-pend{background:rgba(255,140,0,.1);color:var(--orange);border:1px solid rgba(255,140,0,.2)}
+.badge-no{background:rgba(255,51,85,.1);color:var(--red);border:1px solid rgba(255,51,85,.2)}
+
+/* ── PROGRESS BAR ── */
+.prog-bar{height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin-top:3px}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--nb),var(--ep));box-shadow:0 0 6px var(--nb);transition:width .6s}
+
+/* ── IKIGAI CARD ── */
+.ikigai-mini{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.68rem;
+}
+.ik-tag{border-radius:6px;padding:3px 7px;font-size:.62rem;font-weight:700;border:1px solid}
+.ik-love{background:rgba(255,107,138,.1);border-color:rgba(255,107,138,.25);color:#FF6B8A}
+.ik-skill{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.2);color:#00D4FF}
+.ik-world{background:rgba(255,214,10,.08);border-color:rgba(255,214,10,.2);color:#FFD60A}
+.ik-paid{background:rgba(176,96,255,.1);border-color:rgba(176,96,255,.25);color:#B060FF}
+
+/* ── RANKING ── */
+.rank-row{
+  display:flex;align-items:center;gap:12px;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:12px;padding:12px 16px;margin-bottom:7px;
+  transition:.15s;
+}
+.rank-row:hover{border-color:rgba(0,212,255,.2)}
+.rank-pos{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:900;min-width:32px;text-align:center}
+.rank-av{font-size:1.5rem}
+.rank-name{font-weight:800;font-size:.88rem;flex:1}
+.rank-niche{font-size:.65rem;color:var(--muted)}
+.rank-xp{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:900;color:var(--gold)}
+.rank-level{font-size:.62rem;color:var(--muted)}
+
+/* ── PHASE PROGRESS ── */
+.phase-dots{display:flex;gap:4px;flex-wrap:wrap}
+.ph-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.08);transition:.2s}
+.ph-dot.done{background:var(--dc,var(--nb));box-shadow:0 0 5px var(--dc,var(--nb))}
+
+/* ── ALERTS ── */
+.alert{
+  border-radius:10px;padding:10px 14px;font-size:.78rem;font-weight:700;
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.alert-info{background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--nb)}
+.alert-warn{background:rgba(255,214,10,.07);border:1px solid rgba(255,214,10,.2);color:var(--gold)}
+.alert-ok{background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.2);color:var(--cg)}
+
+/* ── MOBILE ── */
+@media(max-width:780px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .form-row.cols3,.form-row.cols4{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="tb-logo">NEXUS ACADEMY <span>Painel do Professor · Nuvem Veloz</span></div>
+  <div class="tb-sep"></div>
+  <div class="tb-badge">📊 CONTROLE DA TURMA</div>
+  <div class="tb-stats">
+    <div class="tb-stat">Alunos <strong id="tb-alunos">0</strong></div>
+    <div class="tb-stat">XP médio <strong id="tb-xp-medio">0</strong></div>
+    <div class="tb-stat">Missões concluídas <strong id="tb-missoes">0</strong></div>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="nav-label">Visão Geral</div>
+  <button class="nav-btn on" onclick="navTo('dashboard',this)"><span class="nav-icon">🏠</span>Dashboard</button>
+  <button class="nav-btn" onclick="navTo('ranking',this)"><span class="nav-icon">🏆</span>Ranking</button>
+
+  <div class="nav-label">Alunos</div>
+  <button class="nav-btn" onclick="navTo('alunos',this)"><span class="nav-icon">👤</span>Cadastro</button>
+  <button class="nav-btn" onclick="navTo('ikigai',this)"><span class="nav-icon">✦</span>Diagnósticos iKigai</button>
+
+  <div class="nav-label">Progresso</div>
+  <button class="nav-btn" onclick="navTo('xp',this)"><span class="nav-icon">⚡</span>Registrar XP</button>
+  <button class="nav-btn" onclick="navTo('entregas',this)"><span class="nav-icon">📋</span>Entregas</button>
+
+  <div class="nav-label">Exportar</div>
+  <button class="nav-btn" onclick="navTo('exportar',this)"><span class="nav-icon">⬇️</span>Google Sheets</button>
+
+  <div class="sidebar-footer">
+    <button class="btn btn-red btn-sm" style="width:100%" onclick="if(confirm('Apagar todos os dados?')){clearAll()}">↩ Limpar tudo</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ════ DASHBOARD ════ -->
+  <div class="page on" id="page-dashboard">
+    <div class="page-title">🏠 Dashboard</div>
+    <div class="page-sub">Visão geral da turma em tempo real</div>
+
+    <div class="stat-grid">
+      <div class="stat-card" style="--sc:var(--nb)">
+        <div class="stat-val" id="s-alunos">0</div>
+        <div class="stat-label">Alunos cadastrados</div>
+      </div>
+      <div class="stat-card" style="--sc:var(--gold)">
+        <div class="stat-val" id="s-xp-total">0</div>
+        <div class="stat-label">XP total da turma</div>
+      </div>
+      <div class="stat-card" style="--sc:var(--cg)">
+        <div class="stat-val" id="s-missoes">0</div>
+        <div class="stat-label">Missões concluídas</div>
+      </div>
+      <div class="stat-card" style="--sc:var(--ep)">
+        <div class="stat-val" id="s-ikigai">0</div>
+        <div class="stat-label">iKigais registrados</div>
+      </div>
+    </div>
+
+    <!-- Top 3 -->
+    <div class="card">
+      <div class="card-title">🏆 Top 3 Agentes</div>
+      <div id="top3-list"><div style="color:var(--muted);font-size:.8rem">Nenhum aluno cadastrado ainda.</div></div>
+    </div>
+
+    <!-- Fase progress -->
+    <div class="card">
+      <div class="card-title">📊 Progresso por Fase — Turma</div>
+      <div id="fase-progress"></div>
+    </div>
+
+    <!-- Alunos em destaque / atenção -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="card">
+        <div class="card-title" style="color:var(--cg)">⭐ Em Destaque</div>
+        <div id="destaque-list"><div style="color:var(--muted);font-size:.78rem">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--orange)">⚠️ Precisam de Atenção</div>
+        <div id="atencao-list"><div style="color:var(--muted);font-size:.78rem">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ RANKING ════ -->
+  <div class="page" id="page-ranking">
+    <div class="page-title">🏆 Ranking da Turma</div>
+    <div class="page-sub">Classifição por XP total acumulado</div>
+    <div id="ranking-list"><div class="alert alert-info">ℹ️ Nenhum aluno cadastrado ainda.</div></div>
+  </div>
+
+  <!-- ════ CADASTRO ════ -->
+  <div class="page" id="page-alunos">
+    <div class="page-title">👤 Cadastro de Alunos</div>
+    <div class="page-sub">Adicione alunos manualmente ou importe do iKigai</div>
+
+    <div class="card">
+      <div class="card-title">➕ Novo Aluno</div>
+      <div class="form-row cols3">
+        <div><span class="fl">Nome completo</span><input class="fi" id="a-nome" placeholder="Nome do aluno"></div>
+        <div><span class="fl">Turma</span><input class="fi" id="a-turma" placeholder="Ex: Turma A · 2026"></div>
+        <div><span class="fl">Idade</span><input class="fi" id="a-idade" type="number" placeholder="Ex: 11" min="8" max="18"></div>
+      </div>
+      <div class="form-row cols2">
+        <div><span class="fl">Avatar (emoji)</span><input class="fi" id="a-avatar" placeholder="🚀" maxlength="4"></div>
+        <div><span class="fl">Data de início</span><input class="fi" id="a-data" type="date"></div>
+      </div>
+      <button class="btn btn-cyber" onclick="addAluno()">⚡ Adicionar Aluno</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👥 Alunos Cadastrados</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Avatar</th><th>Nome</th><th>Turma</th><th>Idade</th>
+            <th>Fase Atual</th><th>XP Total</th><th>Nível</th><th>iKigai</th><th>Ações</th>
+          </tr></thead>
+          <tbody id="alunos-tbody"><tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px">Nenhum aluno cadastrado</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ IKIGAI ════ -->
+  <div class="page" id="page-ikigai">
+    <div class="page-title">✦ Diagnósticos iKigai</div>
+    <div class="page-sub">Importe o CSV gerado pelo iKigai NEXUS ou registre manualmente</div>
+
+    <div class="card">
+      <div class="card-title">⬆️ Importar CSV do iKigai</div>
+      <div class="alert alert-info">ℹ️ No iKigai, após o diagnóstico, clique em "Exportar CSV". Arraste o arquivo aqui.</div>
+      <div id="drop-zone" style="
+        border:2px dashed rgba(0,212,255,.3);border-radius:14px;
+        padding:28px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:12px;
+      " onclick="document.getElementById('csv-input').click()"
+         ondragover="event.preventDefault();this.style.borderColor='var(--nb)'"
+         ondragleave="this.style.borderColor='rgba(0,212,255,.3)'"
+         ondrop="handleDrop(event)">
+        <div style="font-size:2rem;margin-bottom:8px">📂</div>
+        <div style="font-family:'Orbitron',monospace;font-size:.7rem;color:var(--nb);margin-bottom:4px">ARRASTE O CSV AQUI</div>
+        <div style="font-size:.74rem;color:var(--muted)">ou clique para selecionar o arquivo</div>
+        <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSV(this.files[0])">
+      </div>
+      <div id="csv-feedback"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✦ Diagnósticos Registrados</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Nome</th><th>Turma</th><th>Data</th><th>Arquétipo</th><th>Nicho</th>
+            <th>Paixão</th><th>Talento</th><th>Impacto</th><th>Mercado</th><th>XP</th><th>Ações</th>
+          </tr></thead>
+          <tbody id="ikigai-tbody"><tr><td colspan="11" style="text-align:center;color:var(--muted);padding:20px">Nenhum diagnóstico importado</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ XP ════ -->
+  <div class="page" id="page-xp">
+    <div class="page-title">⚡ Registrar XP</div>
+    <div class="page-sub">Registre XP por missão concluída, desafio ou bônus</div>
+
+    <div class="card">
+      <div class="card-title">➕ Novo Registro de XP</div>
+      <div class="form-row cols2">
+        <div>
+          <span class="fl">Aluno</span>
+          <select class="fs" id="xp-aluno"><option value="">— Selecione o aluno —</option></select>
+        </div>
+        <div>
+          <span class="fl">Data</span>
+          <input class="fi" id="xp-data" type="date">
+        </div>
+      </div>
+      <div class="form-row cols3">
+        <div>
+          <span class="fl">Fase</span>
+          <select class="fs" id="xp-fase">
+            <option value="1">🌱 Fase 1 — Despertar Criativo</option>
+            <option value="2">🎨 Fase 2 — Criar Marca</option>
+            <option value="3">📣 Fase 3 — Conteúdo</option>
+            <option value="4">🎯 Fase 4 — Marketing Digital</option>
+            <option value="5">🌀 Fase 5 — Funil de Vendas</option>
+            <option value="6">💰 Fase 6 — Dinheiro & Finanças</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">Missão</span>
+          <select class="fs" id="xp-missao">
+            <option value="">— Selecione a fase primeiro —</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">XP Concedido</span>
+          <input class="fi" id="xp-val" type="number" placeholder="Ex: 60" min="0" max="500">
+        </div>
+      </div>
+      <div class="form-row">
+        <div><span class="fl">Observação (opcional)</span>
+        <input class="fi" id="xp-obs" placeholder="Ex: Apresentou ideia com criatividade excepcional"></div>
+      </div>
+      <button class="btn btn-green" onclick="addXP()">⚡ Registrar XP</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Histórico de XP</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Data</th><th>Aluno</th><th>Fase</th><th>Missão</th>
+            <th>XP</th><th>XP Acumulado</th><th>Nível</th><th>Obs.</th><th></th>
+          </tr></thead>
+          <tbody id="xp-tbody"><tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px">Nenhum XP registrado</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ ENTREGAS ════ -->
+  <div class="page" id="page-entregas">
+    <div class="page-title">📋 Entregas & Desafios</div>
+    <div class="page-sub">Controle de materiais produzidos pelos alunos</div>
+
+    <div class="card">
+      <div class="card-title">➕ Nova Entrega</div>
+      <div class="form-row cols3">
+        <div><span class="fl">Aluno</span><select class="fs" id="ent-aluno"><option>— Selecione —</option></select></div>
+        <div><span class="fl">Fase · Missão</span>
+          <select class="fs" id="ent-missao">
+            <option>F1 · 1.1 Bem-vindo</option><option>F1 · 1.2 Caça aos Problemas</option>
+            <option>F1 · 1.3 Laboratório</option><option>F1 · 1.4 Registro NEXUS</option>
+            <option>F2 · 2.1 O Poder da Marca</option><option>F2 · 2.2 Logo no Canva</option>
+            <option>F2 · 2.3 Slogan</option><option>F2 · 2.4 Manual da Marca</option>
+            <option>F2 · 2.5 Pitch 30s</option><option>F2 · 2.6 Brand Reveal</option>
+            <option>F3 · 3.1 Conteúdo é Poder</option><option>F3 · 3.2 Storytelling</option>
+            <option>F3 · 3.3 Vídeo Curto</option><option>F3 · 3.4 Copywriting</option>
+            <option>F3 · 3.5 Calendário</option><option>F3 · 3.6 Portfólio</option>
+            <option>F4 · 4.1 Cliente Ideal</option><option>F4 · 4.2 Dores e Gatilhos</option>
+            <option>F4 · 4.3 Proposta de Valor</option><option>F4 · 4.4 Anúncios</option>
+            <option>F4 · 4.5 Tráfego Orgânico</option><option>F4 · 4.6 CMO por Um Dia</option>
+            <option>F5 · 5.1 O Funil</option><option>F5 · 5.2 Isca Digital</option>
+            <option>F5 · 5.3 Lista e WhatsApp</option><option>F5 · 5.4 Oferta Irresistível</option>
+            <option>F5 · 5.5 Técnicas de Fechamento</option><option>F5 · 5.6 Simulação Total</option>
+            <option>F6 · 6.1 Educação Financeira</option><option>F6 · 6.2 Precificação</option>
+            <option>F6 · 6.3 A Venda Real</option><option>F6 · 6.4 Demo Day</option>
+          </select>
+        </div>
+        <div><span class="fl">Status</span>
+          <select class="fs" id="ent-status">
+            <option value="ok">✅ Entregue</option>
+            <option value="pend">⏳ Pendente</option>
+            <option value="no">❌ Não entregue</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row cols2">
+        <div><span class="fl">Feedback / Observação</span><input class="fi" id="ent-obs" placeholder="Comentário sobre a entrega"></div>
+        <div><span class="fl">XP Bônus (opcional)</span><input class="fi" id="ent-xp" type="number" placeholder="0" min="0"></div>
+      </div>
+      <button class="btn btn-cyber" onclick="addEntrega()">📋 Registrar Entrega</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Histórico de Entregas</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Aluno</th><th>Missão</th><th>Status</th><th>XP Bônus</th><th>Feedback</th><th></th></tr></thead>
+          <tbody id="ent-tbody"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Nenhuma entrega registrada</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ EXPORTAR ════ -->
+  <div class="page" id="page-exportar">
+    <div class="page-title">⬇️ Exportar para Google Sheets</div>
+    <div class="page-sub">Baixe os CSVs e cole direto no Google Sheets</div>
+
+    <div class="alert alert-ok">✅ Todos os dados são salvos automaticamente no navegador (localStorage). Exporte sempre que quiser ter uma cópia de segurança.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+      <div class="card">
+        <div class="card-title">👥 Alunos + iKigai</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Todos os alunos com dados do Diagnóstico de Vocação, arquétipo, nicho e scores.</p>
+        <button class="btn btn-gold" onclick="exportAlunos()">⬇️ Baixar CSV — Alunos</button>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ Histórico de XP</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Todos os registros de XP por data, aluno, fase e missão — pronto para o Google Sheets.</p>
+        <button class="btn btn-gold" onclick="exportXP()">⬇️ Baixar CSV — XP</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Entregas</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Controle completo de entregas por aluno e missão.</p>
+        <button class="btn btn-gold" onclick="exportEntregas()">⬇️ Baixar CSV — Entregas</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🏆 Ranking Completo</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Ranking da turma com XP, nível, missões e nicho de negócio.</p>
+        <button class="btn btn-gold" onclick="exportRanking()">⬇️ Baixar CSV — Ranking</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:4px">
+      <div class="card-title">📖 Como importar no Google Sheets</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:.8rem;color:var(--muted);line-height:1.7">
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:var(--s3);border-radius:6px;padding:2px 8px;color:var(--nb);font-family:Orbitron,monospace;font-size:.6rem;font-weight:700;flex-shrink:0">1</span>Abra o <strong style="color:var(--text)">Google Sheets</strong> e crie uma nova planilha chamada "NEXUS ACADEMY".</div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:var(--s3);border-radius:6px;padding:2px 8px;color:var(--nb);font-family:Orbitron,monospace;font-size:.6rem;font-weight:700;flex-shrink:0">2</span>Clique em <strong style="color:var(--text)">Arquivo → Importar → Fazer upload</strong> e selecione o CSV baixado.</div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:var(--s3);border-radius:6px;padding:2px 8px;color:var(--nb);font-family:Orbitron,monospace;font-size:.6rem;font-weight:700;flex-shrink:0">3</span>Escolha <strong style="color:var(--text)">"Substituir planilha"</strong> e <strong style="color:var(--text)">separador: vírgula</strong>. Clique em Importar.</div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:var(--s3);border-radius:6px;padding:2px 8px;color:var(--nb);font-family:Orbitron,monospace;font-size:.6rem;font-weight:700;flex-shrink:0">4</span>Crie abas separadas para cada CSV: <strong style="color:var(--text)">Alunos · XP · Entregas · Ranking</strong>.</div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:var(--s3);border-radius:6px;padding:2px 8px;color:var(--nb);font-family:Orbitron,monospace;font-size:.6rem;font-weight:700;flex-shrink:0">5</span>Para o ranking ao vivo, use <strong style="color:var(--text)">Arquivo → Publicar na web</strong> e projete o link durante as aulas!</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+/* ════ DATA ════ */
+const PHASES = [
+  {id:1,icon:'🌱',name:'Despertar Criativo',color:'#00FF88',total:4},
+  {id:2,icon:'🎨',name:'Criar Marca',color:'#00D4FF',total:6},
+  {id:3,icon:'📣',name:'Conteúdo',color:'#FFD60A',total:6},
+  {id:4,icon:'🎯',name:'Marketing Digital',color:'#FF8C00',total:6},
+  {id:5,icon:'🌀',name:'Funil de Vendas',color:'#FF3355',total:6},
+  {id:6,icon:'💰',name:'Dinheiro & Finanças',color:'#B060FF',total:4},
+];
+const MISSIONS_BY_PHASE = {
+  1:['1.1 NEXUS Online','1.2 Caça aos Problemas','1.3 Laboratório','1.4 Registro NEXUS'],
+  2:['2.1 O Poder da Marca','2.2 Logo no Canva','2.3 Slogan','2.4 Manual da Marca','2.5 Pitch 30s','2.6 Brand Reveal'],
+  3:['3.1 Conteúdo é Poder','3.2 Storytelling','3.3 Vídeo Curto','3.4 Copywriting','3.5 Calendário','3.6 Portfólio'],
+  4:['4.1 Cliente Ideal','4.2 Dores e Gatilhos','4.3 Proposta de Valor','4.4 Anúncios','4.5 Tráfego Orgânico','4.6 CMO por Um Dia'],
+  5:['5.1 O Funil','5.2 Isca Digital','5.3 Lista e WhatsApp','5.4 Oferta Irresistível','5.5 Fechamento','5.6 Simulação Total'],
+  6:['6.1 Educação Financeira','6.2 Precificação','6.3 A Venda Real','6.4 Demo Day'],
+};
+const LEVELS = [
+  {n:1,icon:'🌱',title:'Explorador de Ideias',min:0,max:150},
+  {n:2,icon:'🔧',title:'Inventor de Soluções',min:150,max:350},
+  {n:3,icon:'🎨',title:'Mestre da Marca',min:350,max:600},
+  {n:4,icon:'📣',title:'Comunicador Digital',min:600,max:900},
+  {n:5,icon:'🎯',title:'Estrategista',min:900,max:1300},
+  {n:6,icon:'🌀',title:'Mestre do Funil',min:1300,max:9999},
+];
+
+/* ════ STATE ════ */
+let DB = {alunos:[], xpLog:[], ikigais:[], entregas:[]};
+function save(){ try{localStorage.setItem('nexus_prof', JSON.stringify(DB))}catch(e){} }
+function load(){
+  try{
+    const d = localStorage.getItem('nexus_prof');
+    if(d) DB = JSON.parse(d);
+  }catch(e){}
+}
+
+function getLevel(xp){ return LEVELS.slice().reverse().find(l=>xp>=l.min)||LEVELS[0]; }
+function getAlunoXP(nome){ return DB.xpLog.filter(x=>x.aluno===nome).reduce((s,x)=>s+x.xp,0); }
+function getAlunoMissoes(nome){ return DB.xpLog.filter(x=>x.aluno===nome).length; }
+function getAlunoFase(nome){
+  const xp = getAlunoXP(nome);
+  if(xp>=1300) return 6; if(xp>=900) return 5; if(xp>=600) return 4;
+  if(xp>=350) return 3; if(xp>=150) return 2; return 1;
+}
+function phaseClass(ph){ return `badge-ph${ph}`; }
+
+/* ════ NAV ════ */
+function navTo(page, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+page).classList.add('on');
+  if(btn) btn.classList.add('on');
+  renderAll();
+}
+
+/* ════ RENDER ════ */
+function renderAll(){
+  renderTopbar(); renderDashboard(); renderRanking();
+  renderAlunosTable(); renderIkigaiTable(); renderXPTable();
+  renderEntregasTable(); populateSelects();
+}
+
+function renderTopbar(){
+  document.getElementById('tb-alunos').textContent = DB.alunos.length;
+  const totalXP = DB.alunos.reduce((s,a)=>s+getAlunoXP(a.nome),0);
+  const medio = DB.alunos.length ? Math.round(totalXP/DB.alunos.length) : 0;
+  document.getElementById('tb-xp-medio').textContent = medio;
+  document.getElementById('tb-missoes').textContent = DB.xpLog.length;
+}
+
+function renderDashboard(){
+  document.getElementById('s-alunos').textContent = DB.alunos.length;
+  const totalXP = DB.alunos.reduce((s,a)=>s+getAlunoXP(a.nome),0);
+  document.getElementById('s-xp-total').textContent = totalXP.toLocaleString();
+  document.getElementById('s-missoes').textContent = DB.xpLog.length;
+  document.getElementById('s-ikigai').textContent = DB.ikigais.length;
+
+  // Top 3
+  const sorted = [...DB.alunos].map(a=>({...a,xp:getAlunoXP(a.nome)})).sort((a,b)=>b.xp-a.xp);
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('top3-list').innerHTML = sorted.slice(0,3).map((a,i)=>{
+    const lv = getLevel(a.xp);
+    return `<div class="rank-row">
+      <div class="rank-pos">${medals[i]||''}</div>
+      <div class="rank-av">${a.avatar||'🚀'}</div>
+      <div style="flex:1"><div class="rank-name">${a.nome}</div><div class="rank-niche">${a.turma||'—'}</div></div>
+      <div style="text-align:right"><div class="rank-xp">${a.xp} XP</div><div class="rank-level">${lv.icon} ${lv.title}</div></div>
+    </div>`;
+  }).join('') || '<div style="color:var(--muted);font-size:.8rem">Nenhum aluno ainda.</div>';
+
+  // Fase progress
+  document.getElementById('fase-progress').innerHTML = PHASES.map(ph=>{
+    const concluidas = DB.alunos.filter(a=>getAlunoFase(a.nome)>=ph.id).length;
+    const pct = DB.alunos.length ? Math.round(concluidas/DB.alunos.length*100) : 0;
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:4px">
+        <span style="color:${ph.color};font-weight:800">${ph.icon} Fase ${ph.id} — ${ph.name}</span>
+        <span style="color:var(--muted)">${concluidas}/${DB.alunos.length} alunos · ${pct}%</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${ph.color};box-shadow:0 0 6px ${ph.color}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Destaque / Atenção
+  const destaques = sorted.slice(0,3);
+  document.getElementById('destaque-list').innerHTML = destaques.map(a=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span>${a.avatar||'🚀'}</span>
+      <div style="flex:1;font-size:.78rem;font-weight:800">${a.nome}</div>
+      <span style="font-family:Orbitron,monospace;font-size:.7rem;color:var(--gold)">${a.xp} XP</span>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:.78rem">—</div>';
+
+  const atencao = sorted.filter(a=>a.xp===0);
+  document.getElementById('atencao-list').innerHTML = atencao.map(a=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span>${a.avatar||'🚀'}</span>
+      <div style="flex:1;font-size:.78rem;font-weight:800">${a.nome}</div>
+      <span style="font-size:.65rem;color:var(--orange)">Sem XP</span>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:.78rem">Todos com progresso ✓</div>';
+}
+
+function renderRanking(){
+  const sorted = [...DB.alunos].map(a=>{
+    const xp = getAlunoXP(a.nome);
+    const lv = getLevel(xp);
+    const ik = DB.ikigais.find(k=>k.nome===a.nome);
+    return {...a, xp, lv, niche: ik?.niche||'—'};
+  }).sort((a,b)=>b.xp-a.xp);
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('ranking-list').innerHTML = sorted.map((a,i)=>`
+    <div class="rank-row">
+      <div class="rank-pos" style="color:${i<3?'var(--gold)':'var(--muted)'}">${medals[i]||i+1+'º'}</div>
+      <div class="rank-av">${a.avatar||'🚀'}</div>
+      <div style="flex:1">
+        <div class="rank-name">${a.nome}</div>
+        <div class="rank-niche">🎯 ${a.niche}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rank-xp">${a.xp} XP</div>
+        <div class="rank-level">${a.lv.icon} ${a.lv.title}</div>
+      </div>
+    </div>`).join('') || '<div class="alert alert-info">ℹ️ Nenhum aluno cadastrado ainda.</div>';
+}
+
+function renderAlunosTable(){
+  const rows = DB.alunos.map((a,i)=>{
+    const xp = getAlunoXP(a.nome);
+    const lv = getLevel(xp);
+    const fase = getAlunoFase(a.nome);
+    const ik = DB.ikigais.find(k=>k.nome===a.nome);
+    const phClass = phaseClass(fase);
+    return `<tr>
+      <td style="font-size:1.2rem;text-align:center">${a.avatar||'🚀'}</td>
+      <td style="font-weight:800">${a.nome}</td>
+      <td>${a.turma||'—'}</td>
+      <td>${a.idade||'—'}</td>
+      <td><span class="badge ${phClass}">Fase ${fase}</span></td>
+      <td class="td-mono" style="color:var(--gold)">${xp} XP</td>
+      <td style="font-size:.75rem">${lv.icon} ${lv.title}</td>
+      <td>${ik?`<span class="badge badge-ok">✓ Feito</span>`:`<span class="badge badge-pend">Pendente</span>`}</td>
+      <td><button class="btn btn-red btn-sm" onclick="removeAluno(${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('alunos-tbody').innerHTML = rows || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px">Nenhum aluno cadastrado</td></tr>';
+}
+
+function renderIkigaiTable(){
+  const rows = DB.ikigais.map((k,i)=>`<tr>
+    <td style="font-weight:800">${k.nome}</td>
+    <td>${k.turma||'—'}</td>
+    <td style="font-size:.72rem;color:var(--muted)">${k.data||'—'}</td>
+    <td style="font-size:.75rem;color:var(--nb)">${k.archetype||'—'}</td>
+    <td><span class="badge badge-ok" style="font-size:.62rem">${k.niche||'—'}</span></td>
+    <td class="td-mono" style="color:var(--love)">${k.score_love||'—'}%</td>
+    <td class="td-mono" style="color:var(--nb)">${k.score_skill||'—'}%</td>
+    <td class="td-mono" style="color:var(--gold)">${k.score_world||'—'}%</td>
+    <td class="td-mono" style="color:var(--ep)">${k.score_paid||'—'}%</td>
+    <td class="td-mono" style="color:var(--gold)">${k.xp||'—'}</td>
+    <td><button class="btn btn-red btn-sm" onclick="removeIkigai(${i})">✕</button></td>
+  </tr>`).join('');
+  document.getElementById('ikigai-tbody').innerHTML = rows || '<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:20px">Nenhum diagnóstico importado</td></tr>';
+}
+
+function renderXPTable(){
+  const rows = [...DB.xpLog].reverse().map((x,i)=>{
+    const real_i = DB.xpLog.length - 1 - i;
+    const lv = getLevel(x.xpAcum||x.xp);
+    const ph = PHASES[x.fase-1];
+    return `<tr>
+      <td style="font-size:.72rem;color:var(--muted)">${x.data||'—'}</td>
+      <td style="font-weight:800">${x.aluno}</td>
+      <td><span class="badge badge-ph${x.fase}">${ph?.icon} F${x.fase}</span></td>
+      <td style="font-size:.72rem">${x.missao||'—'}</td>
+      <td class="td-mono" style="color:var(--gold)">+${x.xp}</td>
+      <td class="td-mono" style="color:var(--cg)">${x.xpAcum||'?'}</td>
+      <td style="font-size:.72rem">${lv.icon} ${lv.title}</td>
+      <td style="font-size:.72rem;color:var(--muted)">${x.obs||'—'}</td>
+      <td><button class="btn btn-red btn-sm" onclick="removeXP(${real_i})">✕</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('xp-tbody').innerHTML = rows || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px">Nenhum XP registrado</td></tr>';
+}
+
+function renderEntregasTable(){
+  const rows = [...DB.entregas].reverse().map((e,i)=>{
+    const real_i = DB.entregas.length - 1 - i;
+    const cls = e.status==='ok'?'badge-ok':e.status==='pend'?'badge-pend':'badge-no';
+    const lbl = e.status==='ok'?'✅ Entregue':e.status==='pend'?'⏳ Pendente':'❌ Não entregue';
+    return `<tr>
+      <td style="font-weight:800">${e.aluno}</td>
+      <td style="font-size:.72rem">${e.missao||'—'}</td>
+      <td><span class="badge ${cls}">${lbl}</span></td>
+      <td class="td-mono" style="color:var(--gold)">${e.xpBonus?'+'+e.xpBonus:'—'}</td>
+      <td style="font-size:.72rem;color:var(--muted)">${e.obs||'—'}</td>
+      <td><button class="btn btn-red btn-sm" onclick="removeEntrega(${real_i})">✕</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('ent-tbody').innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Nenhuma entrega registrada</td></tr>';
+}
+
+function populateSelects(){
+  const opts = DB.alunos.map(a=>`<option value="${a.nome}">${a.avatar||'🚀'} ${a.nome}</option>`).join('');
+  ['xp-aluno','ent-aluno'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    const cur = el.value;
+    el.innerHTML = `<option value="">— Selecione o aluno —</option>${opts}`;
+    if(cur) el.value = cur;
+  });
+}
+
+/* ════ ACTIONS ════ */
+function addAluno(){
+  const nome = document.getElementById('a-nome').value.trim();
+  if(!nome){ alert('Informe o nome do aluno.'); return; }
+  if(DB.alunos.find(a=>a.nome===nome)){ alert('Aluno já cadastrado.'); return; }
+  DB.alunos.push({
+    nome,
+    turma: document.getElementById('a-turma').value.trim(),
+    idade: document.getElementById('a-idade').value.trim(),
+    avatar: document.getElementById('a-avatar').value.trim() || '🚀',
+    data: document.getElementById('a-data').value,
+  });
+  save(); renderAll();
+  ['a-nome','a-turma','a-idade','a-avatar','a-data'].forEach(id=>document.getElementById(id).value='');
+}
+
+function removeAluno(i){ if(confirm('Remover este aluno?')){ DB.alunos.splice(i,1); save(); renderAll(); } }
+function removeIkigai(i){ if(confirm('Remover este diagnóstico?')){ DB.ikigais.splice(i,1); save(); renderAll(); } }
+function removeXP(i){ if(confirm('Remover este registro?')){ DB.xpLog.splice(i,1); save(); renderAll(); } }
+function removeEntrega(i){ if(confirm('Remover?')){ DB.entregas.splice(i,1); save(); renderAll(); } }
+
+// Mission select by phase
+document.getElementById('xp-fase').addEventListener('change', function(){
+  const fase = parseInt(this.value);
+  const ms = MISSIONS_BY_PHASE[fase]||[];
+  document.getElementById('xp-missao').innerHTML = ms.map(m=>`<option>${m}</option>`).join('');
+});
+
+function addXP(){
+  const aluno = document.getElementById('xp-aluno').value;
+  const xp    = parseInt(document.getElementById('xp-val').value)||0;
+  const fase  = parseInt(document.getElementById('xp-fase').value)||1;
+  const missao= document.getElementById('xp-missao').value;
+  const data  = document.getElementById('xp-data').value;
+  const obs   = document.getElementById('xp-obs').value.trim();
+  if(!aluno||!xp){ alert('Selecione o aluno e informe o XP.'); return; }
+  const xpAcum = getAlunoXP(aluno) + xp;
+  DB.xpLog.push({aluno, xp, xpAcum, fase, missao, data, obs});
+  save(); renderAll();
+  document.getElementById('xp-val').value='';
+  document.getElementById('xp-obs').value='';
+}
+
+function addEntrega(){
+  const aluno   = document.getElementById('ent-aluno').value;
+  const missao  = document.getElementById('ent-missao').value;
+  const status  = document.getElementById('ent-status').value;
+  const obs     = document.getElementById('ent-obs').value.trim();
+  const xpBonus = parseInt(document.getElementById('ent-xp').value)||0;
+  if(!aluno){ alert('Selecione o aluno.'); return; }
+  DB.entregas.push({aluno, missao, status, obs, xpBonus});
+  if(xpBonus>0){
+    const xpAcum = getAlunoXP(aluno) + xpBonus;
+    DB.xpLog.push({aluno, xp:xpBonus, xpAcum, fase:parseInt(missao[1])||1, missao, data:new Date().toLocaleDateString('pt-BR'), obs:'Bônus entrega'});
+  }
+  save(); renderAll();
+  document.getElementById('ent-obs').value='';
+  document.getElementById('ent-xp').value='';
+}
+
+/* ════ CSV IMPORT ════ */
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('drop-zone').style.borderColor='rgba(0,212,255,.3)';
+  const file = e.dataTransfer.files[0];
+  if(file) handleCSV(file);
+}
+
+function handleCSV(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const lines = e.target.result.split('\n').filter(l=>l.trim());
+      const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').trim().toLowerCase());
+      let imported = 0;
+      for(let i=1;i<lines.length;i++){
+        const vals = parseCSVLine(lines[i]);
+        if(vals.length<2) continue;
+        const row = {};
+        headers.forEach((h,j)=>row[h]=vals[j]||'');
+        const nome = row['nome']||'';
+        if(!nome) continue;
+        // Map headers
+        const entry = {
+          nome,
+          turma:      row['turma']||'',
+          data:       row['data']||'',
+          archetype:  row['arquétipo']||row['arquetipo']||row['archetype']||'',
+          niche:      row['nicho']||row['niche']||'',
+          xp:         row['xp ganhos']||row['xp']||'',
+          score_love: (row['paixão%']||row['paixao%']||'').replace('%',''),
+          score_skill:(row['talento%']||'').replace('%',''),
+          score_world:(row['impacto%']||'').replace('%',''),
+          score_paid: (row['mercado%']||'').replace('%',''),
+        };
+        // Remove existing entry for same name if any
+        DB.ikigais = DB.ikigais.filter(k=>k.nome!==nome);
+        DB.ikigais.push(entry);
+        // Auto-add aluno if not exists
+        if(!DB.alunos.find(a=>a.nome===nome)){
+          DB.alunos.push({nome, turma:entry.turma, idade:'', avatar:'🚀', data:''});
+        }
+        imported++;
+      }
+      save(); renderAll();
+      document.getElementById('csv-feedback').innerHTML = `<div class="alert alert-ok">✅ ${imported} diagnóstico(s) importado(s) com sucesso!</div>`;
+      setTimeout(()=>document.getElementById('csv-feedback').innerHTML='', 4000);
+    }catch(err){
+      document.getElementById('csv-feedback').innerHTML = `<div class="alert alert-warn">⚠️ Erro ao ler o CSV: ${err.message}</div>`;
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function parseCSVLine(line){
+  const result=[]; let cur=''; let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){inQ=!inQ}
+    else if(c===','&&!inQ){result.push(cur.trim());cur=''}
+    else cur+=c;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+/* ════ EXPORT ════ */
+function dlCSV(name, headers, rows){
+  const csv = [headers.join(','), ...rows.map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download=name; a.click(); URL.revokeObjectURL(url);
+}
+
+function exportAlunos(){
+  dlCSV('nexus-alunos.csv',
+    ['Nome','Turma','Idade','Avatar','Data Início','XP Total','Nível','Fase Atual','Arquétipo','Nicho','Paixão%','Talento%','Impacto%','Mercado%'],
+    DB.alunos.map(a=>{
+      const xp=getAlunoXP(a.nome);
+      const lv=getLevel(xp);
+      const ik=DB.ikigais.find(k=>k.nome===a.nome)||{};
+      return [a.nome,a.turma,a.idade,a.avatar,a.data,xp,lv.title,getAlunoFase(a.nome),ik.archetype||'',ik.niche||'',ik.score_love||'',ik.score_skill||'',ik.score_world||'',ik.score_paid||''];
+    })
+  );
+}
+
+function exportXP(){
+  dlCSV('nexus-xp.csv',
+    ['Data','Aluno','Fase','Missão','XP','XP Acumulado','Nível','Observação'],
+    DB.xpLog.map(x=>[x.data,x.aluno,`Fase ${x.fase}`,x.missao,x.xp,x.xpAcum,getLevel(x.xpAcum||0).title,x.obs])
+  );
+}
+
+function exportEntregas(){
+  dlCSV('nexus-entregas.csv',
+    ['Aluno','Missão','Status','XP Bônus','Observação'],
+    DB.entregas.map(e=>[e.aluno,e.missao,e.status==='ok'?'Entregue':e.status==='pend'?'Pendente':'Não entregue',e.xpBonus||0,e.obs])
+  );
+}
+
+function exportRanking(){
+  const sorted = [...DB.alunos].map(a=>{
+    const xp=getAlunoXP(a.nome);
+    const lv=getLevel(xp);
+    const ik=DB.ikigais.find(k=>k.nome===a.nome)||{};
+    return {nome:a.nome,turma:a.turma,xp,nivel:lv.title,missoes:getAlunoMissoes(a.nome),niche:ik.niche||'',archetype:ik.archetype||''};
+  }).sort((a,b)=>b.xp-a.xp);
+  dlCSV('nexus-ranking.csv',
+    ['Posição','Nome','Turma','XP Total','Nível','Missões','Nicho','Arquétipo'],
+    sorted.map((a,i)=>[i+1,a.nome,a.turma,a.xp,a.nivel,a.missoes,a.niche,a.archetype])
+  );
+}
+
+function clearAll(){
+  DB={alunos:[],xpLog:[],ikigais:[],entregas:[]};
+  save(); renderAll();
+}
+
+/* ════ INIT ════ */
+// Set today's date in date inputs
+const today = new Date().toISOString().split('T')[0];
+document.querySelectorAll('input[type=date]').forEach(el=>el.value=today);
+// Trigger mission list for default phase
+document.getElementById('xp-fase').dispatchEvent(new Event('change'));
+
+load();
+renderAll();
+</script>
+</body>
+</html>
