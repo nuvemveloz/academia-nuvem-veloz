@@ -2703,6 +2703,8 @@ function completeMission(id) {
   G.hist.unshift({label:'Missão '+m.num+': '+m.title, pts:m.xp, ck:coinKey(m.xp)});
   saveG();
   checkDailyStreak();
+  // ── Envia XP para o Google Sheets ──
+  sendXPToSheets(m, m.xp);
   soundFanfare();
 
   const btn = event && event.target ? event.target : null;
@@ -3010,7 +3012,7 @@ function mobileNav(s, btn) {
 function resetGame() {
   if (!confirm('Tem certeza? Todo progresso será perdido.')) return;
   try { localStorage.removeItem('nexus_g'); } catch(e) {}
-  G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},weekDays:0,lastActiveDate:'',weekBonus:false};
+  G = {name:'',av:'🚀',xp:0,phase:1,completed:[],streak:0,hist:[],tasks:{},weekDays:0,lastActiveDate:'',weekBonus:false,turma:''};
   saveG();
   goIntro();
   document.getElementById('inp-name').value = '';
@@ -3027,11 +3029,59 @@ document.addEventListener('click', e => {
 document.addEventListener('DOMContentLoaded', () => {
   loadG();
   setImages();
-  if (G.name) {
+
+  // ── Lê parâmetros da URL (vindos do iKigai) ──
+  const params = new URLSearchParams(window.location.search);
+  const urlNome   = params.get('nome');
+  const urlTurma  = params.get('turma');
+  const urlAvatar = params.get('avatar');
+
+  if (urlNome && !G.name) {
+    // Novo aluno chegando do iKigai — pré-preenche e entra direto
+    G.name  = urlNome;
+    G.turma = urlTurma || '';
+    G.av    = urlAvatar || '🚀';
+    saveG();
     document.getElementById('inp-name').value = G.name;
-    document.querySelectorAll('.av').forEach(a => a.classList.toggle('on', a.dataset.av===G.av));
+    document.querySelectorAll('.av').forEach(a => a.classList.toggle('on', a.dataset.av === G.av));
+    // Inicia o jogo automaticamente
+    setTimeout(() => startGame(), 400);
+  } else if (G.name) {
+    document.getElementById('inp-name').value = G.name;
+    document.querySelectorAll('.av').forEach(a => a.classList.toggle('on', a.dataset.av === G.av));
   }
 });
+
+/* ════ GOOGLE SHEETS SYNC ════
+   Cole aqui a mesma URL do Google Apps Script.
+   Deixe vazio para funcionar sem sync (modo offline).
+════════════════════════════════ */
+const NEXUS_SHEET_URL = '';  // ← cole sua URL aqui
+
+async function sendXPToSheets(missao, xpGanho) {
+  if (!NEXUS_SHEET_URL) return;
+  const lv = getLevel();
+  try {
+    await fetch(NEXUS_SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tipo:    'xp',
+        nome:    G.name,
+        turma:   G.turma || '',
+        fase:    missao.phase,
+        missao:  missao.num + ' — ' + missao.title,
+        xp:      xpGanho,
+        xpTotal: G.xp,
+        nivel:   lv.icon + ' ' + lv.title,
+        streak:  G.streak,
+      }),
+      mode: 'no-cors'
+    });
+  } catch(e) {
+    console.warn('NEXUS Sheets XP sync falhou:', e.message);
+  }
+}
 
 // Mostrar/esconder mobile nav ao redimensionar
 window.addEventListener('resize', () => {

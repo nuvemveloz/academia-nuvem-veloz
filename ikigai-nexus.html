@@ -714,7 +714,7 @@ body::after{
       <h3>// MISSÃO DESBLOQUEADA</h3>
       <p id="r-next">Com seu Ikigai mapeado, a Fase 2 do curso vai transformar esse perfil numa marca real. Você já sabe o que te move — agora é hora de dar um rosto a isso.</p>
       <div class="next-actions">
-        <button class="btn btn-cyber" onclick="window.open('jogo-narrativo-academia.html','_blank')">
+        <button class="btn btn-cyber" onclick="abrirJogo()">
           ⚡ Abrir o Jogo NEXUS
         </button>
         <button class="btn btn-ghost" onclick="restartQuiz()">↩ Refazer o teste</button>
@@ -1231,6 +1231,26 @@ function renderResult(){
       <div class="ef-val">${f.v||'—'}</div>
     </div>`).join('');
 
+    // ── Envia para o Google Sheets automaticamente ──
+    sendToSheets({
+      tipo:        'ikigai',
+      nome:        G.name,
+      turma:       G.turma,
+      idade:       G.idade,
+      avatar:      '🚀',
+      archetype:   G.archetype,
+      niche:       G.niche,
+      xp:          G.xp,
+      score_love:  sc.love,
+      score_skill: sc.skill,
+      score_world: sc.world,
+      score_paid:  sc.paid,
+      ama:         S.love.join('; '),
+      fazBem:      S.skill.join('; '),
+      mundo:       S.world.join('; '),
+      pagariam:    S.paid.join('; '),
+    });
+
   }, 1400);
 }
 
@@ -1241,6 +1261,39 @@ function typeWriter(text, el, speed=18){
     if(i<text.length){ el.textContent+=text[i++]; setTimeout(tick, speed); }
   }
   tick();
+}
+
+/* ════ GOOGLE SHEETS SYNC ════
+   Cole aqui a URL gerada pelo Google Apps Script após implantar.
+   Deixe vazio para funcionar offline (sem sync).
+════════════════════════════════ */
+const NEXUS_SHEET_URL = '';  // ← cole sua URL aqui
+
+async function sendToSheets(payload) {
+  if (!NEXUS_SHEET_URL) return; // offline mode
+  try {
+    await fetch(NEXUS_SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'no-cors' // Google Apps Script requer no-cors
+    });
+  } catch(e) {
+    console.warn('NEXUS Sheets sync falhou (offline?):', e.message);
+  }
+}
+
+function abrirJogo() {
+  const S  = G.summary;
+  const sc = G.scores;
+  // Monta URL do jogo com nome e avatar como parâmetros
+  const params = new URLSearchParams({
+    nome:   G.name,
+    turma:  G.turma,
+    avatar: '🚀',
+  });
+  const jogoURL = 'jogo-narrativo-academia.html?' + params.toString();
+  window.open(jogoURL, '_blank');
 }
 
 /* ════ EXPORT ════ */
