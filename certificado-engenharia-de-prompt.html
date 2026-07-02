@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado · Engenharia de Prompt — NEXUS ACADEMY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:ital,wght@0,400;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:#0D1530}
+
+/* ── CONTROLES (não imprimem) ── */
+.no-print{background:rgba(0,0,0,.4);border-bottom:1px solid rgba(0,212,255,.15);padding:14px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.ctrl-input{background:rgba(255,255,255,.08);border:1.5px solid rgba(0,212,255,.3);color:#fff;font-family:'Nunito';font-size:.88rem;font-weight:700;padding:8px 14px;border-radius:8px;outline:none;min-width:200px}
+.ctrl-input::placeholder{color:rgba(255,255,255,.25)}
+.ctrl-input:focus{border-color:rgba(0,212,255,.7)}
+.btn-print{background:linear-gradient(135deg,#00D4FF,#007A9A);color:#001520;font-family:'Nunito';font-size:.88rem;font-weight:900;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;box-shadow:0 0 18px rgba(0,212,255,.3);transition:.2s}
+.btn-print:hover{box-shadow:0 0 28px rgba(0,212,255,.5);transform:translateY(-1px)}
+.hint{text-align:center;font-size:.62rem;color:rgba(255,255,255,.3);padding:6px 0 12px}
+.hint strong{color:rgba(0,212,255,.5)}
+.cert-wrapper{display:flex;justify-content:center;align-items:flex-start;padding:20px;overflow-x:auto}
+
+/* ── CERTIFICADO A4 PAISAGEM · fundo branco ── */
+.cert{width:297mm;height:210mm;background:#fff;position:relative;display:flex;flex-direction:column;flex-shrink:0;border:1mm solid #1a1a2e;outline:.3mm solid #B060FF;outline-offset:-3mm;overflow:hidden}
+.cert-topbar{height:4mm;background:linear-gradient(90deg,#03050F,#00FF88,#00D4FF,#FFD60A,#FF8C00,#FF3355,#B060FF,#03050F)}
+.cert-bottombar{height:3mm;background:linear-gradient(90deg,#B060FF,#00D4FF,#FFD60A,#00D4FF,#B060FF);margin-top:auto}
+.cert-body{flex:1;display:grid;grid-template-columns:54mm 1fr 50mm;min-height:0}
+
+/* coluna esquerda */
+.col-left{border-right:.3mm solid #e0e0f0;background:linear-gradient(180deg,#f8f8ff,#f0f0fa);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5mm 3mm;gap:3.5mm}
+.logo-img{width:22mm;height:22mm;border-radius:50%;border:.5mm solid #00D4FF;box-shadow:0 0 4mm rgba(0,212,255,.3);object-fit:cover}
+.brand-name{font-family:'Orbitron';font-size:2.4mm;font-weight:700;color:#00299A;letter-spacing:.08em;text-align:center;line-height:1.6}
+.missions-title{font-family:'Orbitron';font-size:2mm;color:#5a2e9e;letter-spacing:.08em;font-weight:700;margin-top:2mm}
+.mission-list{font-size:2.4mm;color:#333;line-height:2;text-align:left}
+.mission-list b{color:#5a2e9e}
+
+/* coluna central */
+.col-center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8mm 10mm}
+.cert-eyebrow{font-family:'Orbitron';font-size:3mm;letter-spacing:.4em;color:#5a2e9e;font-weight:700}
+.cert-title{font-family:'Orbitron';font-size:9mm;font-weight:900;color:#1a1a2e;margin:3mm 0 1mm;letter-spacing:.05em}
+.cert-module{font-family:'Orbitron';font-size:4.6mm;font-weight:700;background:linear-gradient(90deg,#0090c0,#5a2e9e);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6mm}
+.cert-text{font-size:3.4mm;color:#444;line-height:1.7;max-width:150mm}
+.cert-name{font-family:'Orbitron';font-size:8mm;font-weight:700;color:#1a1a2e;border-bottom:.4mm solid #B060FF;padding:2mm 10mm;margin:4mm 0;min-width:110mm;min-height:14mm}
+.cert-skills{display:flex;gap:3mm;flex-wrap:wrap;justify-content:center;margin-top:5mm}
+.skill{font-family:'Orbitron';font-size:2.2mm;letter-spacing:.06em;font-weight:700;border:.3mm solid;border-radius:8mm;padding:1.6mm 4mm}
+.sk1{color:#00795a;border-color:#00b884}.sk2{color:#0070a0;border-color:#00b0e0}.sk3{color:#8a6d00;border-color:#d4af00}.sk4{color:#a03000;border-color:#e06020}.sk5{color:#a01030;border-color:#e04060}.sk6{color:#5a2e9e;border-color:#9060d0}
+.cert-sigs{display:flex;gap:22mm;margin-top:9mm}
+.sig{text-align:center}
+.sig .line{width:52mm;border-bottom:.35mm solid #333;margin-bottom:1.5mm;height:8mm}
+.sig .who{font-family:'Orbitron';font-size:2.2mm;color:#333;font-weight:700;letter-spacing:.06em}
+.sig .role{font-size:2.4mm;color:#888}
+
+/* coluna direita */
+.col-right{border-left:.3mm solid #e0e0f0;background:linear-gradient(180deg,#f8f8ff,#f0f0fa);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5mm 3mm;gap:3mm}
+.medal-img{width:30mm;height:30mm;object-fit:contain;filter:drop-shadow(0 0 2mm rgba(212,175,0,.4))}
+.xp-total{font-family:'Orbitron';font-size:5.5mm;font-weight:900;color:#8a6d00}
+.xp-label{font-family:'Orbitron';font-size:2mm;letter-spacing:.2em;color:#8a6d00}
+.coin-img{width:14mm;height:14mm;border-radius:50%}
+.cert-date-box{margin-top:3mm;text-align:center}
+.cert-date-box .d-label{font-family:'Orbitron';font-size:2mm;letter-spacing:.15em;color:#5a2e9e;font-weight:700}
+.cert-date{font-size:3mm;color:#333;font-weight:700}
+.cert-code{font-family:monospace;font-size:2.2mm;color:#999;margin-top:3mm;letter-spacing:.1em}
+
+/* selo de fundo */
+.watermark{position:absolute;font-family:'Orbitron';font-weight:900;font-size:60mm;color:rgba(90,46,158,.035);top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);white-space:nowrap;pointer-events:none}
+
+@media print{
+  body{background:#fff}
+  .no-print,.hint{display:none !important}
+  .cert-wrapper{padding:0}
+  @page{size:A4 landscape;margin:0}
+  .cert{border-width:1mm}
+}
+@media(max-width:900px){.cert{transform:scale(.42);transform-origin:top left;margin-bottom:-115mm;margin-right:-170mm}}
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <span style="font-family:'Orbitron';font-size:.7rem;letter-spacing:2px;color:#00D4FF">CERTIFICADO · ENGENHARIA DE PROMPT</span>
+  <input class="ctrl-input" id="inp-name" placeholder="Nome do Agente" oninput="upd()">
+  <input class="ctrl-input" id="inp-date" placeholder="Data (ex.: 02 de julho de 2026)" oninput="upd()" style="min-width:230px">
+  <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR / SALVAR PDF</button>
+</div>
+<div class="hint">Preencha o nome e a data, depois clique em imprimir. Escolha <strong>Paisagem</strong> e <strong>Salvar como PDF</strong> para gerar o arquivo.</div>
+
+<div class="cert-wrapper">
+<div class="cert" id="cert">
+  <div class="cert-topbar"></div>
+  <div class="watermark">NEXUS</div>
+  <div class="cert-body">
+
+    <div class="col-left">
+      <img class="logo-img" src="logo.png" alt="NEXUS ACADEMY">
+      <div class="brand-name">NEXUS<br>ACADEMY</div>
+      <div class="missions-title">10 MISSÕES CUMPRIDAS</div>
+      <div class="mission-list">
+        <b>1</b> O Cérebro da IA<br>
+        <b>2</b> Anatomia do Prompt<br>
+        <b>3</b> Cercando Todos os Lados<br>
+        <b>4</b> Iteração<br>
+        <b>5</b> Detector de Ilusões<br>
+        <b>6</b> O Mega-Prompt<br>
+        <b>7</b> Técnicas dos Mestres<br>
+        <b>8</b> Escudo Digital<br>
+        <b>9</b> Criador, não Copiador<br>
+        <b>10</b> O Agente do Futuro
+      </div>
+    </div>
+
+    <div class="col-center">
+      <div class="cert-eyebrow">CERTIFICADO DE CONCLUSÃO</div>
+      <div class="cert-title">ENGENHARIA DE PROMPT</div>
+      <div class="cert-module">MÓDULO ESPECIAL · DOMINE A LINGUAGEM DAS IAs</div>
+      <div class="cert-text">A NEXUS ACADEMY certifica que o(a) Agente</div>
+      <div class="cert-name" id="cert-name">&nbsp;</div>
+      <div class="cert-text">concluiu com mérito as <b>10 missões</b> do módulo, acumulando <b>1100 XP</b> e demonstrando domínio das competências da nova era:</div>
+      <div class="cert-skills">
+        <span class="skill sk1">PROMPTS CIRÚRGICOS</span>
+        <span class="skill sk2">TÉCNICAS AVANÇADAS</span>
+        <span class="skill sk3">ITERAÇÃO</span>
+        <span class="skill sk4">SEGURANÇA DIGITAL</span>
+        <span class="skill sk5">PENSAMENTO CRÍTICO</span>
+        <span class="skill sk6">ÉTICA &amp; AUTORIA</span>
+      </div>
+      <div class="cert-sigs">
+        <div class="sig"><div class="line"></div><div class="who">DONA LUX</div><div class="role">Guardiã da NEXUS</div></div>
+        <div class="sig"><div class="line"></div><div class="who">DIREÇÃO NEXUS ACADEMY</div><div class="role">by Nuvem Veloz</div></div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <img class="medal-img" src="medal-teacher.png" alt="Medalha Suprema">
+      <div><div class="xp-total">1100</div><div class="xp-label">XP TOTAIS</div></div>
+      <img class="coin-img" src="xp500.png" alt="Moeda XP">
+      <div class="cert-date-box">
+        <div class="d-label">CONCLUÍDO EM</div>
+        <div class="cert-date" id="cert-date">____/____/______</div>
+      </div>
+      <div class="cert-code" id="cert-code">NX-EP-0000</div>
+    </div>
+
+  </div>
+  <div class="cert-bottombar"></div>
+</div>
+</div>
+
+<script>
+function upd(){
+  var n=document.getElementById('inp-name').value.trim();
+  var d=document.getElementById('inp-date').value.trim();
+  document.getElementById('cert-name').innerHTML=n||'&nbsp;';
+  document.getElementById('cert-date').textContent=d||'____/____/______';
+  var code='NX-EP-'+(n?String(Math.abs(n.split('').reduce(function(a,c){return a*31+c.charCodeAt(0)|0;},7))%10000).padStart(4,'0'):'0000');
+  document.getElementById('cert-code').textContent=code;
+}
+/* pré-preencher via link: certificado...html?nome=Fulano */
+try{
+  var p=new URLSearchParams(location.search);
+  if(p.get('nome')){document.getElementById('inp-name').value=p.get('nome');}
+  var hoje=new Date();var meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  if(!document.getElementById('inp-date').value){document.getElementById('inp-date').value=hoje.getDate()+' de '+meses[hoje.getMonth()]+' de '+hoje.getFullYear();}
+  upd();
+}catch(e){}
+</script>
+</body>
+</html>

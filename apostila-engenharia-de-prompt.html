@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS ACADEMY · Engenharia de Prompt — Apostila Oficial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#03050F; --card:#0D1530; --card2:#0A1024;
+  --border:rgba(0,212,255,.15); --text:#E8F4FF; --muted:#7A98B8;
+  --f1:#00FF88; --f2:#00D4FF; --f3:#FFD60A; --f4:#FF8C00; --f5:#FF3355; --f6:#B060FF;
+  --gold:#FFD60A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:17px;line-height:1.65;overflow-x:hidden}
+h1,h2,h3,.orb{font-family:'Orbitron',sans-serif}
+img,video{max-width:100%}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* ===== HUD ===== */
+#hud{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(3,5,15,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+#hud .wrap{display:flex;align-items:center;gap:12px;padding:8px 20px}
+#hud img.logo{height:34px}
+#hud .hud-title{font-family:'Orbitron';font-size:.7rem;letter-spacing:2px;color:var(--f2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#xpbox{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:4px 14px 4px 6px}
+#xpbox img{height:26px;width:26px;border-radius:50%}
+#xpval{font-family:'Orbitron';font-weight:700;color:var(--gold);font-size:.95rem}
+#sndbtn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1rem}
+#progressbar{height:4px;background:#0A1024}
+#progressfill{height:100%;width:0%;background:linear-gradient(90deg,var(--f1),var(--f2),var(--f3),var(--f4),var(--f5),var(--f6));transition:width .6s ease}
+
+/* ===== HERO ===== */
+#hero{padding:110px 0 60px;text-align:center;position:relative;background:
+  radial-gradient(ellipse at 20% 10%, rgba(0,212,255,.10), transparent 55%),
+  radial-gradient(ellipse at 80% 30%, rgba(176,96,255,.10), transparent 55%)}
+#hero .logo-big{height:110px;margin-bottom:18px;filter:drop-shadow(0 0 22px rgba(0,212,255,.5))}
+#hero .eyebrow{font-family:'Orbitron';font-size:.68rem;letter-spacing:4px;color:var(--f2);margin-bottom:14px}
+#hero h1{font-size:clamp(1.7rem,6vw,3.1rem);font-weight:900;line-height:1.15;
+  background:linear-gradient(90deg,var(--f1),var(--f2) 45%,var(--f6));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+#hero .sub{color:var(--muted);max-width:560px;margin:0 auto 30px;font-size:1.05rem}
+#hero video{width:150px;height:150px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 40px rgba(255,214,10,.35);margin-bottom:26px}
+.btn{display:inline-block;font-family:'Orbitron';font-weight:700;font-size:.85rem;letter-spacing:1px;padding:14px 30px;border-radius:12px;border:none;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.97)}
+.btn-cta{background:linear-gradient(90deg,var(--f2),var(--f6));color:#03050F;box-shadow:0 0 24px rgba(0,212,255,.35)}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(0,212,255,.55)}
+
+/* ===== NARRATIVA ===== */
+.story{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--f6);border-radius:14px;padding:26px 28px;margin:40px auto;font-style:italic;color:#CFE3F5;position:relative}
+.story b{color:var(--gold);font-style:normal}
+.story .who{display:block;margin-top:14px;text-align:right;font-style:normal;font-family:'Orbitron';font-size:.7rem;letter-spacing:2px;color:var(--f6)}
+
+/* ===== MISSÕES ===== */
+.mission{margin:70px 0;border:1px solid var(--border);border-radius:18px;background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);overflow:hidden}
+.m-head{display:flex;align-items:center;gap:16px;padding:22px 26px;border-bottom:1px solid var(--border)}
+.m-num{font-family:'Orbitron';font-weight:900;font-size:1.6rem;width:58px;height:58px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#03050F}
+.m-head h2{font-size:clamp(1.05rem,3.5vw,1.5rem);line-height:1.25}
+.m-head .m-xp{margin-left:auto;font-family:'Orbitron';font-size:.75rem;white-space:nowrap;color:var(--gold);border:1px solid rgba(255,214,10,.4);border-radius:20px;padding:5px 12px;flex-shrink:0}
+.m-body{padding:26px}
+.m-body p{margin-bottom:16px}
+.m-body p b{color:#fff}
+.callout{border-radius:12px;padding:16px 20px;margin:20px 0;border:1px solid;background:rgba(0,212,255,.05)}
+.callout .c-tag{font-family:'Orbitron';font-size:.65rem;letter-spacing:2px;display:block;margin-bottom:6px}
+ul.nice{margin:0 0 16px 22px}
+ul.nice li{margin-bottom:8px}
+.promptbox{background:#03050F;border:1px solid var(--border);border-radius:10px;padding:16px 18px;font-family:monospace;font-size:.92rem;color:#B9FFDC;margin:14px 0;white-space:pre-wrap}
+.promptbox.bad{color:#FFB9C4;border-color:rgba(255,51,85,.35)}
+table.cmp{width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem}
+table.cmp th,table.cmp td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+table.cmp th{font-family:'Orbitron';font-size:.68rem;letter-spacing:1px}
+
+/* ===== GAMES ===== */
+.game{margin-top:28px;border:1px dashed rgba(255,214,10,.4);border-radius:14px;padding:22px;background:rgba(255,214,10,.03)}
+.game .g-tag{font-family:'Orbitron';font-size:.7rem;letter-spacing:3px;color:var(--gold);display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.game h3{font-size:1.1rem;margin-bottom:8px}
+.g-sub{color:var(--muted);font-size:.95rem;margin-bottom:18px}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.qcard .qtext{font-weight:700;margin-bottom:12px}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{background:#03050F;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;cursor:pointer;font-family:'Nunito';font-size:.95rem;text-align:left;transition:border-color .15s,transform .1s;flex:1 1 100%}
+.opt.small{flex:0 1 auto}
+.opt:hover{border-color:var(--f2)}
+.opt:active{transform:scale(.98)}
+.opt.right{border-color:var(--f1);background:rgba(0,255,136,.1)}
+.opt.wrong{border-color:var(--f5);background:rgba(255,51,85,.1)}
+.opt:disabled{cursor:default;opacity:.85}
+.explain{display:none;margin-top:10px;font-size:.92rem;color:var(--muted);border-left:2px solid var(--f2);padding-left:12px}
+.explain.show{display:block}
+.g-done{display:none;margin-top:16px;text-align:center;font-family:'Orbitron';font-size:.85rem;color:var(--f1);border:1px solid rgba(0,255,136,.4);border-radius:12px;padding:14px}
+.g-done.show{display:block;animation:pop .4s ease}
+.g-done img{height:44px;vertical-align:middle;margin-right:8px;border-radius:50%}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* montador */
+.blocks{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.block{font-family:'Orbitron';font-size:.72rem;letter-spacing:1px;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:#03050F;cursor:pointer;color:var(--text)}
+.block.used{opacity:.25;pointer-events:none}
+#assembly{min-height:70px;border:1px dashed var(--f2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;background:rgba(0,212,255,.04)}
+#assembly .placed{border-radius:8px;padding:10px 14px;font-size:.9rem;border-left:4px solid;background:var(--card);animation:pop .3s}
+#assembly .hint-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:10px}
+
+/* mega prompt */
+.field{margin-bottom:16px}
+.field label{display:block;font-family:'Orbitron';font-size:.65rem;letter-spacing:2px;margin-bottom:6px;color:var(--f2)}
+.field input,.field textarea{width:100%;background:#03050F;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:12px 14px;font-family:'Nunito';font-size:.95rem;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--f6)}
+#megaout{display:none}
+#megaout.show{display:block}
+
+/* medal / graduation */
+#grad{display:none;text-align:center;padding:30px 0}
+#grad.show{display:block;animation:pop .5s}
+#grad video{width:180px;height:180px;object-fit:cover;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 50px rgba(255,214,10,.5)}
+.medals{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0}
+.medals img{height:56px;filter:grayscale(1) opacity(.35);transition:filter .5s,transform .5s}
+.medals img.won{filter:none;transform:scale(1.08)}
+
+/* coin fly */
+.coinfly{position:fixed;z-index:200;height:64px;pointer-events:none;animation:fly 1.4s ease forwards}
+@keyframes fly{0%{transform:translateY(0) scale(1);opacity:0}15%{opacity:1}100%{transform:translateY(-140px) scale(.55);opacity:0}}
+.confetti{position:fixed;top:-10px;z-index:150;width:9px;height:14px;pointer-events:none;animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(105vh) rotate(720deg)}}
+
+footer{padding:60px 0 40px;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);margin-top:80px}
+footer .orb{color:var(--f2);letter-spacing:2px;font-size:.7rem;display:block;margin-bottom:8px}
+
+/* ===== PRINT ONLY / SCREEN ONLY ===== */
+.print-only{display:none}
+.pline{border-bottom:1.5px solid #99AABB;height:30px;margin:8px 0}
+
+/* ===== HÍBRIDO: IMPRESSÃO A4 ===== */
+@media print{
+  :root{--text:#111;--muted:#445}
+  body{background:#fff;color:#111;font-size:11.5pt}
+  #hud,#progressbar,#sndbtn,.btn,video,.screen-only,.g-done,.explain{display:none !important}
+  .print-only{display:block}
+  #hero{padding:20px 0;background:none}
+  #hero h1{-webkit-text-fill-color:initial;color:#111;background:none}
+  #hero .sub,.g-sub{color:#445}
+  .mission{border:1.5pt solid #223;background:#fff;break-inside:avoid;page-break-inside:avoid;margin:24px 0}
+  .m-head{border-bottom:1.5pt solid #223}
+  .m-head h2,.m-body p b{color:#111}
+  .m-xp{color:#8a6d00;border-color:#8a6d00}
+  .story{background:#f4f6fa;color:#222;border-left:3pt solid #5a2e9e}
+  .story b{color:#8a6d00}
+  .callout{background:#f4f6fa;border-color:#223 !important}
+  .promptbox{background:#f4f6fa;color:#0a5c33;border:1pt solid #99a}
+  .promptbox.bad{color:#8c1a2e}
+  .game{border:1.5pt dashed #8a6d00;background:#fffdf2}
+  .game .g-tag{color:#8a6d00}
+  .qcard{background:#fff;border:1pt solid #99a}
+  .opt{background:#fff;border:1pt solid #99a;color:#111}
+  table.cmp th,table.cmp td{border-color:#223}
+  a{color:#111;text-decoration:none}
+}
+@media(max-width:600px){
+  .m-head{flex-wrap:wrap}
+  .m-head .m-xp{margin-left:0}
+  #hud .hud-title{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HUD ===== -->
+<div id="hud">
+  <div class="wrap">
+    <img class="logo" src="logo.png" alt="NEXUS ACADEMY">
+    <span class="hud-title">ENGENHARIA DE PROMPT · MÓDULO ESPECIAL</span>
+    <div id="xpbox"><img src="xp10.png" alt="XP"><span id="xpval">0</span><span style="font-size:.7rem;color:var(--muted)">/ 1100 XP</span></div>
+    <button id="sndbtn" title="Som ligado/desligado" onclick="toggleSound()">🔊</button>
+  </div>
+  <div id="progressbar"><div id="progressfill"></div></div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="wrap">
+    <img class="logo-big" src="logo.png" alt="NEXUS ACADEMY">
+    <div class="eyebrow">NEXUS ACADEMY · MÓDULO ESPECIAL</div>
+    <h1>ENGENHARIA DE PROMPT<br>Domine a Linguagem das IAs</h1>
+    <p class="sub">10 missões. 10 games. 1100 XP. Da anatomia do prompt até as super-habilidades da nova era — ao final, você comanda as IAs sem nunca entregar o próprio cérebro.</p>
+    <video class="screen-only" src="coin-video.mp4" autoplay loop muted playsinline></video>
+    <br>
+    <a href="#m1" class="btn btn-cta screen-only">▶ INICIAR MISSÃO</a>
+
+    <div class="story" style="text-align:left">
+      Agente, temos um problema novo. <b>O Vazio</b> descobriu as IAs antes de muita gente — e está espalhando um veneno silencioso: <b>prompts preguiçosos</b>. Pessoas pedindo qualquer coisa, de qualquer jeito, recebendo respostas rasas e acreditando nelas sem pensar. Quem não sabe comandar uma IA... acaba comandado por ela. Sua nova missão: aprender a <b>falar a língua das máquinas</b> sem nunca desligar o próprio cérebro.
+      <span class="who">— DONA LUX ESTÁ OBSERVANDO ✦</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<!-- ============ MISSÃO 1 ============ -->
+<section class="mission" id="m1">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f1)">1</div>
+    <h2 style="color:var(--f1)">O CÉREBRO DA IA</h2>
+    <span class="m-xp">+80 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Antes de comandar uma IA, você precisa entender <b>como ela pensa</b>. E aqui vai o segredo que quase ninguém conta:</p>
+    <div class="callout" style="border-color:var(--f1)">
+      <span class="c-tag" style="color:var(--f1)">🧠 CONCEITO-CHAVE</span>
+      Uma IA de texto não "sabe" as coisas como você. Ela é uma <b>máquina de prever a próxima palavra</b> — treinada lendo bilhões de textos. Quando você escreve, ela calcula: <i>"depois dessas palavras, qual é a continuação mais provável?"</i>
+    </div>
+    <p>Pense num jogador de <b>"complete a frase"</b> que leu praticamente a internet inteira. Ele é absurdamente bom no jogo — mas continua sendo um jogo de padrões, não de certezas.</p>
+    <p>Disso nascem 3 regras de ouro:</p>
+    <ul class="nice">
+      <li><b>Ela não lê mentes.</b> Tudo que você não escrever no prompt, ela vai <i>chutar</i>.</li>
+      <li><b>O contexto é a memória de trabalho dela.</b> O que está na conversa, ela enxerga. O que ficou fora, não existe.</li>
+      <li><b>Confiança ≠ verdade.</b> Ela responde com a mesma segurança quando acerta e quando inventa.</li>
+    </ul>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 1 · MITO OU VERDADE</div>
+      <h3>Teste seu radar sobre IAs</h3>
+      <p class="g-sub">Cada acerto vale <b>+10 XP</b>. Pense antes de tocar!</p>
+      <div class="screen-only" id="g1"></div>
+      <div class="print-only">
+        <p>Marque <b>M</b> (mito) ou <b>V</b> (verdade) e justifique em uma linha:</p>
+        <p>( ) A IA entende exatamente o que eu quis dizer, mesmo se eu escrever pouco.</p><div class="pline"></div>
+        <p>( ) A IA pode inventar informações com aparência de verdade.</p><div class="pline"></div>
+        <p>( ) Quanto mais contexto eu der, melhor tende a ser a resposta.</p><div class="pline"></div>
+        <p>( ) A IA sempre sabe quando está errada.</p><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d1"><img src="xp50.png" alt="">MISSÃO 1 CONCLUÍDA · +<span class="dx">80</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 2 ============ -->
+<section class="mission" id="m2">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f2)">2</div>
+    <h2 style="color:var(--f2)">ANATOMIA DO PROMPT</h2>
+    <span class="m-xp">+100 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Um prompt profissional tem <b>5 peças</b>. Decore essa anatomia — ela vale para escola, trabalho e projetos:</p>
+    <table class="cmp">
+      <tr><th style="color:var(--f2)">PEÇA</th><th style="color:var(--f2)">O QUE FAZ</th><th style="color:var(--f2)">EXEMPLO</th></tr>
+      <tr><td><b>1. Papel</b></td><td>Diz quem a IA deve ser</td><td>"Você é um professor de ciências divertido"</td></tr>
+      <tr><td><b>2. Contexto</b></td><td>Explica a situação</td><td>"Tenho uma prova sobre células na sexta"</td></tr>
+      <tr><td><b>3. Tarefa</b></td><td>Ordena a ação exata</td><td>"Crie um resumo com os 10 pontos principais"</td></tr>
+      <tr><td><b>4. Formato</b></td><td>Define a entrega</td><td>"Em tabela, com linguagem simples"</td></tr>
+      <tr><td><b>5. Exemplo</b></td><td>Mostra o padrão desejado</td><td>"Assim: 'Mitocôndria = usina de energia'"</td></tr>
+    </table>
+    <div class="callout" style="border-color:var(--f2)">
+      <span class="c-tag" style="color:var(--f2)">🎯 REGRA DO AGENTE</span>
+      Prompt vago → resposta vaga. Prompt cirúrgico → resposta cirúrgica. <b>A qualidade da pergunta define a qualidade da resposta.</b>
+    </div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 2 · MONTADOR DE PROMPT</div>
+      <h3>Monte o prompt perfeito, peça por peça</h3>
+      <p class="g-sub">Objetivo do Agente: <b>criar uma legenda de Instagram para um brechó jovem</b>. Toque nas peças <b>na ordem certa</b> (Papel → Contexto → Tarefa → Formato → Exemplo). Ordem certa de primeira: <b>+100 XP</b>.</p>
+      <div class="screen-only">
+        <div class="blocks" id="g2blocks"></div>
+        <div id="assembly"><div class="hint-empty">Seu prompt aparece aqui...</div></div>
+      </div>
+      <div class="print-only">
+        <p>Escreva um prompt completo com as 5 peças para o objetivo acima. Identifique cada peça com [colchetes]:</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d2"><img src="xp100.png" alt="">MISSÃO 2 CONCLUÍDA · +<span class="dx">100</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 3 ============ -->
+<section class="mission" id="m3">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f3)">3</div>
+    <h2 style="color:var(--f3)">CERCANDO POR TODOS OS LADOS</h2>
+    <span class="m-xp">+100 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Agentes de elite não deixam brechas. Eles <b>cercam a IA por todos os lados</b> com 4 ferramentas:</p>
+    <ul class="nice">
+      <li><b>Restrições:</b> tamanho, tom, público. <i>"Máximo 3 parágrafos, tom divertido, para adolescentes."</i></li>
+      <li><b>Proibições:</b> o que NÃO fazer. <i>"Não use palavras difíceis. Não invente dados."</i></li>
+      <li><b>Critérios de qualidade:</b> como saber se ficou bom. <i>"Uma boa resposta tem exemplo prático em cada item."</i></li>
+      <li><b>Passo a passo:</b> peça para pensar em etapas. <i>"Antes de responder, liste o que você entendeu do pedido."</i></li>
+    </ul>
+    <p>Compare o antes e depois:</p>
+    <div class="promptbox bad">❌ "me ajuda com a feira de ciências"</div>
+    <div class="promptbox">✅ "Você é um cientista que adora explicar para jovens. Tenho uma feira de ciências em 2 semanas (8º ano) e quero um experimento sobre energia. Me dê 3 opções seguras e baratas, em tabela com: material, custo, tempo e efeito 'uau'. Não sugira nada com fogo ou produtos tóxicos."</div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 3 · CONSERTE O PROMPT QUEBRADO</div>
+      <h3>O Vazio sabotou estes prompts. Repare cada um!</h3>
+      <p class="g-sub">Escolha a melhoria mais poderosa. Cada reparo vale <b>+25 XP</b>.</p>
+      <div class="screen-only" id="g3"></div>
+      <div class="print-only">
+        <p>Reescreva o prompt quebrado <b>"me fala sobre dinossauros"</b> cercando por todos os lados (papel, contexto, tarefa, formato, restrições):</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d3"><img src="xp100.png" alt="">MISSÃO 3 CONCLUÍDA · +<span class="dx">100</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 4 ============ -->
+<section class="mission" id="m4">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f4)">4</div>
+    <h2 style="color:var(--f4)">ITERAÇÃO: O SEGREDO DOS MESTRES</h2>
+    <span class="m-xp">+80 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Aqui está o que separa amadores de Agentes: <b>a primeira resposta da IA é sempre um rascunho.</b> Mestres refinam em rodadas:</p>
+    <ul class="nice">
+      <li><b>Rodada 1 — Peça variações:</b> <i>"Me dê 5 versões bem diferentes."</i></li>
+      <li><b>Rodada 2 — Peça autocrítica:</b> <i>"Aponte 3 pontos fracos da sua própria resposta e melhore."</i></li>
+      <li><b>Rodada 3 — Aperte o foco:</b> <i>"Gostei da versão 3. Deixe mais curta e com uma pergunta no final."</i></li>
+    </ul>
+    <div class="callout" style="border-color:var(--f4)">
+      <span class="c-tag" style="color:var(--f4)">🔁 MANTRA DO AGENTE</span>
+      Conversar com IA não é fazer <b>uma</b> pergunta perfeita. É conduzir um <b>diálogo</b> — como treinar um estagiário genial que faz tudo em segundos, mas precisa da sua direção.
+    </div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 4 · BATALHA DE PROMPTS</div>
+      <h3>Qual prompt vence o duelo?</h3>
+      <p class="g-sub">Em cada rodada, toque no prompt que gera a melhor resposta. Cada vitória: <b>+20 XP</b>.</p>
+      <div class="screen-only" id="g4"></div>
+      <div class="print-only">
+        <p>Escreva a "Rodada 2" de uma conversa: você recebeu um texto mediano da IA. Que pedido de refinamento você faria?</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d4"><img src="xp50.png" alt="">MISSÃO 4 CONCLUÍDA · +<span class="dx">80</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 5 ============ -->
+<section class="mission" id="m5">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f5)">5</div>
+    <h2 style="color:var(--f5)">DETECTOR DE ILUSÕES</h2>
+    <span class="m-xp">+90 XP</span>
+  </div>
+  <div class="m-body">
+    <p>A arma mais perigosa do Vazio: a <b>alucinação</b>. É quando a IA inventa uma informação falsa — com total confiança, nomes, datas e tudo. Ela não está mentindo de propósito: está <i>completando o padrão</i> mesmo sem ter a resposta.</p>
+    <p>Escudo do Agente, em 4 camadas:</p>
+    <ul class="nice">
+      <li><b>Desconfie de detalhes muito específicos</b> (números, nomes, datas) que você não pode conferir.</li>
+      <li><b>Peça a fonte:</b> <i>"De onde vem essa informação? Você tem certeza?"</i></li>
+      <li><b>Confira fora da IA</b> o que for importante: prova, trabalho, saúde, dinheiro.</li>
+      <li><b>Nunca cole sem ler.</b> Quem entrega sem revisar entrega o cérebro junto.</li>
+    </ul>
+    <div class="callout" style="border-color:var(--f5)">
+      <span class="c-tag" style="color:var(--f5)">🛡️ CÓDIGO DE HONRA</span>
+      A IA é sua ferramenta, não sua muleta. Usar IA para <b>pensar melhor</b> = poder. Usar IA para <b>não pensar</b> = O Vazio venceu.
+    </div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 5 · CAÇA À ILUSÃO</div>
+      <h3>Cada resposta de IA abaixo tem 1 informação falsa. Encontre!</h3>
+      <p class="g-sub">Toque na frase suspeita. Cada ilusão destruída: <b>+30 XP</b>.</p>
+      <div class="screen-only" id="g5"></div>
+      <div class="print-only">
+        <p>Liste 3 perguntas que você faria para checar se uma resposta de IA é confiável:</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d5"><img src="xp100.png" alt="">MISSÃO 5 CONCLUÍDA · +<span class="dx">90</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 6 ============ -->
+<section class="mission" id="m6">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f6)">6</div>
+    <h2 style="color:var(--f6)">O MEGA-PROMPT</h2>
+    <span class="m-xp">+150 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Hora de forjar sua primeira arma de verdade, Agente. Você vai construir um <b>Mega-Prompt</b> de verdade, sobre algo da <b>sua</b> vida: um trabalho da escola, um canal, um jogo, um negócio. Use tudo que aprendeu.</p>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME FINAL · CONSTRUTOR DE MEGA-PROMPT</div>
+      <h3>Preencha as 6 câmaras do prompt</h3>
+      <p class="g-sub">Preencha todos os campos com atenção e forje seu Mega-Prompt: <b>+150 XP</b> + a Medalha do Módulo.</p>
+      <div class="screen-only">
+        <div class="field"><label>1 · PAPEL — quem a IA deve ser?</label><input id="f1" placeholder="Ex.: Você é um roteirista de vídeos curtos, criativo e direto..."></div>
+        <div class="field"><label>2 · CONTEXTO — qual é a situação?</label><textarea id="f2" rows="2" placeholder="Ex.: Tenho um canal sobre games com 200 inscritos e quero crescer..."></textarea></div>
+        <div class="field"><label>3 · TAREFA — o que exatamente ela deve fazer?</label><textarea id="f3" rows="2" placeholder="Ex.: Crie 5 ideias de vídeos de até 60 segundos..."></textarea></div>
+        <div class="field"><label>4 · FORMATO — como deve entregar?</label><input id="f4" placeholder="Ex.: Em lista numerada, com título chamativo e gancho de 5 segundos..."></div>
+        <div class="field"><label>5 · RESTRIÇÕES — o que evitar / limites?</label><input id="f5" placeholder="Ex.: Nada de clickbait mentiroso. Linguagem simples. Máximo 3 linhas por ideia."></div>
+        <div class="field"><label>6 · CRITÉRIO DE QUALIDADE — como saber se ficou bom?</label><input id="f6" placeholder="Ex.: Boa ideia = eu conseguiria gravar hoje, só com meu celular."></div>
+        <button class="btn btn-cta" onclick="forgeMega()">⚡ FORJAR MEGA-PROMPT</button>
+        <div id="megaout">
+          <p style="margin-top:20px"><b>Seu Mega-Prompt está pronto. Copie e use em qualquer IA:</b></p>
+          <div class="promptbox" id="megatext"></div>
+          <button class="btn" style="background:var(--card);color:var(--text);border:1px solid var(--border)" onclick="copyMega()">📋 COPIAR PROMPT</button>
+        </div>
+      </div>
+      <div class="print-only">
+        <p>Escreva seu Mega-Prompt completo (papel, contexto, tarefa, formato, restrições e critério de qualidade):</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d6"><img src="xp500.png" alt="">MISSÃO 6 CONCLUÍDA · +<span class="dx">150</span> XP REGISTRADOS</div>
+    </div>
+
+    <div id="grad">
+      <video src="medal-video.mp4" autoplay loop muted playsinline></video>
+      <h2 style="color:var(--gold);margin:18px 0 8px">MEDALHA DO PROMPT CONQUISTADA</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto">Você dominou a base da engenharia de prompt. Mas Dona Lux tem um recado: <i>"A técnica abre a porta. O caráter decide o que você faz do outro lado."</i> As missões avançadas esperam por você. ✦</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ MISSÃO 7 ============ -->
+<section class="mission" id="m7">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--gold)">7</div>
+    <h2 style="color:var(--gold)">MODO AVANÇADO: TÉCNICAS DOS MESTRES</h2>
+    <span class="m-xp">+120 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Existe um arsenal secreto que engenheiros de prompt profissionais usam todos os dias. Agora ele é seu:</p>
+    <table class="cmp">
+      <tr><th style="color:var(--gold)">TÉCNICA</th><th style="color:var(--gold)">COMO USAR</th></tr>
+      <tr><td><b>🎯 Exemplos em série</b><br><span style="font-size:.8rem;color:var(--muted)">(few-shot)</span></td><td>Mostre 2-3 exemplos do resultado que quer, e a IA copia o padrão: <i>"Faça como nestes exemplos: ..."</i></td></tr>
+      <tr><td><b>🧩 Pensar em voz alta</b><br><span style="font-size:.8rem;color:var(--muted)">(chain of thought)</span></td><td><i>"Resolva passo a passo, explicando seu raciocínio antes da resposta final."</i> Reduz erros em problemas difíceis.</td></tr>
+      <tr><td><b>🔄 Prompt reverso</b></td><td><i>"Antes de responder, me faça 3 perguntas para entender melhor o que eu preciso."</i> A IA vira detetive do seu pedido.</td></tr>
+      <tr><td><b>⚔️ Debate de personas</b></td><td><i>"Responda como dois especialistas que discordam, depois dê o veredito."</i> Você enxerga os dois lados.</td></tr>
+      <tr><td><b>🌡️ Controle de ousadia</b></td><td><i>"Me dê 3 ideias seguras e 3 ideias malucas."</i> Você controla o nível de criatividade da resposta.</td></tr>
+      <tr><td><b>📦 Saída estruturada</b></td><td>Peça tabela, lista, etapas numeradas ou até um modelo para preencher. Estrutura = clareza.</td></tr>
+    </table>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 7 · DECODIFICADOR</div>
+      <h3>Qual técnica está escondida em cada prompt?</h3>
+      <p class="g-sub">Identifique a técnica secreta. Cada acerto: <b>+20 XP</b>.</p>
+      <div class="screen-only" id="g7"></div>
+      <div class="print-only">
+        <p>Escreva um prompt usando a técnica do <b>prompt reverso</b> para planejar uma festa:</p>
+        <div class="pline"></div><div class="pline"></div>
+        <p>Escreva um prompt usando <b>debate de personas</b> sobre: "vale a pena ter celular na escola?"</p>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d7"><img src="xp100.png" alt="">MISSÃO 7 CONCLUÍDA · +<span class="dx">120</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 8 ============ -->
+<section class="mission" id="m8">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f2)">8</div>
+    <h2 style="color:var(--f2)">ESCUDO DIGITAL: SEGURANÇA NA ERA DA IA</h2>
+    <span class="m-xp">+100 XP</span>
+  </div>
+  <div class="m-body">
+    <p>O Vazio tem uma divisão inteira dedicada a golpes com IA. E o alvo preferido são jovens confiantes demais. Ative seu escudo:</p>
+    <ul class="nice">
+      <li><b>Dados pessoais são tesouro.</b> Nunca digite em uma IA: senhas, endereço completo, documentos, fotos íntimas, dados do cartão. Conversas podem ser armazenadas.</li>
+      <li><b>Vozes e rostos podem ser clonados.</b> Deepfakes imitam parentes pedindo dinheiro por áudio ou vídeo. Regra da família: crie uma <b>palavra-código secreta</b> para emergências reais.</li>
+      <li><b>Urgência é a assinatura do golpe.</b> "É agora ou nunca!", "não conta pra ninguém!" — quanto maior a pressa, maior a desconfiança.</li>
+      <li><b>Nem toda "IA" é IA.</b> Sites e apps falsos se disfarçam de assistentes para roubar dados. Use apenas ferramentas conhecidas, baixadas de lojas oficiais.</li>
+      <li><b>Adultos de confiança são aliados, não inimigos.</b> Se algo online te deixou desconfortável ou confuso, contar não é fraqueza — é protocolo de Agente.</li>
+    </ul>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 8 · CENTRAL DE SEGURANÇA</div>
+      <h3>Aprove ou bloqueie cada situação</h3>
+      <p class="g-sub">Você é o oficial de segurança da NEXUS. Cada decisão certa: <b>+25 XP</b>.</p>
+      <div class="screen-only" id="g8"></div>
+      <div class="print-only">
+        <p>Qual seria a palavra-código secreta da sua família e por que ela funciona contra deepfakes?</p>
+        <div class="pline"></div><div class="pline"></div>
+        <p>Liste 3 informações que você NUNCA deve digitar em uma IA:</p>
+        <div class="pline"></div>
+      </div>
+      <div class="g-done" id="d8"><img src="xp100.png" alt="">MISSÃO 8 CONCLUÍDA · +<span class="dx">100</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 9 ============ -->
+<section class="mission" id="m9">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f1)">9</div>
+    <h2 style="color:var(--f1)">CRIADOR, NÃO COPIADOR</h2>
+    <span class="m-xp">+100 XP</span>
+  </div>
+  <div class="m-body">
+    <p>A pergunta que define sua geração: <b>a IA trabalha PARA você ou NO LUGAR de você?</b> O código de honra do Agente criador:</p>
+    <ul class="nice">
+      <li><b>Co-criação ≠ cópia.</b> Usar IA para gerar ideias, organizar pensamentos e revisar é inteligência. Entregar o texto dela com seu nome é abrir mão do seu cérebro.</li>
+      <li><b>Transparência é força.</b> Dizer "usei IA para pesquisar e revisar" mostra domínio da ferramenta, não fraqueza.</li>
+      <li><b>Toda IA tem viés.</b> Ela aprendeu com textos humanos — herdou opiniões, estereótipos e pontos cegos. Pergunte: <i>"que outros pontos de vista existem sobre isso?"</i></li>
+      <li><b>Sua voz é insubstituível.</b> A IA escreve como a média da internet. Ninguém no mundo escreve como VOCÊ — e é isso que o mundo quer ler.</li>
+    </ul>
+    <div class="callout" style="border-color:var(--f1)">
+      <span class="c-tag" style="color:var(--f1)">⚖️ TESTE DO ESPELHO</span>
+      Antes de entregar qualquer coisa feita com IA, pergunte: <b>"Eu consigo explicar e defender cada frase disso?"</b> Se sim, é seu. Se não, você foi apenas o mensageiro.
+    </div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME 9 · TRIBUNAL DO AGENTE</div>
+      <h3>Julgue cada caso: uso honesto ou território do Vazio?</h3>
+      <p class="g-sub">Bata o martelo com sabedoria. Cada veredito justo: <b>+25 XP</b>.</p>
+      <div class="screen-only" id="g9"></div>
+      <div class="print-only">
+        <p>Descreva uma forma de usar IA num trabalho escolar que seja 100% honesta — e uma que seria desonesta:</p>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+      <div class="g-done" id="d9"><img src="xp100.png" alt="">MISSÃO 9 CONCLUÍDA · +<span class="dx">100</span> XP REGISTRADOS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÃO 10 ============ -->
+<section class="mission" id="m10">
+  <div class="m-head">
+    <div class="m-num" style="background:var(--f6)">10</div>
+    <h2 style="color:var(--f6)">MISSÃO SUPREMA: O AGENTE DO FUTURO</h2>
+    <span class="m-xp">+180 XP</span>
+  </div>
+  <div class="m-body">
+    <p>Última lição — e a mais importante. Num mundo onde a IA faz tarefas em segundos, o que <b>valoriza</b> não é o que a máquina faz melhor. É o que só humanos fazem. As <b>4 super-habilidades da nova era</b>:</p>
+    <table class="cmp">
+      <tr><th style="color:var(--f6)">SUPER-HABILIDADE</th><th style="color:var(--f6)">POR QUE A IA NÃO SUBSTITUI</th></tr>
+      <tr><td><b>🧠 Pensamento crítico</b></td><td>A IA gera respostas. Só você decide o que é verdade, o que é justo e o que vale a pena.</td></tr>
+      <tr><td><b>🎨 Criatividade com propósito</b></td><td>A IA remixa o passado. Você imagina o que nunca existiu — e sabe POR QUE criar.</td></tr>
+      <tr><td><b>🤝 Conexão humana</b></td><td>Empatia, confiança, olho no olho. Nenhum modelo sente o que um amigo sente.</td></tr>
+      <tr><td><b>🌊 Adaptabilidade</b></td><td>As ferramentas vão mudar mil vezes. Quem aprende a aprender nunca fica obsoleto.</td></tr>
+    </table>
+    <div class="callout" style="border-color:var(--f6)">
+      <span class="c-tag" style="color:var(--f6)">✦ A EQUAÇÃO DA NOVA ERA</span>
+      <b>Humano + IA bem comandada &gt; Humano sozinho &gt; IA sozinha.</b> A IA é a alavanca. Você é a força. O Vazio quer te convencer de que a máquina te substitui — prove o contrário todos os dias.
+    </div>
+
+    <div class="game">
+      <div class="g-tag">🎮 GAME FINAL · JURAMENTO DO AGENTE</div>
+      <h3>Sele seu compromisso com a nova era</h3>
+      <p class="g-sub">Escolha sua super-habilidade prioritária, declare sua primeira ação e assine. Graduação: <b>+180 XP</b> + patente de Agente Graduado.</p>
+      <div class="screen-only">
+        <div class="field"><label>SUPER-HABILIDADE QUE VOU TREINAR PRIMEIRO</label>
+          <div class="opts" id="skillpick">
+            <button class="opt small" onclick="pickSkill(this,'Pensamento crítico')">🧠 Pensamento crítico</button>
+            <button class="opt small" onclick="pickSkill(this,'Criatividade com propósito')">🎨 Criatividade</button>
+            <button class="opt small" onclick="pickSkill(this,'Conexão humana')">🤝 Conexão humana</button>
+            <button class="opt small" onclick="pickSkill(this,'Adaptabilidade')">🌊 Adaptabilidade</button>
+          </div>
+        </div>
+        <div class="field"><label>MINHA PRIMEIRA AÇÃO CONCRETA (esta semana)</label><textarea id="j2" rows="2" placeholder="Ex.: Vou usar o prompt reverso para planejar meu trabalho de ciências, e conferir todas as fontes..."></textarea></div>
+        <div class="field"><label>NOME DE AGENTE (assinatura)</label><input id="j3" placeholder="Seu nome ou codinome de Agente"></div>
+        <button class="btn btn-cta" onclick="swearOath()">✦ ASSINAR O JURAMENTO</button>
+        <div id="oathout" style="display:none;margin-top:22px" class="story">
+          <b>JURAMENTO REGISTRADO NOS ARQUIVOS DA NEXUS</b><br><br>
+          Eu, <span id="o-name" style="color:var(--gold)"></span>, juro usar a IA como alavanca e nunca como muleta; questionar antes de acreditar; criar antes de copiar; proteger meus dados e as pessoas ao meu redor; e treinar <span id="o-skill" style="color:var(--gold)"></span> até o Vazio desistir de mim.<br><br>
+          Primeira ação: <i id="o-action"></i>
+          <span class="who">— REGISTRADO POR DONA LUX ✦</span>
+        </div>
+      </div>
+      <div class="print-only">
+        <p><b>JURAMENTO DO AGENTE</b> — complete e assine:</p>
+        <p>Eu, ______________________________, juro usar a IA como alavanca e nunca como muleta. Minha super-habilidade prioritária: ______________________________.</p>
+        <p>Minha primeira ação concreta:</p>
+        <div class="pline"></div><div class="pline"></div>
+        <p>Assinatura do Agente: ______________________ Data: ____/____/______</p>
+      </div>
+      <div class="g-done" id="d10"><img src="xp500.png" alt="">MISSÃO SUPREMA CONCLUÍDA · +<span class="dx">180</span> XP REGISTRADOS</div>
+    </div>
+
+    <div id="grad2" style="display:none;text-align:center;padding:30px 0">
+      <video src="agente-graduado.mp4" autoplay loop muted playsinline style="width:200px;height:200px;object-fit:cover;border-radius:50%;border:3px solid var(--f6);box-shadow:0 0 60px rgba(176,96,255,.55)"></video>
+      <h2 style="color:var(--f6);margin:18px 0 8px">AGENTE GRADUADO EM ENGENHARIA DE PROMPT</h2>
+      <p style="color:var(--muted);max-width:540px;margin:0 auto">10 missões. 1100 XP. Dona Lux saiu das sombras uma única vez — para registrar o seu nome. <i>Alguém apostou em você quando o mundo ainda não sabia quem você era. E você provou que valia a aposta.</i> ✦</p>
+      <a id="certlink" class="btn btn-cta" style="margin-top:22px" href="certificado-engenharia-de-prompt.html" target="_blank">🎓 EMITIR MEU CERTIFICADO</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CÓDICE DO AGENTE ============ -->
+<section class="mission" id="codice">
+  <div class="m-head">
+    <div class="m-num" style="background:linear-gradient(135deg,var(--f2),var(--f6));color:#fff">✦</div>
+    <h2 style="color:var(--f2)">CÓDICE DO AGENTE · 10 PROMPTS PRONTOS</h2>
+  </div>
+  <div class="m-body">
+    <p>Sua carta na manga. Copie, adapte e use — na escola, nos projetos, na vida. <span class="screen-only">Imprima esta página (Ctrl+P) e cole na parede.</span></p>
+    <div class="promptbox">1 · ESTUDAR: "Sou do [ano escolar] e tenho prova de [matéria] sobre [tema]. Crie 10 flashcards do fácil ao difícil e me pergunte um por um, corrigindo minhas respostas."</div>
+    <div class="promptbox">2 · ENTENDER DE VERDADE: "Explique [tema] em 3 níveis: para uma criança de 8 anos, para alguém da minha idade e para um especialista. Depois me faça 2 perguntas para testar se entendi."</div>
+    <div class="promptbox">3 · DESTRAVAR IDEIAS: "Preciso de ideias para [objetivo]. Me dê 5 seguras e 5 malucas. Não repita ideias óbvias."</div>
+    <div class="promptbox">4 · MELHORAR MEU TEXTO: "Avalie MEU texto abaixo como um professor exigente: clareza, argumentos e gramática. Nota 0-10 em cada, com sugestões — mas NÃO reescreva por mim."</div>
+    <div class="promptbox">5 · PROMPT REVERSO: "Quero [objetivo]. Antes de responder, me faça 3 perguntas para entender exatamente o que eu preciso."</div>
+    <div class="promptbox">6 · VER OS DOIS LADOS: "Apresente os melhores argumentos A FAVOR e CONTRA [tema], como dois especialistas debatendo. Depois liste o que os dois lados concordam."</div>
+    <div class="promptbox">7 · CHECAR ILUSÕES: "Revise sua última resposta: aponte qualquer informação que você pode ter inventado ou da qual não tem certeza, e diga o que eu deveria confirmar em outra fonte."</div>
+    <div class="promptbox">8 · PLANEJAR PROJETO: "Me ajude a planejar [projeto] em etapas semanais. Para cada etapa: o que fazer, quanto tempo leva e como saber se ficou pronto."</div>
+    <div class="promptbox">9 · RESOLVER PASSO A PASSO: "Resolva [problema] pensando em voz alta, passo a passo. Só dê a resposta final depois de mostrar o raciocínio."</div>
+    <div class="promptbox">10 · APRENDER COM ERROS: "Errei [questão/situação] assim: [descreva]. Me explique ONDE meu raciocínio quebrou e crie 2 exercícios parecidos para eu treinar."</div>
+  </div>
+</section>
+
+<!-- MEDALHEIRO -->
+<section style="text-align:center;margin:60px 0">
+  <div class="orb" style="font-size:.7rem;letter-spacing:3px;color:var(--muted);margin-bottom:14px">SEU MEDALHEIRO</div>
+  <div class="medals">
+    <img id="md1" src="medal-ph1.png" alt="Medalha 1"><img id="md2" src="medal-ph2.png" alt="Medalha 2">
+    <img id="md3" src="medal-ph3.png" alt="Medalha 3"><img id="md4" src="medal-ph4.png" alt="Medalha 4">
+    <img id="md5" src="medal-ph5.png" alt="Medalha 5"><img id="md6" src="medal-ph6.png" alt="Medalha 6">
+    <img id="md10" src="medal-teacher.png" alt="Medalha Suprema" style="height:72px">
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="orb">✦ NEXUS ACADEMY by NUVEM VELOZ ✦</span>
+  Engenharia de Prompt · Módulo Especial · 10 missões · 1100 XP<br>
+  "No mundo do Vazio, ignorância é moeda. No nosso, o conhecimento é." — Dona Lux
+</footer>
+
+<script>
+/* ================= ESTADO ================= */
+var XP=0, TOTAL=1100, soundOn=true;
+var done={m1:false,m2:false,m3:false,m4:false,m5:false,m6:false,m7:false,m8:false,m9:false,m10:false};
+function save(){try{localStorage.setItem('nexus-prompt-xp',JSON.stringify({XP:XP,done:done}));}catch(e){}}
+function load(){try{var s=JSON.parse(localStorage.getItem('nexus-prompt-xp'));if(s&&typeof s.XP==='number'){XP=s.XP;done=s.done||done;}}catch(e){}}
+function updHUD(){
+  document.getElementById('xpval').textContent=XP;
+  document.getElementById('progressfill').style.width=(Math.min(XP,TOTAL)/TOTAL*100)+'%';
+}
+/* ================= SOM (Web Audio) ================= */
+var AC=null;
+function ctx(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+function tone(f,t,dur,type,vol){var a=ctx();if(!a||!soundOn)return;var o=a.createOscillator(),g=a.createGain();
+  o.type=type||'sine';o.frequency.setValueAtTime(f,a.currentTime+t);
+  g.gain.setValueAtTime(0.0001,a.currentTime+t);g.gain.exponentialRampToValueAtTime(vol||0.18,a.currentTime+t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+t+dur);
+  o.connect(g);g.connect(a.destination);o.start(a.currentTime+t);o.stop(a.currentTime+t+dur+0.05);}
+function sndCoin(){tone(1320,0,0.12,'triangle');tone(1760,0.09,0.22,'triangle');}
+function sndWrong(){tone(220,0,0.18,'sawtooth',0.08);tone(180,0.12,0.22,'sawtooth',0.08);}
+function sndFanfare(){[523,659,784,1047].forEach(function(f,i){tone(f,i*0.13,0.28,'triangle',0.2);});tone(1319,0.55,0.5,'triangle',0.22);}
+function toggleSound(){soundOn=!soundOn;document.getElementById('sndbtn').textContent=soundOn?'🔊':'🔇';}
+
+/* ================= EFEITOS ================= */
+function coinFor(v){return v>=150?'xp500.png':v>=100?'xp100.png':v>=50?'xp50.png':v>=25?'xp10.png':'xp5.png';}
+function flyCoin(el,v){var img=document.createElement('img');img.src=coinFor(v);img.className='coinfly';
+  var r=el.getBoundingClientRect();img.style.left=(r.left+r.width/2-32)+'px';img.style.top=(r.top-10)+'px';
+  document.body.appendChild(img);setTimeout(function(){img.remove();},1500);}
+function gainXP(v,el){XP+=v;updHUD();save();sndCoin();if(el)flyCoin(el,v);}
+function confetti(){var cols=['#00FF88','#00D4FF','#FFD60A','#FF8C00','#FF3355','#B060FF'];
+  for(var i=0;i<90;i++){var c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'vw';c.style.background=cols[i%6];
+    c.style.animationDuration=(2.2+Math.random()*2.5)+'s';c.style.animationDelay=(Math.random()*0.8)+'s';
+    document.body.appendChild(c);(function(el){setTimeout(function(){el.remove();},6000);})(c);}}
+function missionDone(n,bonus){done['m'+n]=true;save();
+  var d=document.getElementById('d'+n);if(d)d.classList.add('show');
+  var md=document.getElementById('md'+n);if(md)md.classList.add('won');
+  sndFanfare();confetti();
+  if(n===6){var g=document.getElementById('grad');g.classList.add('show');g.scrollIntoView({behavior:'smooth',block:'center'});}
+  if(n===10){var g2=document.getElementById('grad2');g2.style.display='block';g2.scrollIntoView({behavior:'smooth',block:'center'});var mt=document.getElementById('md10');if(mt)mt.classList.add('won');setTimeout(confetti,900);setTimeout(confetti,1800);}}
+
+/* ================= GAME 1 · MITO OU VERDADE ================= */
+var Q1=[
+ {q:'A IA entende exatamente o que eu quis dizer, mesmo se eu escrever pouquinho.',a:0,e:'MITO. Ela não lê mentes: o que você não escreve, ela chuta com base em padrões.'},
+ {q:'A IA pode inventar uma informação falsa e apresentá-la com total confiança.',a:1,e:'VERDADE. Isso se chama alucinação — ela completa o padrão mesmo sem ter a resposta.'},
+ {q:'Quanto mais contexto útil eu der, melhor tende a ser a resposta.',a:1,e:'VERDADE. O contexto é a memória de trabalho da IA.'},
+ {q:'A IA sempre percebe quando está errada e avisa.',a:0,e:'MITO. Ela responde com a mesma segurança quando acerta e quando erra.'},
+ {q:'A IA de texto funciona prevendo qual é a próxima palavra mais provável.',a:1,e:'VERDADE. É um "complete a frase" turbinado, treinado em bilhões de textos.'},
+ {q:'Se a resposta veio bonita e organizada, então está correta.',a:0,e:'MITO. Beleza não é prova. Informação importante se confere fora da IA.'},
+ {q:'Duas pessoas com o mesmo objetivo podem receber respostas bem diferentes por causa do prompt.',a:1,e:'VERDADE. A qualidade da pergunta define a qualidade da resposta.'},
+ {q:'A IA guarda para sempre tudo que eu já pensei em pedir.',a:0,e:'MITO. Ela só enxerga o que está na conversa (o contexto).'}
+];
+function buildG1(){var box=document.getElementById('g1');if(!box)return;var solved=0;
+ Q1.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">'+(idx+1)+'. '+item.q+'</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  ['MITO','VERDADE'].forEach(function(lbl,oi){
+    var b=document.createElement('button');b.className='opt small';b.textContent=lbl;
+    b.onclick=function(){
+      var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(10,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q1.length&&!done.m1){missionDone(1);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 2 · MONTADOR ================= */
+var PARTS=[
+ {k:'PAPEL',c:'#00FF88',t:'Você é um social media criativo, especialista em moda jovem.'},
+ {k:'CONTEXTO',c:'#00D4FF',t:'Tenho um brechó online para adolescentes, com peças únicas e preços baixos.'},
+ {k:'TAREFA',c:'#FFD60A',t:'Crie 3 legendas de Instagram para o look da semana.'},
+ {k:'FORMATO',c:'#FF8C00',t:'Cada legenda com no máximo 2 linhas + 3 hashtags + 1 emoji.'},
+ {k:'EXEMPLO',c:'#B060FF',t:'No estilo: "Achado de hoje: jaqueta anos 90 por R$25 🔥 #brechó"'}
+];
+var g2next=0,g2perfect=true;
+function buildG2(){var bl=document.getElementById('g2blocks');if(!bl)return;
+ var shuffled=PARTS.map(function(p,i){return {p:p,i:i};}).sort(function(){return Math.random()-0.5;});
+ shuffled.forEach(function(o){
+  var b=document.createElement('button');b.className='block';b.textContent=o.p.k;b.style.borderColor=o.p.c;b.style.color=o.p.c;
+  b.onclick=function(){
+    if(o.i===g2next){
+      b.classList.add('used');
+      var asm=document.getElementById('assembly');
+      if(g2next===0)asm.innerHTML='';
+      var pl=document.createElement('div');pl.className='placed';pl.style.borderLeftColor=o.p.c;
+      pl.innerHTML='<b style="color:'+o.p.c+';font-family:Orbitron;font-size:.62rem;letter-spacing:1px">'+o.p.k+'</b><br>'+o.p.t;
+      asm.appendChild(pl);sndCoin();g2next++;
+      if(g2next===5&&!done.m2){gainXP(g2perfect?100:60,asm);missionDone(2);}
+    }else{sndWrong();g2perfect=false;b.style.transform='translateX(4px)';setTimeout(function(){b.style.transform='';},150);}
+  };bl.appendChild(b);});}
+
+/* ================= GAME 3 · CONSERTE O PROMPT ================= */
+var Q3=[
+ {broken:'"me fala sobre dinossauros"',opts:[
+   'Adicionar por favor no final',
+   'Dizer o objetivo, o formato e o público: "Resumo dos 5 dinossauros mais curiosos, em tabela, para um trabalho do 7º ano"',
+   'Escrever tudo em letras maiúsculas para a IA prestar atenção'],a:1,
+  e:'Contexto + tarefa + formato + público = prompt cercado. Maiúsculas e "por favor" não mudam a qualidade.'},
+ {broken:'"escreve uma redação pra mim"',opts:[
+   'Pedir: "Me ajude a montar um roteiro de argumentos sobre o tema X, com fontes para eu pesquisar, e depois revise MEU texto"',
+   'Pedir a redação pronta, mas avisar que é urgente',
+   'Pedir duas redações para escolher a melhor'],a:0,
+  e:'Agente usa IA para pensar melhor, não para não pensar. Roteiro + revisão do SEU texto = aprendizado de verdade.'},
+ {broken:'"faz um convite de aniversário"',opts:[
+   'Adicionar: "bem legal"',
+   'Pedir 10 convites de uma vez',
+   'Dar os dados e o clima: "Convite divertido para meus 15 anos, festa neon dia 20/08 às 19h, tom animado, máximo 4 linhas, com emoji"'],a:2,
+  e:'Datas, tom, limite de tamanho e estilo: a IA não adivinha nenhum desses detalhes.'},
+ {broken:'"esse texto tá bom?"',opts:[
+   'Perguntar de novo com mais pontos de interrogação',
+   'Dar critérios: "Avalie este texto como um professor exigente: clareza, argumentos e gramática. Dê nota 0-10 em cada um e diga como melhorar"',
+   'Pedir apenas elogios para ganhar confiança'],a:1,
+  e:'Critérios de qualidade transformam um "tá bom" vazio em avaliação útil e acionável.'}
+];
+function buildG3(){var box=document.getElementById('g3');if(!box)return;var solved=0;
+ Q3.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">Prompt quebrado '+(idx+1)+':</div><div class="promptbox bad" style="margin-top:0">❌ '+item.broken+'</div><div class="qtext" style="font-size:.9rem;color:var(--muted)">Melhor reparo:</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.opts.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt';b.textContent=t;
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(25,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q3.length&&!done.m3){missionDone(3);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 4 · BATALHA ================= */
+var Q4=[
+ {t:'Objetivo: nome para uma loja de doces artesanais',o:['"me dá nomes de loja"','"Gere 10 nomes para loja de doces artesanais feitos por uma adolescente, curtos, fáceis de lembrar, que funcionem como @ no Instagram. Evite nomes já famosos."'],a:1,e:'Quantidade definida + critérios + restrição = respostas prontas para usar.'},
+ {t:'Objetivo: melhorar um texto que a IA já entregou',o:['"Aponte os 3 pontos mais fracos do seu texto e reescreva corrigindo cada um."','"não gostei, faz de novo"'],a:0,e:'Autocrítica guiada > refazer no escuro. Diga O QUE melhorar.'},
+ {t:'Objetivo: estudar para prova de história',o:['"resume a revolução francesa"','"Sou do 9º ano e tenho prova sexta. Crie 8 flashcards de pergunta/resposta sobre as causas da Revolução Francesa, do mais fácil ao mais difícil, e depois me pergunte um por um."'],a:1,e:'Formato de estudo ativo (flashcards + quiz) vence resumo passivo.'},
+ {t:'Objetivo: continuar uma conversa que estava boa',o:['"Gostei da opção 2. Deixe-a 30% mais curta, troque o final por uma pergunta e mantenha o tom divertido."','"muda um pouco aí"'],a:0,e:'Iteração cirúrgica: diga o que manter, o que mudar e quanto.'}
+];
+function buildG4(){var box=document.getElementById('g4');if(!box)return;var solved=0;
+ Q4.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">⚔️ Rodada '+(idx+1)+' — '+item.t+'</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.o.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt';b.textContent=t;
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(20,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q4.length&&!done.m4){missionDone(4);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 5 · CAÇA À ILUSÃO ================= */
+var Q5=[
+ {intro:'Pergunta feita à IA: "Fale sobre o Brasil"',lines:[
+   'O Brasil é o maior país da América do Sul.',
+   'A capital do Brasil é o Rio de Janeiro desde 1960.',
+   'O português é o idioma oficial do país.'],a:1,
+  e:'Ilusão destruída! Em 1960 aconteceu o contrário: a capital DEIXOU de ser o Rio e passou a ser Brasília.'},
+ {intro:'Pergunta feita à IA: "Como funciona a fotossíntese?"',lines:[
+   'As plantas usam a luz do sol como fonte de energia.',
+   'O processo acontece principalmente nas folhas.',
+   'As plantas absorvem oxigênio e liberam gás carbônico durante a fotossíntese.'],a:2,
+  e:'Ilusão destruída! É o contrário: absorvem gás carbônico e liberam oxigênio.'},
+ {intro:'Pergunta feita à IA: "Quem foi Santos Dumont?"',lines:[
+   'Santos Dumont foi um inventor brasileiro pioneiro da aviação.',
+   'Ele voou com o 14-Bis em Paris, em 1906.',
+   'Ele nasceu em Portugal e se mudou para o Brasil aos 20 anos.'],a:2,
+  e:'Ilusão destruída! Santos Dumont nasceu no Brasil (Palmira, hoje Santos Dumont, em Minas Gerais).'}
+];
+function buildG5(){var box=document.getElementById('g5');if(!box)return;var solved=0;
+ Q5.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">🔎 Caso '+(idx+1)+' — '+item.intro+'</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.lines.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt';b.textContent='🤖 "'+t+'"';
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(30,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q5.length&&!done.m5){missionDone(5);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 6 · MEGA-PROMPT ================= */
+function forgeMega(){
+  var labels=['','Papel','Contexto','Tarefa','Formato','Restrições','Critério de qualidade'];
+  var vals=[],filled=0;
+  for(var i=1;i<=6;i++){var v=document.getElementById('f'+i).value.trim();vals[i]=v;if(v.length>=10)filled++;}
+  if(filled<6){sndWrong();alert('Câmaras incompletas, Agente! Preencha os 6 campos com pelo menos uma frase caprichada em cada.');return;}
+  var out='';for(var j=1;j<=6;j++){out+='['+labels[j].toUpperCase()+']\n'+vals[j]+'\n\n';}
+  document.getElementById('megatext').textContent=out.trim();
+  document.getElementById('megaout').classList.add('show');
+  if(!done.m6){gainXP(150,document.getElementById('megatext'));missionDone(6);}
+}
+function copyMega(){var t=document.getElementById('megatext').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(t);}else{
+    var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+  sndCoin();}
+
+
+/* ================= GAME 7 · DECODIFICADOR ================= */
+var Q7=[
+ {q:'"Antes de responder, me faça 3 perguntas sobre o que eu realmente preciso."',opts:['Prompt reverso','Exemplos em série','Saída estruturada'],a:0,e:'Prompt reverso: a IA vira detetive do seu pedido antes de agir.'},
+ {q:'"Faça legendas como nestes 3 exemplos que estou colando abaixo..."',opts:['Debate de personas','Exemplos em série (few-shot)','Controle de ousadia'],a:1,e:'Few-shot: você mostra o padrão e a IA copia o estilo.'},
+ {q:'"Resolva mostrando o raciocínio passo a passo antes da resposta final."',opts:['Pensar em voz alta (chain of thought)','Prompt reverso','Exemplos em série'],a:0,e:'Chain of thought: pensar em etapas reduz muito os erros em problemas difíceis.'},
+ {q:'"Responda como um nutricionista e um chef que discordam, depois dê o veredito."',opts:['Saída estruturada','Controle de ousadia','Debate de personas'],a:2,e:'Debate de personas: dois pontos de vista revelam o que um só esconderia.'},
+ {q:'"Me dê 3 ideias seguras e 3 completamente malucas."',opts:['Controle de ousadia','Chain of thought','Prompt reverso'],a:0,e:'Controle de ousadia: você regula o termostato da criatividade.'},
+ {q:'"Entregue em tabela com colunas: etapa, tempo, material e resultado esperado."',opts:['Debate de personas','Saída estruturada','Few-shot'],a:1,e:'Saída estruturada: formato definido = resposta organizada e pronta para usar.'}
+];
+function buildG7(){var box=document.getElementById('g7');if(!box)return;var solved=0;
+ Q7.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">'+(idx+1)+'. <span style="font-family:monospace;color:#B9FFDC">'+item.q+'</span></div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.opts.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt small';b.textContent=t;
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(20,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q7.length&&!done.m7){missionDone(7);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 8 · CENTRAL DE SEGURANÇA ================= */
+var Q8=[
+ {q:'Um app de IA pede seu CPF e uma foto do seu documento "para personalizar as respostas".',opts:['✅ APROVAR','⛔ BLOQUEAR'],a:1,e:'BLOQUEADO. IA de conversa não precisa de documentos. Pedido estranho = alarme máximo.'},
+ {q:'Você quer ajuda com um trabalho e descreve o tema para a IA, sem dados pessoais.',opts:['✅ APROVAR','⛔ BLOQUEAR'],a:0,e:'APROVADO. Uso normal e seguro: tema sim, dados pessoais não.'},
+ {q:'Áudio no WhatsApp com a voz do seu primo: "Sofri um acidente, me manda um Pix AGORA e não conta pra ninguém!"',opts:['✅ APROVAR','⛔ BLOQUEAR'],a:1,e:'BLOQUEADO. Urgência + segredo + dinheiro = assinatura clássica de golpe com voz clonada. Ligue para o número verdadeiro e use a palavra-código da família.'},
+ {q:'Um site desconhecido oferece "IA ilimitada grátis", mas primeiro pede a senha do seu e-mail para "sincronizar".',opts:['✅ APROVAR','⛔ BLOQUEAR'],a:1,e:'BLOQUEADO. Nenhum serviço legítimo pede a senha do seu e-mail. Isso é phishing puro.'}
+];
+function buildG8(){var box=document.getElementById('g8');if(!box)return;var solved=0;
+ Q8.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">🛰️ Caso '+(idx+1)+': '+item.q+'</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.opts.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt small';b.textContent=t;
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(25,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q8.length&&!done.m8){missionDone(8);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 9 · TRIBUNAL ================= */
+var Q9=[
+ {q:'Ana pediu à IA 10 ideias de tema, escolheu uma, pesquisou em livros e escreveu o texto com as próprias palavras.',opts:['⚖️ USO HONESTO','🌑 TERRITÓRIO DO VAZIO'],a:0,e:'HONESTO. IA para destravar ideias + pesquisa própria + texto próprio = co-criação exemplar.'},
+ {q:'Bruno colou a redação inteira gerada pela IA, trocou 3 palavras e entregou com o nome dele.',opts:['⚖️ USO HONESTO','🌑 TERRITÓRIO DO VAZIO'],a:1,e:'VAZIO. Ele não consegue defender uma frase daquilo. Foi só o mensageiro — e o cérebro dele ficou parado.'},
+ {q:'Carla escreveu o texto sozinha e pediu à IA para apontar erros de gramática e frases confusas, corrigindo ela mesma.',opts:['⚖️ USO HONESTO','🌑 TERRITÓRIO DO VAZIO'],a:0,e:'HONESTO. Revisão assistida mantém a autoria e ainda ensina. Passou no Teste do Espelho.'},
+ {q:'Diego usou IA para criar um vídeo "engraçado" colocando o rosto de um colega em situações vergonhosas, sem o colega saber.',opts:['⚖️ USO HONESTO','🌑 TERRITÓRIO DO VAZIO'],a:1,e:'VAZIO — e dos piores. Deepfake de pessoas reais sem consentimento é violência digital e pode ser crime. Poder sem caráter é o combustível do Vazio.'}
+];
+function buildG9(){var box=document.getElementById('g9');if(!box)return;var solved=0;
+ Q9.forEach(function(item,idx){
+  var card=document.createElement('div');card.className='qcard';
+  card.innerHTML='<div class="qtext">📜 Caso '+(idx+1)+': '+item.q+'</div>';
+  var opts=document.createElement('div');opts.className='opts';
+  item.opts.forEach(function(t,oi){
+    var b=document.createElement('button');b.className='opt small';b.textContent=t;
+    b.onclick=function(){var btns=opts.querySelectorAll('.opt');btns.forEach(function(x){x.disabled=true;});
+      var ex=card.querySelector('.explain');ex.classList.add('show');
+      if(oi===item.a){b.classList.add('right');gainXP(25,b);}else{b.classList.add('wrong');btns[item.a].classList.add('right');sndWrong();}
+      solved++;if(solved===Q9.length&&!done.m9){missionDone(9);}
+    };opts.appendChild(b);});
+  card.appendChild(opts);
+  var ex=document.createElement('div');ex.className='explain';ex.textContent=item.e;card.appendChild(ex);
+  box.appendChild(card);});}
+
+/* ================= GAME 10 · JURAMENTO ================= */
+var pickedSkill='';
+function pickSkill(btn,name){pickedSkill=name;
+  document.querySelectorAll('#skillpick .opt').forEach(function(x){x.classList.remove('right');});
+  btn.classList.add('right');sndCoin();}
+function swearOath(){
+  var action=document.getElementById('j2').value.trim();
+  var name=document.getElementById('j3').value.trim();
+  if(!pickedSkill||action.length<10||name.length<2){sndWrong();alert('Juramento incompleto, Agente! Escolha a super-habilidade, escreva uma ação concreta e assine.');return;}
+  document.getElementById('o-name').textContent=name;
+  document.getElementById('o-skill').textContent=pickedSkill;
+  document.getElementById('o-action').textContent=action;
+  document.getElementById('oathout').style.display='block';
+  var cl=document.getElementById('certlink');if(cl)cl.href='certificado-engenharia-de-prompt.html?nome='+encodeURIComponent(name);
+  if(!done.m10){gainXP(180,document.getElementById('oathout'));missionDone(10);}
+}
+
+/* ================= INIT ================= */
+load();
+buildG1();buildG2();buildG3();buildG4();buildG5();buildG7();buildG8();buildG9();
+updHUD();
+for(var k=1;k<=10;k++){if(done['m'+k]){var d=document.getElementById('d'+k);if(d)d.classList.add('show');var md=document.getElementById('md'+k);if(md)md.classList.add('won');if(k===6)document.getElementById('grad').classList.add('show');if(k===10){document.getElementById('grad2').style.display='block';var mt=document.getElementById('md10');if(mt)mt.classList.add('won');}}}
+</script>
+</body>
+</html>
